@@ -1,18 +1,23 @@
-var app = require("express")(); 
-var bodyParser = require("body-parser"); 
-var user = "Prodicode";
+var express = require('express');
+var app = express();
 
+// set the port of our application
+// process.env.PORT lets the port be set by Heroku
+var port = process.env.PORT || 8080;
 
-//Set view engine to ejs
-app.set("view engine", "ejs"); 
+// set the view engine to ejs
+app.set('view engine', 'ejs');
 
-//Tell Express where we keep our index.ejs
-app.set("views", __dirname + "/views"); 
+// make express look in the public directory for assets (css/js/img)
+app.use(express.static(__dirname + '/public'));
 
-//Use body-parser
-app.use(bodyParser.urlencoded({ extended: false })); 
+// set the home page route
+app.get('/', function(req, res) {
 
-//Instead of sending Hello World, we render index.ejs
-app.get("/", (req, res) => { res.render("index", { username: user }); });
+	// ejs render automatically looks in the views folder
+	res.render('index');
+});
 
-app.listen(8000, () => { console.log("Server online on http://localhost:8000"); });
+app.listen(port, function() {
+	console.log('Our app is running on http://localhost:' + port);
+});

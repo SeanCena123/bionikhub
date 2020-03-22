@@ -1,5 +1,5 @@
 //Init socket connection
-var socket = io.connect('http://localhost:8000');
+var socket = io.connect('https://bionikhubtesting.herokuapp.com/');
 
 //Array associated with the removal of tags
 var myCatArray = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games", "Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Emus", "Emus4", "Flekstore"];

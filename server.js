@@ -1,7 +1,7 @@
 //Initiating Global Variables
 var express = require('express');
 var app = express();
-const port = 3000;
+const port = process.env.API_KEY;
 var totalNumApps;
 var viewcounter = 0;
 //Firebase Init

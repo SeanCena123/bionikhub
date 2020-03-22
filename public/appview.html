@@ -1,0 +1,446 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="apple-touch-icon" sizes="128x128" href="/img/appicon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="shortcut icon" href="img/trans.png" />
+    <title> Bionik </title>
+
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+</head>
+<body>
+    <div class="views tabs toolbar-through layout-dark alert-text"> <!-- Dark Theme Applied -->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                <div class="center sliding" id="appname_3">APP NAME</div>
+                <div class="right">
+                    <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                </div>
+            </div>
+        </div>
+
+    <div data-page="index-1" class="page">
+    <div class="page-content"><br>  
+        <div class="content-block-title" style="margin-top: -10px"><h2 id="appname_1">APP NAME</h2></div>
+                <div class="card" style="margin-top: -10px">
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img id="frontimage" class="lazy-fadeIn lazy-loaded" width="44" >
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title" id="appname_2">APP NAME</div>
+                                                        </div>
+                                                        <div class="app-subtitle" id="developer_1">DEVELOPER</div>
+                                                    </div>
+                                                    </li>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        
+                    </div><br>
+
+                    <!-- DESCRIPTION -->
+                    <div class="card" style="margin-top: -10px">
+                            <div class="list-block media-list">
+                                <div class="card-content lazy lazy-fadeIn">
+                                    <div class="list-block media-list">
+                                        <div class="all-file-managers">
+                                            <div class="list-block media-list">
+                                                <div class="card-content lazy lazy-fadeIn">
+                                                    <div class="list-block media-list">
+    
+                                                        <li class="item-content">
+                                                        <div class="item-inner">
+                                                            <div class="item-title-row">
+                                                                <div class="item-title">Description</div>
+                                                            </div><br>
+                                                            <div id="description">
+                                                            DESCRIPTION
+                                                            </div>
+                                                            </li>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div><br>
+
+                <div class="card" style="margin-top: -10px">
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1198371611419693056/QYNy-2pj_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Ignition</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a  id="ignition-get" onclick="window.open('');" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1084347611253944320/RMag_5c__400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Topstore</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="top-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/875904208993648640/TubOLdYs_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Appvalley</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="valley-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1172110767056924672/C7ffDMIQ_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Tweakbox</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="box-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">IOSNinja</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="ninja-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">CoconutX</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="coco-get" onclick="myElement()" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">IOSGods</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="god-get" onclick="window.open('');" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+    
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">FlekSt0re</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="flek-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="list-block media-list">
+                    <div class="card-content lazy lazy-fadeIn">
+                        <div class="list-block media-list">
+                            <div class="all-file-managers">
+                                <div class="list-block media-list">
+                                    <div class="card-content lazy lazy-fadeIn">
+                                        <div class="list-block media-list">
+    
+                                            <li class="item-content">
+                                                <div class="item-media">
+                                                    <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg">
+                                                </div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">Emus4u</div>
+                                                    <div class="" style="margin-right: 20px;">
+                                                        <a id="emus4-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                    </div>
+                                                </div>
+                                                <div class="app-subtitle">3rd Party Appstore</div>
+                                            </div>
+                                            </li>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="list-block media-list">
+                <div class="card-content lazy lazy-fadeIn">
+                    <div class="list-block media-list">
+                        <div class="all-file-managers">
+                            <div class="list-block media-list">
+                                <div class="card-content lazy lazy-fadeIn">
+                                    <div class="list-block media-list">
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">IOSEmus</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a id="emus-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+
+
+                                        <!-- DESCRIPTION -->
+                                        <div class="card" style="margin-top: -10px">
+                                            <div class="list-block media-list">
+                                                <div class="card-content lazy lazy-fadeIn">
+                                                    <div class="list-block media-list">
+                                                        <div class="all-file-managers">
+
+                                                            <div class="card-header">Developer: 
+                                                                <font color="white" id="developer_2"> DEVELOPER </font>
+                                                            </div>
+
+                                                            <div class="card-header">Version: 
+                                                             <font color="white" id="version"> VERSION </font>
+                                                            </div> 
+
+                                                            <div class="card-header">Category: 
+                                                            <font color="white" id="category"> CATEGORY </font>
+                                                            </div> 
+                                                            
+                                                            <div class="card-header">Size: 
+                                                            <font color="white" id="size"> SIZE </font>
+                                                            </div> 
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div><br>
+                
+                </div>
+            </div>  
+    </div>
+</div> 
+</div>
+<script type="text/javascript" src="js/appfunc.js"></script>
+</body>
+</html>
+<!-- 
+<div class="card-header">Developer: 
+    <font color="white"> Closed </font>
+</div>
+
+
+
+<div class="card-header">Version: 
+ <font color="white"> Closed </font>
+</div> -->

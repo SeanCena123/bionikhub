@@ -1,345 +1,1395 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/html">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-	
-	<title> Bionik </title>
-	
-    <link rel="shortcut icon" href="img/trans.png" />
-	<link rel="apple-touch-icon" sizes="128x128" href="/img/appicon.png">
-	<link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="apple-touch-icon" sizes="128x128" href="/img/appicon.png">
+    <link rel="shortcut icon" href="img/trans.png"/>
+    
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
     <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
     <link rel="stylesheet" href="css/my-app.css">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <link rel="stylesheet" href="css/swiper.min.css">
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
+    <title> Bionik </title>
 </head>
+
 <body>
+<!-- Status bar overlay for fullscreen mode-->
+<div class="statusbar-overlay"></div>
+<div class="panel-overlay"></div>
 
-	<div id="view-1" class="view tab view-main active" data-page="index-1">
-		<div class="navbar layout-dark"> <!-- Dark Theme Applied -->
-			<div class="navbar-inner">
-				<div class="center sliding" style="left: 642.5px;">Home</div>
-			</div>
-		</div>	
-		<div class="pages navbar-through">
-			<div data-page="index-1" class="page">
-				<div class="page-content">
-					<div class="content-block-title">
-						<center>     
-							<p style="text-align:center;">
-								<img src="img/trans.png" width="200px">
-							</p>
-							<h1 class="text color-text-flow"> Bionik Hub </h1>
-							<h2 class="text color-text-flow" style="margin-top: -10px;"> Beta </h2>
-						</center>
-						</div>
-					<div>
-					<center> 
-						<h1 class="text color-text-flow" style="font-size: 2.25vh; margin-top: -10px;"> KHM </h1>
-					</center>
-					</div><br>	
+<div class="views tabs toolbar-through layout-dark alert-text">
 
-					<div class="content-block-title" style="margin-top: -10px"><h2>ABOUT</h2></div>
-					<div class="card" style="margin-top: -10px">
-					<div class="card-header"><b>Welcome to BionikHub!</b></div>
-					<div class="card-header">The Central Third Party Appstore Service. <br> Make sure to follow us on Twitter as we will alarm you on any resigning and or addition of applications on our service. Feel free to ask us questions also.</div>
-					<div class="list-block media-list">
-
-					</div>
-				</div><br>
-
-					<div class="content-block-title" style="margin-top: -10px">
-						<h2>BIONIK Team</h2>
-					</div>
-					<div class="card" style="margin-top: -10px">
-						<div class="card-header">TEAM</div>
-							<div class="list-block media-list">
-								<div class="card-content lazy lazy-fadeIn">
-									<div class="list-block media-list">
-										
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1203646959468204032/Bkfz_edz_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">Bionik</div>
-												<div class="" style="margin-right: 20px;">
-													<!-- <a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/BstoreIOS')">TWITTER</a> -->
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" href="#view-2" submitTwitter('bionik');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">Official Account</div>
-										</div>
-										</li>
-										
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/983100386151104512/AWtVvyNL_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div class="item-title">DJFeelOfficial</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/DJFeeLOfficiaI'); submitTwitter('djfeelofficial');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">Supporter</div>
-										</div>
-										</li> 
-										 
-									</div>
-								</div>
-							</div>
-						</div> <br> <br>
-
-						<div class="content-block-title" style="margin-top: -10px"><h2>Popular Apps</h2></div>
-						<div class="card" style="margin-top: -10px">
-						<div class="card-header">APPS</div>
-						<div class="list-block media-list">
-							<div class="card-content lazy lazy-fadeIn">
-								<div class="list-block media-list">
-								  
-								<div id="popular-apps"></div>
-
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="content-block-title"><h2>Terms and Conditions</h2></div>
-					<div class="card">
-						<div class="list-block media-list">
-							<div class="card-content lazy lazy-fadeIn">
-								<div class="list-block media-list">
-									<li class="item-content">
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div class="app-title">Legal Statements</div>
-												<a href="ToS.html" class="button button-fill button-round" onclick="submitLegal();" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">OPEN</a>
-											</div>
-										</div>
-									</li>    
-								</div>
-							</div>
-						</div>
-					</div><br>
-
-
-						<div class="content-block-title" style="margin-top: -10px">
-							<h2>Sources</h2>
-						</div>
-						<div class="card" style="margin-top: -10px">
-						<div class="card-header">3RD PARTY STORES</div>
-							<div class="list-block media-list">
-								<div class="card-content lazy lazy-fadeIn">
-									<div class="list-block media-list">
-										
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1198371611419693056/QYNy-2pj_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">Ignition</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/TryIgnition'); submitHomeSource('Ignition');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-										
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1084347611253944320/RMag_5c__400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">Top Store</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/TopStore12'); submitHomeSource('TopStore');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/875904208993648640/TubOLdYs_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">Appvalley</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/App_Valley_vip'); submitHomeSource('AppValley');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1172110767056924672/C7ffDMIQ_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">Tweakbox</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/usetweakbox'); submitHomeSource('TweakBox');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">IOSNinja</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/iosninja_io'); submitHomeSource('IOSNinja');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">CoconutX</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/cokernut_x'); submitHomeSource('CoconutX');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">IOSGods</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/iOSGodsCom'); submitHomeSource('IOSGods');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">FlekSt0re</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/FlekSt0re'); submitHomeSource('Flekstore');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">Emus4u</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/Emus4you'); submitHomeSource('Emus4u');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-
-										<li class="item-content">
-											<div class="item-media">
-												<img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg">
-											</div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div id="app1" class="item-title">IOSEmus</div>
-												<div class="" style="margin-right: 20px;">
-													<a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/iOSEmusTeam'); submitHomeSource('IOSEmus');">TWITTER</a>
-												</div>
-											</div>
-											<div class="app-subtitle">3rd Party Appstore</div>
-										</div>
-										</li>
-										 
-									</div>
-								</div>
-							</div>
-						</div>  
-				
-					<div class="content-block-title"><h2>Submission of Apps</h2></div>
-						<div class="card">
-							<div class="list-block media-list">
-								<div class="card-content lazy lazy-fadeIn">
-									<div class="list-block media-list">
-										<li class="item-content">
-											<div class="item-inner">
-												<div class="item-title-row">
-													<div class="app-title">Request Apps</div>
-													<a onclick="window.open('mailto:kneehowmasup@gmail.com?subject=Blackstore App Suggestion &body=My App Suggestion Is:'); submitRequest()" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">SUBMIT</a>
-												</div>
-											</div>
-										</li>    
-									</div>
-								</div>
-							</div>
-						</div><br>
-					</div> 
-				</div>
-			</div>
-		</div>
-
-
-		<div id="view-2" class="view tab" data-page="index-2">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="center sliding" style="left: 642.5px;">Apps</div>
-                </div>
+    <!-- Home -->
+    <div id="view-1" class="view tab view-main active" data-page="index-1">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="center sliding">Home</div>
             </div>
-            <div class="pages navbar-through">
-                <div data-page="index-2" class="page">
+        </div>
+        <div class="pages navbar-through">
+            <div data-page="index-1" class="page">
+                <div class="page-content">
+                    <div class="content-block-title">
+                        <center>     
+                            <p style="text-align:center;">
+                                <img src="img/trans.png" width="200px">
+                            </p>
+                            <h1 class="rainbow rainbow_text_animated"> Bionik Hub </h1>
+                            <h2 class="rainbow2 rainbow_text_animated" style="margin-top: -10px;"> Beta </h2>
+                        </center>
+                        
+                    </div>
+                    
+                    <div class="content-block-title" style="margin-top: -10px">
+                        <h2>ABOUT</h2>
+                    </div>
+                    <div class="card" style="margin-top: -10px">
+                        <div class="card-header"><b>Welcome to BionikHub!</b></div>
+                        <div class="card-header">The Central Third Party Appstore Service. <br> Make sure to follow us on Twitter as we will alarm you on any resigning and or addition of applications on our service. Feel free to ask us questions also.</div>
+                        <div class="list-block media-list"></div>
+                    </div><br>
+                
+                    
+                    <div class="content-block-title" style="margin-top: -10px">
+                        <h2>BIONIK Team</h2>
+                    </div>
+                    <div class="card" style="margin-top: -10px">
+                        <div class="card-header">TEAM</div>
+                            <div class="list-block media-list">
+                                <div class="card-content lazy lazy-fadeIn">
+                                    <div class="list-block media-list">
+                                        
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1203646959468204032/Bkfz_edz_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Bionik</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="button button-fill button-round" id="twitter-bionik" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/BStoreIOS');">TWITTER</a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">Official Account</div>
+                                        </div>
+                                        </li>
+                                        
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/983100386151104512/AWtVvyNL_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">DJFeelOfficial</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="button button-fill button-round" id="twitter-djfeel" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/DJFeeLOfficiaI');">TWITTER</a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">Supporter</div>
+                                        </div>
+                                        </li> 
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br><br>       
+                        
+                        <div class="content-block-title" style="margin-top: -10px"><h2>Popular Apps</h2></div>
+                        <div class="card" style="margin-top: -10px">
+                        <div class="card-header">APPS</div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    
+                                <div id="popular-apps"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="content-block-title"><h2>Terms and Conditions</h2></div>
+                    <div class="card">
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <li class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="app-title">Legal Statements</div>
+                                                <a class="tab-link" href="#view-0" id="legal-button">
+                                                    <em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>    
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                    
+
+                    <div class="content-block-title" style="margin-top: -10px">
+                        <h2>Sources</h2>
+                    </div>
+                    <div class="card" style="margin-top: -10px">
+                    <div class="card-header">3RD PARTY STORES</div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1198371611419693056/QYNy-2pj_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">Ignition</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-ignition" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/TryIgnition');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+                                    
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1084347611253944320/RMag_5c__400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">Top Store</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-topstore" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/TopStore12');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/875904208993648640/TubOLdYs_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">Appvalley</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-appvalley" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/App_Valley_vip');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1172110767056924672/C7ffDMIQ_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">Tweakbox</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-tweakbox" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/usetweakbox');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">IOSNinja</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-iosninja" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/iosninja_io');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">CoconutX</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-coconutx" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/cokernut_x');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">IOSGods</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-iosgods" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/iOSGodsCom');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">FlekSt0re</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-flekstore" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/FlekSt0re');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">Emus4u</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-emus4u" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/Emus4you');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+
+                                    <li class="item-content">
+                                        <div class="item-media">
+                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg">
+                                        </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div id="app1" class="item-title">IOSEmus</div>
+                                            <div class="" style="margin-right: 20px;">
+                                                <a class="button button-fill button-round" id="twitter-iosemus" style="background: #F0F1F6; color: #007AFF; font-weight:bold;" onclick="window.open('https://twitter.com/iOSEmusTeam');">TWITTER</a>
+                                            </div>
+                                        </div>
+                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                    </div>
+                                    </li>
+                                     
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="content-block-title"><h2>Submission of Apps</h2></div>
+                    <div class="card">
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <li class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="app-title">Request Apps</div>
+                                                <a id="submission-button" onclick="window.open('mailto:kneehowmasup@gmail.com?subject=Blackstore App Suggestion &body=My App Suggestion Is:');" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">SUBMIT</a>
+                                            </div>
+                                        </div>
+                                    </li>    
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Apps (Category) -->
+    <div id="view-2" class="view tab" data-page="index-2">
+        <!-- We can make with view with navigation, let's add Top Navbar-->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="center sliding" style="left: 642.5px;">Apps</div>
+            </div>
+        </div>
+        <div class="pages navbar-through">
+            <div data-page="index-2" class="page">
+                <div class="page-content">
+                    <div class="content-block-title">
+                        <h1 class="text color-text-flow"> Apps </h1>
+                    </div>
+                    <div class="card" style="margin-top: -10px">
+                        <div class="card-header">The Category/Apps Page is designed to categorise all your favourite apps in one place.</div>
+                        <div class="list-block media-list"></div>
+                    </div><br>
+<!-- Slider container -->
+<div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <a class="swiper-slide"><img class="swiper-slide" data-swiper-autoplay="1000" style="width: 550px" src="img/bannerone.png"></a>
+        <a class="swiper-slide"><img class="swiper-slide" data-swiper-autoplay="1000" style="width: 550px" src="img/bannertwo.png"></a>
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+</div>
+                    <br><br> 
+                    <div class="card" style="margin-top: -10px"><div class="card-header">Jailbreaks<a class="tab-link" href="#view-5" id="jailbreak-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a></div></div><br>
+                    <div class="card" style="margin-top: -10px"><div class="card-header">Tweaked<a class="tab-link" href="#view-5" id="tweaked-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a></div></div><br>
+                    <div class="card" style="margin-top: -10px"><div class="card-header">Entertainment<a class="tab-link" href="#view-5" id="entertainment-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a></div></div><br>
+                    <div class="card" style="margin-top: -10px"><div class="card-header">Emulators<a class="tab-link" href="#view-5" id="emulators-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a></div></div><br>
+                    <div class="card" style="margin-top: -10px"><div class="card-header">Games/Paid Apps<a class="tab-link" href="#view-5" id="games-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a></div></div><br>
+                </div> 
+                <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Sources -->
+    <div id="view-3" class="view tab" data-page="index-3">
+        <!-- We can make with view with navigation, let's add Top Navbar-->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="center sliding" style="left: 642.5px;">Sources</div>
+            </div>
+        </div>
+        <div class="pages navbar-through">
+            <div data-page="index-3" class="page">
+                <div class="page-content">
+                    <div class="content-block-title">
+                        <h1 class="text color-text-flow"> Sources </h1>
+                    </div>
+                    <div class="card" style="margin-top: -10px">
+                        <div class="card-header">The Source/Stores Page is designed to categorise all apps available to each store. Tip: This is helpful if you want to locate a specific version from a specific store.</div>
+                        <div class="list-block media-list"></div>
+                    </div><br>         
+                    <div class="card" style="margin-top: -10px">
+                            <div class="list-block media-list">
+                                <div class="card-content lazy lazy-fadeIn">
+                                    <div class="list-block media-list">
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1198371611419693056/QYNy-2pj_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Ignition</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="ignition-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+                                        
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1084347611253944320/RMag_5c__400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Top Store</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="topstore-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/875904208993648640/TubOLdYs_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Appvalley</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="appvalley-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1172110767056924672/C7ffDMIQ_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Tweakbox</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="tweakbox-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">IOSNinja</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="iosninja-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">CoconutX</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="coconutx-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">IOSGods</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="iosgods-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">FlekSt0re</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="flekstore-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Emus4u</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="emus4u-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">IOSEmus</div>
+                                                <div class="" style="margin-right: 20px;">
+                                                    <a class="tab-link" href="#view-6" id="iosemus-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a>
+                                                </div>
+                                            </div>
+                                            <div class="app-subtitle">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                </div> 
+                <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div id="view-4" class="view tab" data-page="index-5">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="center sliding" style="left: 642.5px;">Search</div>
+            </div>
+        </div>
+        <div class="pages navbar-fixed">
+            <div data-page="index-5" class="page">
+                <div class="pages navbar-through">
                     <div class="page-content">
-                        <div class="content-block-title"><h1>Categorised Apps</h1></div>
-                        <div class="slideshow-container">
-                            <p style="text-align:center; align-content: center;"> <img class="mySlides fade" src="img/bannerone.png" style="width:100%"> </p>
-                            <p style="text-align:center; align-content: center;"> <img class="mySlides fade" src="img/bannertwo.png" style="width:100%"> </p>
-                  </div>            
-				        <div class="content-block-title" style="margin-top: -10px"><h2>Categories</h2></div>
-                        <div class="card" style="margin-top: -10px"><div class="card-header">Jailbreaks<a href="jailbreaks.html" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">OPEN</a></div></div>
-                        <div class="card"><div class="card-header"> Tweaked <a href="tweaked.html" onclick="appCatLoad('Tweaked'); submitCategoryApps('Tweaked')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">OPEN</a></div></div>	
-                        <div class="card"><div class="card-header"> Entertainment <a href="entertainment.html" onclick="appCatLoad('Entertainment'); submitCategoryApps('Entertainment')"  class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">OPEN</a></div></div>
-                        <div class="card"><div class="card-header"> Emulators <a href="emulators.html" onclick="appCatLoad('Emulators'); submitCategoryApps('Emulators')"  class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">OPEN</a></div></div>
-                        <div class="card"><div class="card-header"> Games/Paid Apps <a href="games.html" onclick="appCatLoad('Games'); submitCategoryApps('Games')"  class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">OPEN</a></div></div> <br>
+                        <div data-page="home" class="page">
+                            <form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;">
+                                <div class="searchbar-input">
+                                        <input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a>
+                                </div><a href="#" class="searchbar-cancel">Cancel</a>
+                            </form>
+                            <div class="searchbar-overlay"></div><div class="page-content"><div class="content-block searchbar-not-found">
+                                    <div class="content-block-inner">Nothing found</div></div>
+                                <div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn">
+                              <ul>       
+                              <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list">
+<div id="search-apps">
+
+</div>                              
+                              </div>
+                              </div>
+                              </div>                         
+                              </ul>       
+                              </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
+    </div>
+
+    <!-- Category Page -->
+    <div id="view-5" class="view tab" data-page="index-5">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="card-footer item-content item-media left" style="visibility: hidden;">
+                    <a href="#view-2" class="tab-link "> 
+                        <i class="icon icon-back left" id="back-left-cat"></i>
+                    </a>
+                </div>
+                <div class="center sliding" style="left: 642.5px;" id="category-name">Search</div>
+            </div>
+        </div>
+        <div class="pages navbar-fixed">
+            <div data-page="index-5" class="page">
+                <div class="pages navbar-through">
+                    <div class="page-content">
+                        <div class="content-block-title" style="margin-top: -10px">
+                            <h2 id="category-title">TITLE</h2>
+                        </div>
+                        <div data-page="home" class="page">
+                            <form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;">
+                                <div class="searchbar-input">
+                                        <input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a>
+                                </div><a href="#" class="searchbar-cancel">Cancel</a>
+                            </form>
+                            <div class="searchbar-overlay"></div><div class="page-content"><div class="content-block searchbar-not-found">
+                                    <div class="content-block-inner">Nothing found</div></div>
+                                <div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn">
+                              <ul>       
+                              <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list">
+<div id="category-loc">
+
+</div>                              
+                              </div>
+                              </div>
+                              </div>                         
+                              </ul>       
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Source Page -->
+    <div id="view-6" class="view tab" data-page="index-5">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="card-footer item-content item-media left" style="visibility: hidden;">
+                    <a href="#view-3" class="tab-link "> 
+                        <i class="icon icon-back left" id="back-left-sor"></i>
+                    </a>
+                </div>
+                <div class="center sliding" style="left: 642.5px;" id="category-name-sor">Search</div>
+            </div>
+        </div>
+        <div class="pages navbar-fixed">
+            <div data-page="index-5" class="page">
+                <div class="pages navbar-through">
+                    <div class="page-content">
+                        <div class="content-block-title" style="margin-top: -10px">
+                            <h2 id="category-title-sor">TITLE</h2>
+                        </div>
+                        <div data-page="home" class="page">
+                            <form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;">
+                                <div class="searchbar-input">
+                                        <input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a>
+                                </div><a href="#" class="searchbar-cancel">Cancel</a>
+                            </form>
+                            <div class="searchbar-overlay"></div><div class="page-content"><div class="content-block searchbar-not-found">
+                                    <div class="content-block-inner">Nothing found</div></div>
+                                <div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn">
+                              <ul>       
+                              <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list">
+<div id="category-loc-sor">
+
+</div>                              
+                              </div>
+                              </div>
+                              </div>                         
+                              </ul>       
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Updates Page -->
+    <div id="view-7" class="view tab" data-page="index-2">
+        <!-- We can make with view with navigation, let's add Top Navbar-->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="center sliding" style="left: 642.5px;">Updates</div>
+            </div>
+        </div>
+        <div class="pages navbar-through">
+            <div data-page="index-2" class="page">
+                <div class="page-content">
+
+                    <div class="content-block-title">
+                        <h1 class="text color-text-flow"> LATEST NEWS </h1>
+                    </div>
+
+                <div class="card" style="margin-top: -10px">
+                    <div class="card-header">To find the latest news on apps and BionikHub, make sure to follow us on twitter at @BStoreIOS. </div>
+                    <div class="list-block media-list"></div>
+                </div><br>
+
+                    <a class="twitter-timeline tw-align-center" data-width="100%" data-height="400px" data-theme="dark" href="https://twitter.com/BStoreIOS?ref_src=twsrc%5Etfw">Tweets by BStoreIOS</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+                    <div class="content-block-title">
+                        <h1 class="text color-text-flow"> STATUS OF SOURCES </h1>
+                    </div>
+                    <div class="card" style="margin-top: -10px">
+                        <div class="card-header">Our team will update this list often to ensure that you are up to date with the signing services status.</div>
+                        <div class="card-header" style="color: #00ff00;">Signing: Service's apps are available to download.</div>
+                        <div class="card-header" style="color: red;">Revoked: Service's apps are unavailable to download.</div>    
+                        <div class="card-header" style="color: #808080;">Unknown: Bionik is unsure on Service's availability.</div>                   
+                        <div class="list-block media-list"></div>
+                    </div><br>         
+                    <div class="card" style="margin-top: -10px">
+                            <div class="list-block media-list">
+                                <div class="card-content lazy lazy-fadeIn">
+                                    <div class="list-block media-list">
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1198371611419693056/QYNy-2pj_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Ignition</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-ignition">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+                                        
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1084347611253944320/RMag_5c__400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Top Store</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-topstore">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/875904208993648640/TubOLdYs_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Appvalley</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-appvalley">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1172110767056924672/C7ffDMIQ_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Tweakbox</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-tweakbox">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">IOSNinja</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-iosninja">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">CoconutX</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-coconutx">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">IOSGods</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-iosgods">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">FlekSt0re</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-flekstore">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">Emus4u</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-emus4u">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+    
+                                        <li class="item-content">
+                                            <div class="item-media">
+                                                <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg">
+                                            </div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div id="app1" class="item-title">IOSEmus</div>
+                                            </div>
+                                            <div class="app-subtitle" id="status-iosemus">3rd Party Appstore</div>
+                                        </div>
+                                        </li>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+
+                </div> 
+                <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- View App Page -->
+    <div id="view-app" class="view tab" data-page="index-5">
+        <div class="navbar layout-dark" style="position: fixed"> 
+            <div class="navbar-inner" id="navbar-add">
+                <div class="card-footer item-content item-media left" style="visibility: hidden;">
+                    <a id="backview" href="#" class="tab-link "> 
+                        <i class="icon icon-back left" id="back-left"></i>
+                    </a>
+                </div>
+                <a href="#" id="icon-right" class="link icon-only open-panel"> Report App</a>
+            </div>
+        </div>  
+        
+        <div class="pages navbar-through">
+            <div data-page="index-5" class="page">
+                <div class="page-content"><br>
+
+                    <div class="card" style="margin-top: -10px">
+                        <div class="card-header" style="color: red;"><b>Beta Testing Disclaimer:</b></div>
+                        <div class="card-header">If you spot an app that has a wrong link, please click 'Report App' above. We will fix it as soon as possible! If you have specific queries or inconveniences contact us on twitter at: <b>@BStoreIOS</b></div>
+                        <div class="list-block media-list"></div>
+                    </div><br>
+
+                    <div class="content-block-title" style="margin-top: -10px"><h2 id="appname_1">APP NAME</h2></div>
+                    
+                    <div class="card" style="margin-top: -10px">
+                            <div class="list-block media-list">
+                                <div class="card-content lazy lazy-fadeIn">
+                                    <div class="list-block media-list">
+                                        <div class="all-file-managers">
+                                            <div class="list-block media-list">
+                                                <div class="card-content lazy lazy-fadeIn">
+                                                    <div class="list-block media-list">
+    
+                                                        <li class="item-content">
+                                                            <div class="item-media">
+                                                                <img id="frontimage" class="lazy-fadeIn lazy-loaded" width="44" >
+                                                            </div>
+                                                        <div class="item-inner">
+                                                            <div class="item-title-row">
+                                                                <div class="item-title" id="appname_2">APP NAME</div>
+                                                            </div>
+                                                            <div class="app-subtitle" id="developer_1">DEVELOPER</div>
+                                                        </div>
+                                                        </li>
+    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+    
+                            
+                        </div><br>
+    
+                        <!-- DESCRIPTION -->
+                        <div class="card" style="margin-top: -10px">
+                                <div class="list-block media-list">
+                                    <div class="card-content lazy lazy-fadeIn">
+                                        <div class="list-block media-list">
+                                            <div class="all-file-managers">
+                                                <div class="list-block media-list">
+                                                    <div class="card-content lazy lazy-fadeIn">
+                                                        <div class="list-block media-list">
+        
+                                                            <li class="item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Description</div>
+                                                                </div><br>
+                                                                <div id="description">
+                                                                DESCRIPTION
+                                                                </div>
+                                                                </li>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div><br>
+    
+                    <div class="card" style="margin-top: -10px">
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1198371611419693056/QYNy-2pj_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Ignition</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a  id="ignition-get" onclick="window.open('');" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1084347611253944320/RMag_5c__400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Topstore</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="top-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/875904208993648640/TubOLdYs_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Appvalley</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="valley-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1172110767056924672/C7ffDMIQ_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Tweakbox</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="box-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">IOSNinja</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="ninja-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">CoconutX</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="coco-get" onclick="myElement()" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+    
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">IOSGods</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="god-get" onclick="window.open('');" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-block media-list">
+                            <div class="card-content lazy lazy-fadeIn">
+                                <div class="list-block media-list">
+                                    <div class="all-file-managers">
+                                        <div class="list-block media-list">
+                                            <div class="card-content lazy lazy-fadeIn">
+                                                <div class="list-block media-list">
+        
+                                                    <li class="item-content">
+                                                        <div class="item-media">
+                                                            <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg">
+                                                        </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">FlekSt0re</div>
+                                                            <div class="" style="margin-right: 20px;">
+                                                                <a id="flek-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                    </div>
+                                                    </li>
+        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="list-block media-list">
+                        <div class="card-content lazy lazy-fadeIn">
+                            <div class="list-block media-list">
+                                <div class="all-file-managers">
+                                    <div class="list-block media-list">
+                                        <div class="card-content lazy lazy-fadeIn">
+                                            <div class="list-block media-list">
+        
+                                                <li class="item-content">
+                                                    <div class="item-media">
+                                                        <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg">
+                                                    </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Emus4u</div>
+                                                        <div class="" style="margin-right: 20px;">
+                                                            <a id="emus4-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="app-subtitle">3rd Party Appstore</div>
+                                                </div>
+                                                </li>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="list-block media-list">
+                    <div class="card-content lazy lazy-fadeIn">
+                        <div class="list-block media-list">
+                            <div class="all-file-managers">
+                                <div class="list-block media-list">
+                                    <div class="card-content lazy lazy-fadeIn">
+                                        <div class="list-block media-list">
+        
+                                            <li class="item-content">
+                                                <div class="item-media">
+                                                    <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg">
+                                                </div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">IOSEmus</div>
+                                                    <div class="" style="margin-right: 20px;">
+                                                        <a id="emus-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
+                                                    </div>
+                                                </div>
+                                                <div class="app-subtitle">3rd Party Appstore</div>
+                                            </div>
+                                            </li>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+    
+    
+                                            <!-- DESCRIPTION -->
+                                            <div class="card" style="margin-top: -10px">
+                                                <div class="list-block media-list">
+                                                    <div class="card-content lazy lazy-fadeIn">
+                                                        <div class="list-block media-list">
+                                                            <div class="all-file-managers">
+    
+                                                                <div class="card-header">Developer: 
+                                                                    <font color="white" id="developer_2"> DEVELOPER </font>
+                                                                </div>
+    
+                                                                <div class="card-header">Version: 
+                                                                 <font color="white" id="version"> VERSION </font>
+                                                                </div> 
+    
+                                                                <div class="card-header">Category: 
+                                                                <font color="white" id="category"> CATEGORY </font>
+                                                                </div> 
+                                                                
+                                                                <div class="card-header">Size: 
+                                                                <font color="white" id="size"> SIZE </font>
+                                                                </div> 
+    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div><br>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Services -->
+   <div id="view-0" class="view tab" data-page="index-0">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="card-footer item-content item-media left" style="visibility: hidden;">
+                        <a href="#view-1" class="tab-link"> 
+                            <i class="icon icon-back left" id="back-left-tos"></i>
+                        </a>
+                    </div>
+                    <div class="center sliding" style="left: 642.5px;">Sources</div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="index-3" class="page">
+                    <div class="page-content"><br>
+    
+                        <div class="content-block-title" style="margin-top: -10px"><h2>Terms and Conditions</h2></div>
+                            <div class="card" style="margin-top: -10px">
+                            <div class="card-header">
+                                <p style="margin-top: -5px"> <b>Defintions</b> <br> For the purposes of these Terms and Conditions: <br>
+                                •	<b>Affiliate</b> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority. <br>
+                                •	<b>Company</b> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Bionik. <br>
+                                •	<b>Country</b> refers to: Victoria, Australia <br>
+                                •	<b>Service</b> refers to the Website. <br>
+                                •	<b>Third-party Social Media Service</b> means any services or content (including data, information, products or services) provided by a third-party that may be displayed, included or made available by the Service. <br>
+                                •	<b>Website</b> refers to Bionik, accessible from https://bstoreios.github.io/ <br>
+                                •	<b>You</b> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable. <br> <br>
+                                <b style="font-size: 25px;">Acknowledgement</b><br>
+                                These are the Terms and Conditions governing the use of this Service and the agreement that operates between You and the Company. These Terms and Conditions set out the rights and obligations of all users regarding the use of the Service.
+                                Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and Conditions apply to all visitors, users and others who access or use the Service.
+                                By accessing or using the Service You agree to be bound by these Terms and Conditions. If You disagree with any part of these Terms and Conditions then You may not access the Service.
+                                Your access to and use of the Service is also conditioned on Your acceptance of and compliance with the Privacy Policy of the Company. Our Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your personal information when You use the Application or the Website and tells You about Your privacy rights and how the law protects You. Please read Our Privacy Policy carefully before using Our Service.<br><br>
+                
+                                <b style="font-size: 25px;">Link to Other Websites</b><br>
+                                Our Service contains links to third-party web sites, applications or services that are not owned or controlled by the Company.<br>
+                                The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such web sites or services. <br>
+                                We strongly advise You to read the terms and conditions and privacy policies of any third-party web sites or services that You visit. <br><br>
+                                The following third party web sites are sourced by the Company. Third-party web site applications and terms and conditions are also found.<br>
+                                •	<b> https://app.ignition.fun/</b> <br>
+                                •	<b> https://top-store.vip/</b> <br>
+                                •	<b> https://appvalley.vip/</b> <br>
+                                •	<b> https://www.tweakboxapp.com/</b> <br>
+                                •	<b> https://iosninja.io/app</b> <br>
+                                •	<b> https://www.cokernutx.com/</b> <br>
+                                •	<b> https://iosgods.com/</b> <br>
+                                •	<b> https://www.iosem.us/</b> <br>
+                                •	<b> https://www.iinstaller.net/</b> <br>
+                                •	<b> https://flekstore.com/</b> <br><br>
+                
+                                <b style="font-size: 25px;">Termination</b><br>
+                                We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions. <br>
+                                Upon termination, Your right to use the Service will cease immediately. <br><br>
+                
+                                <b style="font-size: 25px;">Limitation of Liability</b><br>
+                                Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service. <br>
+                                To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose. <br>
+                                Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply. In these states, each party's liability will be limited to the greatest extent permitted by law. <br> <br>
+                
+                                <b style="font-size: 25px;">"AS IS" and "AS AVAILABLE" Disclaimer</b><br>
+                                The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, the Company provides no warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability standards or be error free or that any errors or defects can or will be corrected. <br>
+                                Without limiting the foregoing, neither the Company nor any of the company's provider makes any representation or warranty of any kind, express or implied: (i) as to the operation or availability of the Service, or the information, content, and materials or products included thereon; (ii) that the Service will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through the Service; or (iv) that the Service, its servers, the content, or e-mails sent from or on behalf of the Company are free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components. <br>
+                                Some jurisdictions do not allow the exclusion of certain types of warranties or limitations on applicable statutory rights of a consumer, so some or all of the above exclusions and limitations may not apply to You. But in such a case the exclusions and limitations set forth in this section shall be applied to the greatest extent enforceable under applicable law. <br><br>
+                
+                                <b style="font-size: 25px;">Disputes Resolution</b><br>
+                                If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company. <br><br>
+                
+                                <b style="font-size: 25px;">Severability and Waiver</b><br>
+                                <b>Severability</b><br>
+                                If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect. <br>
+                                <b>Waiver</b> <br>
+                                Except as provided herein, the failure to exercise a right or to require performance of an obligation under this Terms shall not effect a party's ability to exercise such right or require such performance at any time thereafter nor shall be the waiver of a breach constitute a waiver of any subsequent breach. <br><br>
+                
+                                <b style="font-size: 25px;">Changes to These Terms and Conditions</b><br>
+                                We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Our sole discretion. <br>
+                                By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service. <br><br>
+                
+                                <b style="font-size: 25px;">Contact Us</b><br>
+                                If you have any questions about these Terms and Conditions, You can contact us: <br>
+                                •	<b> Email: kneehowmasup@gmail.com</b> <br>
+                
+                
+                            </p>
+                        </div>
+                
+                            </div><br>
+                            
+                
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner">
+            <a href="#view-1" class="tab-link active" id="home"> <img src="img/homeicon.png" width="30"> <em class="icon icon-today"></em> <span class="tabbar-label" id="home-font">Home</span></a> 
+            <a href="#view-2" class="tab-link" id="apps"> <img src="img/appsicon.png" width="30"> <em class="icon icon-apps"></em> <span class="tabbar-label" id="apps-font">Apps</span> </a> 
+            <a href="#view-3" class="tab-link" id="stores"> <img src="img/source-icon.png" width="30"> <em class="icon icon-games"> </em><span class="tabbar-label" id="sources-font">Sources</span> </a> 
+            <a href="#view-7" class="tab-link" id="updates"> <img src="img/updatesicon.png" width="24" style="margin-top: 4px;"> <em class="icon icon-update"></em> <span class="tabbar-label" id="updates-font">Updates</span></a> 
+            <a href="#view-4" class="tab-link" id="search" onclick="addSearch();"> <img src="img/searchicon.png" width="30"> <em class="icon icon-update"></em> <span class="tabbar-label" id="search-font">Search</span></a> 
+        </div>
+    
+    </div>
+
+
+</div>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="js/swiper.js"></script>
+<script type="text/javascript" src="js/framework7.js"></script>
+<!-- Path to your app js-->
+<script type="text/javascript" src="js/my-app.js"></script>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase.js"></script>
@@ -347,6 +1397,11 @@
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+
+
+<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+   <script type="text/javascript" src="js/load.js"></script>
+   <script type="text/javascript" src="js/appfunc.js"></script>
 
 </body>
 </html>

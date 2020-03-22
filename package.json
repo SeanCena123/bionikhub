@@ -7,9 +7,22 @@
   },
   "dependencies": {
     "ejs": "^1.0.0",
-    "express": "^4.9.8",
+    "express": "^4.17.1",
     "firebase": "^7.7.0",
     "firebase-admin": "^8.9.1",
     "socket.io": "^2.3.0"
-  }
+  },
+  "version": "1.0.0",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeanCena123/testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SeanCena123/testing/issues"
+  },
+  "homepage": "https://github.com/SeanCena123/testing#readme"
 }

@@ -702,13 +702,9 @@ io.on('connection', function(socket) {
 					if (i < totalNumApps) {
 						if (data !== "none") {
 							socket.emit('sent2', i) 
-							// console.log("K value is: "+i);
-							console.log(data);
 							i++
 						} else {
 							if (i < totalNumApps) 							
-							// console.log("K value is: "+i);
-							// console.log("other");
 							i++
 						}
 					}

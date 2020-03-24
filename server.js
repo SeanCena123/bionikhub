@@ -34,7 +34,7 @@ io.on('connection', function(socket) {
 	//Confirming a socket connection
 	console.log('made socket connection: ' + socket.id)
 	console.log('User Address: '+clientIp);
-	console.log('User Address2: '+address.address);
+	console.log('User Address2: '+address);
 
 
 	//Recieving total number of apps

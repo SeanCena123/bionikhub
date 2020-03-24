@@ -365,26 +365,6 @@ if (refreshcount == 0) {
 //[DATABASE] Sending request to count view (new socket connection)
 socket.emit('storeData/view-counter','value');
 
-// //Function creates popular apps section
-// async function searchAppLoad1() {
-//     for (var t = 1; t < 3; t++) {
-//         await createTag(t, "search-apps");
-//     }
-// }
-// async function searchAppLoad2() {
-//     for (var t = 3; t < totalNumApps; t++) {
-//         await createTag(t, "search-apps");
-//     }
-// }
-
-// //Function that loads 'search apps'
-// async function running() {
-//     await searchAppLoad1();
-//     searchAppLoad2();
-// }
-
-// running();
-
     //[DATABASE] Requesting to database to count the click for Ignition Source
     ignitionValue.addEventListener('click', function() {
     socket.emit('ignition-num', a);

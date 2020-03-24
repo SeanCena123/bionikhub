@@ -27,9 +27,13 @@ var server = app.listen(port, function() {
 var socket = require('socket.io');
 var io = socket(server)
 io.on('connection', function(socket) {
+
+  var clientIp = socket.request.connection.remoteAddress;
 	
 	//Confirming a socket connection
 	console.log('made socket connection: ' + socket.id)
+	console.log('User Address: '+clientIp);
+
 
 	//Recieving total number of apps
 	socket.on('appData', function(data) {

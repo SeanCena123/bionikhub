@@ -329,8 +329,6 @@ function loadApp(a) {
 //Sends request for total number of apps variable
 socket.emit('appData','value');
 
-socket.emit('requestPopularApps','value');
-
 var i = 0;
 socket.on('requestPopularApps', function(data) {
     var a = data;
@@ -343,8 +341,9 @@ socket.on('requestPopularApps', function(data) {
             return (a[1] > b[1]) ? -1 : 1;
         }
     }
+
     a.sort(sortFunction);
-    if (i == 9) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
+    if (i == (totalNumApps-1)) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
         createTag(a[1][0], "popular-apps");
         createTag(a[2][0], "popular-apps");
         createTag(a[3][0], "popular-apps");

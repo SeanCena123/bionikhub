@@ -41,22 +41,106 @@ io.on('connection', function(socket) {
 	sourceAddress.push().set(clientIp)
     sourceTime.push().set(clientTime);	
 
+//Resetting storeData to 0.
+function reset() {
+	//Reset the values of appGet/app-home-get
+	for (var k = 1; k < totalNumApps; k++) {
+	 	var source = firebase.database().ref('storeData/appGet/app-get-home/app'+k+'-total');
+	 	source.set(0);
+	}	
+	//Reset the values of appGet/app-source-get-total
+	for (var k = 1; k < totalNumApps; k++) {
+	 	var source = firebase.database().ref('storeData/appGet/app-source-get-total/app'+k+'-total');
+	 	source.set(0);
+	}	
+	//Reset the values of appGet/app-source-click/app0
+	var delArraySor = ["Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Flekstore", "Emus4", "Emus"];
+	for (var k = 1; k < totalNumApps; k++) {
+	 	for (var i = 0; i < delArraySor.length; i++) {
+	 		var source = firebase.database().ref('storeData/appGet/app-source-click/app'+k+'/app'+k+'-'+delArraySor[i]);
+	 		source.set(0);
+	 	}
+	}
+	//Reset the valies of /category-open
+	var delArrayCat = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games"]	
+	for (var k = 0; k < delArrayCat.length; k++) {
+		var source = firebase.database().ref('storeData/category-open/'+delArrayCat[k]+'-open');
+		source.set(0);
+	}
+	//Reset the valies of storeData/clientData/clientAddress
+	var clientAddressRemove = firebase.database().ref('storeData/clientData/clientAddress');
+	clientAddressRemove.remove();
+	//Reset the valies of storeData/clientData/clientTime
+	var clientTimeRemove = firebase.database().ref('storeData/clientData/clientTime');
+	clientTimeRemove.remove();
+	//Reset the values of storeData/home-data/legal/legal-click
+	var homedatalegal = firebase.database().ref('storeData/home-data/legal/legal-click');
+	homedatalegal.set(0);
+	//Reset the values of storeData/home-data/source-list
+	var delArraySor2 = ["Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "IOSGods", "FlekStore", "Emus4u", "IOSEmus"];
+	for (var k = 0; k < delArraySor2.length; k++) {
+		var homedatasor = firebase.database().ref('storeData/home-data/source-list/'+delArraySor2[k]+'-twitter-click');
+		homedatasor.set(0);
+	}
+	//Reset the values of storeData/home-data/submission/request-click
+	var homedatareq = firebase.database().ref('storeData/home-data/submission/request-click');
+	homedatareq.set(0);
+	//Reset the values of storeData/home-data/twitter/twitter-bionik-click
+	var homedatatwitbionik = firebase.database().ref('storeData/home-data/twitter/twitter-bionik-click');
+	homedatatwitbionik.set(0);
+	//Reset the values of storeData/home-data/twitter/twitter-djfeelofficial-click
+	var homedatatwitdjfeel = firebase.database().ref('storeData/home-data/twitter/twitter-djfeelofficial-click');
+	homedatatwitdjfeel.set(0);
+	//Reset the values of storeData/navbar-click/apps-click
+	var navbarclickapps = firebase.database().ref('storeData/navbar-click/apps-click');
+	navbarclickapps.set(0);
+	//Reset the values of storeData/navbar-click/home-click
+	var navbarclickhome = firebase.database().ref('storeData/navbar-click/home-click');
+	navbarclickhome.set(0);
+	//Reset the values of storeData/navbar-click/search-click
+	var navbarclicksearch = firebase.database().ref('storeData/navbar-click/search-click');
+	navbarclicksearch.set(0);
+	//Reset the values of storeData/navbar-click/sources-click
+	var navbarclicksources = firebase.database().ref('storeData/navbar-click/sources-click');
+	navbarclicksources.set(0);
+	//Reset the values of storeData/navbar-click/stores-click
+	var navbarclickstores = firebase.database().ref('storeData/navbar-click/stores-click');
+	navbarclickstores.set(0);
+	//Reset the values of storeData/navbar-click/updates-click
+	var navbarclickupdates = firebase.database().ref('storeData/navbar-click/updates-click');
+	navbarclickupdates.set(0);
+	//Reset the values of storeData/refresh-counter
+	var refreshcounter = firebase.database().ref('storeData/refresh-counter');
+	refreshcounter.set(0);
+	//Reset the values of storeData/reportApp
+	for (var k = 1; k < totalNumApps; k++) {
+		var reportAppReset = firebase.database().ref('storeData/reportApp/app'+k+'-report');
+		reportAppReset.set(0);
+	}
+	//Reset the values of storeData/source-open
+	for (var k = 0; k < delArraySor.length; k++) {
+		var sourceopenReset = firebase.database().ref('storeData/source-open/'+delArraySor[k]+'-open');
+		sourceopenReset.set(0);
+	}
+	//Reset the values of storeData/view-counter
+	var viewcounterReset = firebase.database().ref('storeData/view-counter');
+	viewcounterReset.set(0);
+}
+
 	//Recieving total number of apps
 	socket.on('appData', function(data) {
 		var ref = firebase.database().ref('appData');
 		ref.on('value', async function(snapshot) { 
-			data = 	snapshot.numChildren();
+			data = await snapshot.numChildren();
 			totalNumApps = (data+1);
 			console.log("Total Apps: "+totalNumApps);
 			socket.emit('appData', totalNumApps);
-		})
-	});	
 
-		//Recieving request to load Popular Apps
-		socket.on('requestPopularApps', async function(data) {
+			//Recieving request to load Popular Apps
+			async function requestPopularApps() {
 			var a = [];
 			var value;
-			for (var g = 0; g < 10; g++) {
+			for (var g = 0; g < totalNumApps; g++) {
 				a.push([g])
 			}
 			function running(num) {
@@ -68,10 +152,17 @@ io.on('connection', function(socket) {
 					socket.emit('requestPopularApps', a);
 				}); 
 			}
-			for (var i = 1; i < 10; i++) {
+			for (var i = 1; i < totalNumApps; i++) {
 				running(i)
 			}
-		});	
+			}
+			requestPopularApps();
+
+			//Resetting the database
+			// await reset();
+
+		})
+	});	
 
 		//Recieving request to load Popular Apps
 		socket.on('statusignition', async function(data) {
@@ -201,6 +292,7 @@ io.on('connection', function(socket) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
+
 	//[DATABASE] Listening for Click on Bionik Twitter
 	socket.on('home-data/twitter/twitter-bionik-click', function(data) {
 		data = submitTwitter('bionik');
@@ -697,7 +789,6 @@ io.on('connection', function(socket) {
 		socket.emit('storeData/source-open/Emus-open',data);
 	});	
 
-
 	//Sources Page Apps	
 	var CategoryArray2 = ["Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Flekstore", "Emus4", "Emus"];
 	var num2;
@@ -771,6 +862,7 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function () {
       	console.log(socket.id+": Disconnected.");
   });
+
 });
 
 

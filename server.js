@@ -29,19 +29,17 @@ var io = socket(server)
 io.on('connection', function(socket) {
 
  	var clientIp = socket.request.connection.remoteAddress;
-	
+ 	var clientTime = socket.handshake.time;
+
 	//Confirming a socket connection
-	console.log('made socket connection: ' + socket.id)
+    console.log(socket.id+": Connected.");
 	console.log('User Address: '+clientIp);
 
 	//Adding connection from userto database
-	var source = firebase.database().ref('storeData/clientAddress');
-	source.push().set(clientIp)
-
-	io.on('disconnect', function() {
-    	clients.splice(clients.indexOf(client), 1);
-    });
-
+	var sourceAddress = firebase.database().ref('storeData/clientData/clientAddress');
+	var sourceTime = firebase.database().ref('storeData/clientData/clientTime');
+	sourceAddress.push().set(clientIp)
+    sourceTime.push().set(clientTime);	
 
 	//Recieving total number of apps
 	socket.on('appData', function(data) {
@@ -770,7 +768,12 @@ io.on('connection', function(socket) {
 		}
 	});
 
+  socket.on('disconnect', function () {
+      	console.log(socket.id+": Disconnected.");
+  });
 });
+
+
 
 //Init index.ejs
 app.set('view engine', 'ejs');

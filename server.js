@@ -28,13 +28,15 @@ var socket = require('socket.io');
 var io = socket(server)
 io.on('connection', function(socket) {
 
-  var clientIp = socket.request.connection.remoteAddress;
-  var address = socket.handshake.address;
+	var data.user_id = socket.user_id; // user_id to pass the user ID
+ 	var clientIp = socket.request.connection.remoteAddress;
+ 	var address = socket.handshake.address;
 	
 	//Confirming a socket connection
 	console.log('made socket connection: ' + socket.id)
 	console.log('User Address: '+clientIp);
 	console.log('User Address2: '+address);
+	console.log('User Address2: '+data.user_id);
 
 
 	//Recieving total number of apps

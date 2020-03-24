@@ -2,7 +2,7 @@
 var socket = io.connect();
 
 //Array associated with the removal of tags
-var myCatArray = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games", "Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Emus", "Emus4", "Flekstore"];
+var myCatArray = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games", "Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Emus", "Emus4", "Flekstore", "search-apps"];
 
 //Variables associated with event clicking on navbar icons/text
 var home = document.getElementById('home');

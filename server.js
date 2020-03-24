@@ -29,12 +29,18 @@ var io = socket(server)
 io.on('connection', function(socket) {
 
  	var clientIp = socket.request.connection.remoteAddress;
- 	var address = socket.handshake.address;
 	
 	//Confirming a socket connection
 	console.log('made socket connection: ' + socket.id)
 	console.log('User Address: '+clientIp);
-	console.log('User Address2: '+address);
+
+	//Adding connection from userto database
+	var source = firebase.database().ref('storeData/clientAddress');
+	source.push().set(clientIp)
+
+	io.on('disconnect', function() {
+    	clients.splice(clients.indexOf(client), 1);
+    });
 
 
 	//Recieving total number of apps

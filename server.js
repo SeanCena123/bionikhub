@@ -712,8 +712,6 @@ io.on('connection', function(socket) {
 				k++;
 		}
 	});
-		
-
 
 	//Category Page Apps
 	var CategoryArray = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games"]
@@ -736,6 +734,28 @@ io.on('connection', function(socket) {
 			}
 		}
 		retrieving();
+	});
+
+	//Search Page Apps
+	var CategoryArray3 = ["search-apps"]
+	var num3;
+	socket.on('num3', async function(data) {
+		num3 = data;
+		var k = 1;
+		var i = 1;
+		while (k < totalNumApps) {
+			var firebaseAppCategory = await firebase.database().ref().child("appData/app"+k+"/"+CategoryArray3[num3]);
+				firebaseAppCategory.on('value', async function(snapshot) { 
+					data = await snapshot.val();
+					if (i < totalNumApps) {
+						if (((data !== "none") || (data == "none"))) {
+							socket.emit('sent3', i) 
+							i++
+						} 
+					}
+				})
+				k++;
+		}
 	});
 
 });

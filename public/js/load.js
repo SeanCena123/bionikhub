@@ -183,6 +183,7 @@ search.addEventListener('click', function() {
     searchfont.style.color = "#1A72FF";
     removetotalTags();
     hide();
+    appCatLoad3(0);
 });
 
 var app = []

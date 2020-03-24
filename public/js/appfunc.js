@@ -195,6 +195,10 @@ var numberval;
 var CategoryArray2 = ["Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Flekstore", "Emus4", "Emus"];
 var numberval2;
 
+//Variables associated with Search page (loading)
+var CategoryArray3 = ["search-apps"];
+var numberval3;
+
 //Function to run Category/Apps page
 async function appCatLoad(num) {
     await socket.emit('num', num);
@@ -204,6 +208,11 @@ async function appCatLoad(num) {
 async function appCatLoad2(num2) {
     await socket.emit('num2', num2);
     numberval2 = num2;
+}
+//Function to run Source page
+async function appCatLoad3(num3) {
+    await socket.emit('num3', num3);
+    numberval3 = num3;
 }
 //Function that creates tags of apps
 function createTag(loadnum, id) { 
@@ -356,25 +365,25 @@ if (refreshcount == 0) {
 //[DATABASE] Sending request to count view (new socket connection)
 socket.emit('storeData/view-counter','value');
 
-//Function creates popular apps section
-async function searchAppLoad1() {
-    for (var t = 1; t < 3; t++) {
-        await createTag(t, "search-apps");
-    }
-}
-async function searchAppLoad2() {
-    for (var t = 3; t < totalNumApps; t++) {
-        await createTag(t, "search-apps");
-    }
-}
+// //Function creates popular apps section
+// async function searchAppLoad1() {
+//     for (var t = 1; t < 3; t++) {
+//         await createTag(t, "search-apps");
+//     }
+// }
+// async function searchAppLoad2() {
+//     for (var t = 3; t < totalNumApps; t++) {
+//         await createTag(t, "search-apps");
+//     }
+// }
 
-//Function that loads 'search apps'
-async function running() {
-    await searchAppLoad1();
-    searchAppLoad2();
-}
+// //Function that loads 'search apps'
+// async function running() {
+//     await searchAppLoad1();
+//     searchAppLoad2();
+// }
 
-running();
+// running();
 
     //[DATABASE] Requesting to database to count the click for Ignition Source
     ignitionValue.addEventListener('click', function() {
@@ -717,4 +726,8 @@ socket.on('sent', function(data) {
 //Listening to request from database to createtag for Source page
 socket.on('sent2', function(data) {
     createTag(data, CategoryArray2[numberval2])
+});
+//Listening to request from database to createtag for Search page
+socket.on('sent3', function(data) {
+    createTag(data, CategoryArray3[numberval3])
 });

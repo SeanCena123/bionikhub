@@ -4,6 +4,7 @@ var app = express();
 const port = process.env.PORT;
 var totalNumApps;
 var viewcounter = 0;
+var viewcounter2 = 0;
 //Firebase Init
 var firebase = require('firebase');
 require('firebase/app');
@@ -18,6 +19,8 @@ firebase.initializeApp({
 		appId: process.env.APPID,
 		measurementId: process.env.MEASUREMENTID
 });
+
+
 //Beginning Server Commands
 var server = app.listen(port, function() {
 	console.log('Our app is running on http://localhost:' + port);
@@ -38,33 +41,40 @@ io.on('connection', function(socket) {
 	//Adding connection from userto database
 	var sourceAddress = firebase.database().ref('storeData/clientData/clientAddress');
 	var sourceTime = firebase.database().ref('storeData/clientData/clientTime');
-	sourceAddress.push().set(clientIp)
+	sourceAddress.push().set(clientIp);
     sourceTime.push().set(clientTime);	
 
 //Resetting storeData to 0.
 function reset() {
+
+	var appgethomeremove = firebase.database().ref('storeData/appGet/app-get-home');
+	appgethomeremove.remove();
+	var appgetsourceremove = firebase.database().ref('storeData/appGet/app-source-click');
+	appgetsourceremove.remove();
+	var appsourcegettotal = firebase.database().ref('storeData/appGet/app-source-get-total');
+	appsourcegettotal.remove();
 	//Reset the values of appGet/app-home-get
 	for (var k = 1; k < totalNumApps; k++) {
-	 	var source = firebase.database().ref('storeData/appGet/app-get-home/app'+k+'-total');
+	 	var source = firebase.database().ref('storeData/appGet/app-get-home/app'+k+'/app'+k+'-total');
 	 	source.set(0);
 	}	
 	//Reset the values of appGet/app-source-get-total
 	for (var k = 1; k < totalNumApps; k++) {
-	 	var source = firebase.database().ref('storeData/appGet/app-source-get-total/app'+k+'-total');
+	 	var source = firebase.database().ref('storeData/appGet/app-source-get-total/app'+k+'/app'+k+'-total');
 	 	source.set(0);
 	}	
 	//Reset the values of appGet/app-source-click/app0
 	var delArraySor = ["Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "iOSGods", "Flekstore", "Emus4", "Emus"];
 	for (var k = 1; k < totalNumApps; k++) {
 	 	for (var i = 0; i < delArraySor.length; i++) {
-	 		var source = firebase.database().ref('storeData/appGet/app-source-click/app'+k+'/app'+k+'-'+delArraySor[i]);
+	 		var source = firebase.database().ref('storeData/appGet/app-source-click/app'+k+'/app'+k+'-'+delArraySor[i]+'/app'+k+'-'+delArraySor[i]+'-click');
 	 		source.set(0);
 	 	}
 	}
 	//Reset the valies of /category-open
 	var delArrayCat = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games"]	
 	for (var k = 0; k < delArrayCat.length; k++) {
-		var source = firebase.database().ref('storeData/category-open/'+delArrayCat[k]+'-open');
+		var source = firebase.database().ref('storeData/category-open/'+delArrayCat[k]+'-open/'+delArrayCat[k]+'-open-clicker');
 		source.set(0);
 	}
 	//Reset the valies of storeData/clientData/clientAddress
@@ -79,90 +89,687 @@ function reset() {
 	//Reset the values of storeData/home-data/source-list
 	var delArraySor2 = ["Ignition", "TopStore", "AppValley", "Tweakbox", "IOSNinja", "CoconutX", "IOSGods", "FlekStore", "Emus4u", "IOSEmus"];
 	for (var k = 0; k < delArraySor2.length; k++) {
-		var homedatasor = firebase.database().ref('storeData/home-data/source-list/'+delArraySor2[k]+'-twitter-click');
+		var homedatasor = firebase.database().ref('storeData/home-data/source-list/'+delArraySor2+'-list/'+delArraySor2[k]+'-twitter-click');
 		homedatasor.set(0);
 	}
 	//Reset the values of storeData/home-data/submission/request-click
-	var homedatareq = firebase.database().ref('storeData/home-data/submission/request-click');
+	var homedatareq = firebase.database().ref('storeData/home-data/submission/request/request-click');
 	homedatareq.set(0);
 	//Reset the values of storeData/home-data/twitter/twitter-bionik-click
-	var homedatatwitbionik = firebase.database().ref('storeData/home-data/twitter/twitter-bionik-click');
+	var homedatatwitbionik = firebase.database().ref('storeData/home-data/twitter/twitter-bionik/twitter-bionik-click');
 	homedatatwitbionik.set(0);
 	//Reset the values of storeData/home-data/twitter/twitter-djfeelofficial-click
-	var homedatatwitdjfeel = firebase.database().ref('storeData/home-data/twitter/twitter-djfeelofficial-click');
+	var homedatatwitdjfeel = firebase.database().ref('storeData/home-data/twitter/twitter-djfeelofficial/twitter-djfeelofficial-click');
 	homedatatwitdjfeel.set(0);
 	//Reset the values of storeData/navbar-click/apps-click
-	var navbarclickapps = firebase.database().ref('storeData/navbar-click/apps-click');
+	var navbarclickapps = firebase.database().ref('storeData/navbar-click/apps/apps-click');
 	navbarclickapps.set(0);
 	//Reset the values of storeData/navbar-click/home-click
-	var navbarclickhome = firebase.database().ref('storeData/navbar-click/home-click');
+	var navbarclickhome = firebase.database().ref('storeData/navbar-click/home/home-click');
 	navbarclickhome.set(0);
 	//Reset the values of storeData/navbar-click/search-click
-	var navbarclicksearch = firebase.database().ref('storeData/navbar-click/search-click');
+	var navbarclicksearch = firebase.database().ref('storeData/navbar-click/search/search-click');
 	navbarclicksearch.set(0);
 	//Reset the values of storeData/navbar-click/sources-click
-	var navbarclicksources = firebase.database().ref('storeData/navbar-click/sources-click');
+	var navbarclicksources = firebase.database().ref('storeData/navbar-click/sources/sources-click');
 	navbarclicksources.set(0);
 	//Reset the values of storeData/navbar-click/stores-click
-	var navbarclickstores = firebase.database().ref('storeData/navbar-click/stores-click');
+	var navbarclickstores = firebase.database().ref('storeData/navbar-click/stores/stores-click');
 	navbarclickstores.set(0);
 	//Reset the values of storeData/navbar-click/updates-click
-	var navbarclickupdates = firebase.database().ref('storeData/navbar-click/updates-click');
+	var navbarclickupdates = firebase.database().ref('storeData/navbar-click/updates/updates-click');
 	navbarclickupdates.set(0);
 	//Reset the values of storeData/refresh-counter
-	var refreshcounter = firebase.database().ref('storeData/refresh-counter');
+	var refreshcounter = firebase.database().ref('storeData/refresh/refresh-counter');
 	refreshcounter.set(0);
 	//Reset the values of storeData/reportApp
 	for (var k = 1; k < totalNumApps; k++) {
-		var reportAppReset = firebase.database().ref('storeData/reportApp/app'+k+'-report');
+		var reportAppReset = firebase.database().ref('storeData/reportApp/app'+k+'/app'+k+'-report');
 		reportAppReset.set(0);
 	}
 	//Reset the values of storeData/source-open
 	for (var k = 0; k < delArraySor.length; k++) {
-		var sourceopenReset = firebase.database().ref('storeData/source-open/'+delArraySor[k]+'-open');
+		var sourceopenReset = firebase.database().ref('storeData/source-open/'+delArraySor[k]+'-open/'+delArraySor[k]+'-open-clicker');
 		sourceopenReset.set(0);
 	}
 	//Reset the values of storeData/view-counter
-	var viewcounterReset = firebase.database().ref('storeData/view-counter');
+	var viewcounterReset = firebase.database().ref('storeData/view/view-counter');
 	viewcounterReset.set(0);
 }
 
-	//Recieving total number of apps
-	socket.on('appData', function(data) {
-		var ref = firebase.database().ref('appData');
-		ref.on('value', async function(snapshot) { 
-			data = await snapshot.numChildren();
-			totalNumApps = (data+1);
-			console.log("Total Apps: "+totalNumApps);
-			socket.emit('appData', totalNumApps);
+// reset();		
 
-			//Recieving request to load Popular Apps
-			async function requestPopularApps() {
-			var a = [];
-			var value;
-			for (var g = 0; g < totalNumApps; g++) {
-				a.push([g])
-			}
-			function running(num) {
-				var source = firebase.database().ref().child("storeData/appGet/app-source-get-total/app"+num+"-total");
+const auth = firebase.auth();
 
-				source.on('value', function(snapshot) {
-					value = snapshot.val(); 
-					a[num].push(value) 
-					socket.emit('requestPopularApps', a);
-				}); 
-			}
-			for (var i = 1; i < totalNumApps; i++) {
-				running(i)
-			}
-			}
-			requestPopularApps();
+//Submitting the 'SIGN IN' button in non-sign in
+socket.on('loginsignin', async function(data) {
+	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; }
+	var usercred = data; await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
+	if (a == 1) { socket.emit('signinuservalid', 'value'); }    
+}); 
+//Submitting the 'SIGN UP' button in non-sign in
+socket.on('signindata', async function(data) {
+	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('userinvalid', error); a = 0; }
+	var usercred = data; await auth.createUserWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
+	if (a == 1) { socket.emit('uservalid', 'value'); var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); }); }    
+}); 
 
-			//Resetting the database
-			// await reset();
+/*
+CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
+*/
+auth.onAuthStateChanged(user => {
+    if (user) {
+    	//Sign out
+		if (user.emailVerified == 1) {
+       		user.favlist = [];
+        	socket.on('signoutfunc', function(data) { auth.signOut().then(() => { console.log("User signed out."); socket.emit('signoutfunc', 'value'); user.favlist = []; }); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime);	 });	 
+	 		var email = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-email');
+	 		email.set(user.email);
+	 		var uid = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
+	 		uid.set(user.uid);
+			var sourceAddress = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientAddress');
+			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientTime');
+			sourceAddress.push().set(clientIp);
+		    sourceTime.push().set(clientTime);	
 
-		})
+		    socket.on('disconnect', function () {
+      			console.log(socket.id+": Disconnected.");
+	      			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientDisconnect');
+			    	sourceTime.push().set(clientTime);	
+  			});
+
+
+			//Automatically running
+   	        var favappnum; //Used to activate other functions after obtaining numcount
+			var numcount; //Global variable used to count the number of apps inside favlist
+			var totalfavcounter = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist');
+			totalfavcounter.on('value', async function(snapshot) {
+				numcount = await snapshot.numChildren(); //Gets the total number of apps
+				await console.log("Total apps in favlist: "+numcount); //Prints it to the server console
+				await socket.emit('numcount', numcount); //Sends request to numcount on the client
+				favappnum = 1; //Activates other functions to work
+			});	
+
+
+			//Automatically running
+			totalfavcounter.on('value', async function(snapshot) { //Listening for the total value inside 
+			numcount = await snapshot.numChildren();
+			await socket.emit('numcount', numcount);
+	   			for (var i = 0; i < numcount; i++) {
+	   				var favlist = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+						favlist.on("value", async function(snapshot) { 
+							await user.favlist.push(snapshot.val());	
+							await socket.emit('favlist', user.favlist);	
+							if (i == numcount) {
+								await console.log(user.favlist);		
+							}
+						}) 
+			}
+			});		
+
+
+			socket.on('removefavapp', async function(data) {
+			if (favappnum == 1) {
+
+			totalfavcounter.on('value', function(snapshot) {
+				numcount = snapshot.numChildren();
+			});	
+
+				var ref2 = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/removed/app'+user.favlist[(numcount-1)]+'/clientTime');
+				ref2.push().set(clientTime);
+             	await user.favlist.pop();
+                await console.log(user.favlist);
+                await socket.emit('removefavapp', 'value');
+
+                var source = await firebase.database().ref().child('storeData/userProperties/'+user.uid+'/favlist/app'+(numcount-1));
+                await source.remove();
+
+			}
+			});	
+
+			socket.on('favlistadding', function(data) {
+				var favlist =  firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+numcount);
+				var counter = 1;
+				var number;
+				user.favlist = [];
+				if (favappnum == 1) {
+					if (numcount < 10) {
+						for (var i = 0; i < numcount; i++) {
+							var favlistnum = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+							favlistnum.on("value", function(snapshot) {
+								number = snapshot.val();
+								if (number == data) {
+									if (counter == 1) {
+										counter = 0;
+									}
+								}
+							})
+						}
+					if (counter == 1) {
+						favlist.set(data);
+						var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/added/app'+data+'/clientTime');
+						ref2.push().set(clientTime);
+					} 
+					} 
+				}
+			});	
+
+	//[DATABASE] Adding to App Click when clicking on Sources (Singular Source Click)
+	function clicking(name, source) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/app'+name+'-'+source+'-click');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/clientTime');
+		ref2.push().set(clientTime);	
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});
+	}
+	//[DATABASE] Adding to Total App Click when clicking on Sources (Total Source Clicks)
+	function submitAppSourceTotal(num) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/clientTime');
+		ref2.push().set(clientTime);	
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE] Adding to Total App Click when clicking on Homescreen
+	function submitgetAppClick(num) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/app'+a+'-total');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/clientTime');
+		ref2.push().set(clientTime);	
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+
+	socket.on('storeData/userProperties/'+user.uid+'/Number', function(data) {
+		a=data;
+		data = submitgetAppClick(a);
+		console.log('storeData/appGet/app-get-home/app'+a+'/app'+a+'-total ADDED');
+	});
+
+	socket.on('ignition-num', function(data) {
+		var b = data;
+		data = clicking(b, label[0]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[0]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('topstore-num', function(data) {
+		var b = data;
+		data = clicking(b, label[1]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[1]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('appvalley-num', function(data) {
+		var b = data;
+		data = clicking(b, label[2]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[2]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('tweakbox-num', function(data) {
+		var b = data;
+		data = clicking(b, label[3]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[3]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('iosninja-num', function(data) {
+		var b = data;
+		data = clicking(b, label[4]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[4]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('coconutx-num', function(data) {
+		var b = data;
+		data = clicking(b, label[5]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[5]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('iosgods-num', function(data) {
+		var b = data;
+		data = clicking(b, label[6]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[6]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('flekstore-num', function(data) {
+		var b = data;
+		data = clicking(b, label[7]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[7]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('emus4u-num', function(data) {
+		var b = data;
+		data = clicking(b, label[8]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[8]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+	socket.on('iosemus-num', function(data) {
+		var b = data;
+		data = clicking(b, label[9]);
+		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[9]+' ADDED');
+		submitAppSourceTotal(b)
+		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+	});
+
+	//[DATABASE] Adding to Total Click on specific Category OPEN button
+	function submitOpenCategory(a) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/'+a+'-open-clicker');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/clientTime');
+		ref2.push().set(clientTime);	
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE] Adding to Total Click on specific Source OPEN button
+	function submitOpenSource(a) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/'+a+'-open-clicker');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/clientTime');
+		ref2.push().set(clientTime);
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE] Listening to if clicked on Jailbreak open category on apps page
+	socket.on('storeData/userProperties/'+user.uid+'/category-open/Jailbreak-open', function(data) {
+		console.log('storeData/category-open/Jailbreak-open ADDED');
+		data = submitOpenCategory('Jailbreak');
+	});		
+	//[DATABASE] Listening to if clicked on Tweaked open category on apps page
+	socket.on('storeData/userProperties/'+user.uid+'/category-open/Tweaked-open', function(data) {
+		console.log('storeData/category-open/Tweaked-open ADDED');
+		data = submitOpenCategory('Tweaked');
 	});	
+	//[DATABASE] Listening to if clicked on Entertainment open category on apps page
+	socket.on('storeData/userProperties/'+user.uid+'/category-open/Entertainment-open', function(data) {
+		console.log('storeData/category-open/Entertainment-open ADDED');
+		data = submitOpenCategory('Entertainment');
+	});			
+	//[DATABASE] Listening to if clicked on Emulators open category on apps page
+	socket.on('storeData/userProperties/'+user.uid+'/category-open/Emulators-open', function(data) {
+		console.log('storeData/category-open/Emulators-open ADDED');
+		data = submitOpenCategory('Emulators');
+	});		
+	//[DATABASE] Listening to if clicked on Games open category on apps page
+	socket.on('storeData/userProperties/'+user.uid+'/category-open/Games-open', function(data) {
+		console.log('storeData/category-open/Games-open ADDED');
+		data = submitOpenCategory('Games');
+	});			
+
+	
+	//[DATABASE] Listening to if clicked on Ignition open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/Ignition-open', function(data) {
+		console.log('storeData/source-open/Ignition-open ADDED');
+		data = submitOpenSource('Ignition');
+	});		
+	//[DATABASE] Listening to if clicked on TopStore open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/TopStore-open', function(data) {
+		console.log('storeData/source-open/TopStore-open ADDED');
+		data = submitOpenSource('TopStore');
+	});		
+	//[DATABASE] Listening to if clicked on AppValley open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/AppValley-open', function(data) {
+		console.log('storeData/source-open/AppValley-open ADDED');
+		data = submitOpenSource('AppValley');
+	});		
+	//[DATABASE] Listening to if clicked on Tweakbox open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/Tweakbox-open', function(data) {
+		console.log('storeData/source-open/Tweakbox-open ADDED');
+		data = submitOpenSource('Tweakbox');
+	});		
+	//[DATABASE] Listening to if clicked on IOSNinja open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/IOSNinja-open', function(data) {
+		console.log('storeData/source-open/IOSNinja-open ADDED');
+		data = submitOpenSource('IOSNinja');
+	});		
+	//[DATABASE] Listening to if clicked on CoconutX open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/CoconutX-open', function(data) {
+		console.log('storeData/source-open/CoconutX-open ADDED');
+		data = submitOpenSource('CoconutX');
+	});		
+	//[DATABASE] Listening to if clicked on iOSGods open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/iOSGods-open', function(data) {
+		console.log('storeData/source-open/iOSGods-open ADDED');
+		data = submitOpenSource('iOSGods');
+	});		
+	//[DATABASE] Listening to if clicked on Flekstore open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/Flekstore-open', function(data) {
+		console.log('storeData/source-open/Flekstore-open ADDED');
+		data = submitOpenSource('Flekstore');
+	});		
+	//[DATABASE] Listening to if clicked on Emus4 open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus4-open', function(data) {
+		console.log('storeData/source-open/Emus4-open ADDED');
+		data = submitOpenSource('Emus4');
+	});		
+	//[DATABASE] Listening to if clicked on Emus open on source page
+	socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus-open', function(data) {
+		console.log('storeData/source-open/Emus-open ADDED');
+		data = submitOpenSource('Emus');
+	});	
+//[DATABASE] Function that adds refresh counter
+function countRefresh() {
+	var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/refresh-counter');
+	var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/clientTime');
+	ref2.push().set(clientTime);
+	ref.transaction(function(currentClicks) {
+	  return (currentClicks || 0) + 1;
+	});      
+}
+//[DATABASE] Function that adds view counter
+function countView() {
+	var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/view-counter/');
+	var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/clientTime');
+
+	ref2.push().set(clientTime);
+	ref.transaction(function(currentClicks) {
+	  return (currentClicks || 0) + 1;
+	});      
+}
+//[DATABASE] Listening for refresh click
+	socket.on('storeData/userProperties/'+user.uid+'/refresh-counter', function(data) {
+		countRefresh();
+	})
+//[DATABASE] Listening for view click
+socket.on('storeData/userProperties/'+user.uid+'/view-counter', function(data) {
+	if (viewcounter2 == 0) {
+		countView();
+		viewcounter2 = 1;
+	}
+})
+//[DATABASE] Function for click on Twitter Name
+	function submitTwitter(name) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/twitter-'+name+'-click');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/clientTime');
+
+		ref2.push().set(clientTime);
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+
+	//[DATABASE] Listening for Click on Bionik Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-bionik-click', function(data) {
+		data = submitTwitter('bionik');
+		console.log('home-data/twitter/twitter-bionik-click ADDED');
+	})
+	//[DATABASE] Listening for Click on DJFeelOfficial Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-djfeelofficial-click', function(data) {
+		data = submitTwitter('djfeelofficial');
+		console.log('home-data/twitter/twitter-djfeelofficial-click ADDED');
+	})
+	//[DATABASE] Function for click on ToS
+	function submitLegal() {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/clientTime');
+		ref2.push().set(clientTime);	
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE] Listening for Click on ToS Page
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click', function(data) {
+		data = submitLegal();
+		console.log('home-data/twitter/legal-click ADDED');
+	})
+	//[DATABASE] Function for click on Request on Home
+	function submitRequest() {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/request-click');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/clientTime');
+		ref2.push().set(clientTime);	
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE] Listening for Click on Request on Home
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/submission/request-click', function(data) {
+		data = submitRequest();
+		console.log('home-data/submission/request-click ADDED');
+	})
+	//[DATABASE] Function for click on Twitter Sources
+	function submitHomeSource(name) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/'+name+'-twitter-click');
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/clientTime');
+		ref2.push().set(clientTime);
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE]Listening for Click on Ignition Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/ignition-twitter-click', function(data) {
+		data = submitHomeSource('Ignition');
+		console.log('home-data/source-list/ignition-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on TopStore Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/topstore-twitter-click', function(data) {
+		data = submitHomeSource('TopStore');
+		console.log('home-data/source-list/topstore-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on AppValley Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/appvalley-twitter-click', function(data) {
+		data = submitHomeSource('AppValley');
+		console.log('home-data/source-list/appvalley-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on Tweakbox Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/tweakbox-twitter-click', function(data) {
+		data = submitHomeSource('Tweakbox');
+		console.log('home-data/source-list/tweakbox-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on IOSNinja Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosninja-twitter-click', function(data) {
+		data = submitHomeSource('IOSNinja');
+		console.log('home-data/source-list/iosninja-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on CoconutX Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/coconutx-twitter-click', function(data) {
+		data = submitHomeSource('CoconutX');
+		socket.emit('home-data/source-list/coconutx-twitter-click', data);
+		console.log('home-data/source-list/coconutx-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on IOSGods Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosgods-twitter-click', function(data) {
+		data = submitHomeSource('IOSGods');
+		console.log('home-data/source-list/iosgods-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on FlekStore Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/flekstore-twitter-click', function(data) {
+		data = submitHomeSource('FlekStore');
+		console.log('home-data/source-list/flekstore-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on Emus4u Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/emus4u-twitter-click', function(data) {
+		data = submitHomeSource('Emus4u');
+		console.log('home-data/source-list/emus4u-twitter-click ADDED');
+	})
+	//[DATABASE]Listening for Click on IOSEmus Twitter
+	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosemus-twitter-click', function(data) {
+		data = submitHomeSource('IOSEmus');
+		console.log('home-data/source-list/iosemus-twitter-click ADDED');
+	})
+	function submitReportApp(a) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/app'+a+"-report");
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/clientTime');
+		ref2.push().set(clientTime);
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});   
+	}
+		socket.on('report-num', function(data) {
+		var b = data;
+		console.log('storeData/userProperties/'+user.uid+'/reportApp/app'+b+"-report");
+		submitReportApp(b);
+	});
+	//[DATABASE] Function for click on Navbar Elements
+	function submitnav(name) {
+		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/'+name+"-click");
+		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/clientTime');
+		ref2.push().set(clientTime);
+		ref.transaction(function(currentClicks) {
+		  return (currentClicks || 0) + 1;
+		});      
+	}
+	//[DATABASE] Listening for Click on Home Navbar
+	socket.on('navbar-click/home-click', function(data) {
+		data = submitnav('home');
+		console.log('navbar-click/home-click ADDED');
+	})
+	//[DATABASE] Listening for Click on Apps Navbar
+	socket.on('navbar-click/apps-click', function(data) {
+		data = submitnav('apps');
+		console.log('navbar-click/apps-click ADDED');
+	})
+	//[DATABASE] Listening for Click on Sources Navbar
+	socket.on('navbar-click/stores-click', function(data) {
+		data = submitnav('stores');
+		console.log('navbar-click/stores-click ADDED');
+	})
+	//[DATABASE] Listening for Click on Updates Navbar
+	socket.on('navbar-click/updates-click', function(data) {
+		data = submitnav('updates');
+		console.log('navbar-click/updates-click ADDED');
+	})
+	//[DATABASE] Listening for Click on Search Navbar
+	socket.on('navbar-click/search-click', function(data) {
+		data = submitnav('search');
+		console.log('navbar-click/search-click ADDED');
+	})
+
+    		console.log("User Logged In. (Verified Account)");
+			//Recieving total number of apps
+			socket.on('appData1', function(data) {
+				var ref = firebase.database().ref('appData');
+				ref.on('value', async function(snapshot) { 
+					data = await snapshot.numChildren();
+					totalNumApps = (data+1);
+					console.log("Total Apps (verified account): "+totalNumApps);
+					socket.emit('appData1', totalNumApps);
+
+					//Recieving request to load Popular Apps
+					async function requestPopularApps() {
+					var a = [];
+					var value;
+					for (var g = 0; g < totalNumApps; g++) {
+						a.push([g])
+					}
+					function running(num) {
+						var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+						source.on('value', function(snapshot) {
+							value = snapshot.val(); 
+							a[num].push(value) 
+							socket.emit('requestPopularApps1', a);
+						}); 
+					}
+					for (var i = 1; i < totalNumApps; i++) {
+						running(i)
+					}
+					}
+					requestPopularApps();
+
+					//Resetting the database
+					// await reset();
+
+				})
+			});	
+			return socket.emit('checkuserstat', user);
+    	} else if (user.emailVerified == 0) {
+       		console.log("User Logged In. (Not Verified Account)");
+	    	//Recieving total number of apps
+			socket.on('appData2', function(data) {
+				var ref = firebase.database().ref('appData');
+				ref.on('value', async function(snapshot) { 
+					data = await snapshot.numChildren();
+					totalNumApps = ((data+1)/2);
+					console.log("Total Apps (!verified account): "+totalNumApps);
+					socket.emit('appData2', totalNumApps);
+
+					//Recieving request to load Popular Apps
+					async function requestPopularApps() {
+					var a = [];
+					var value;
+					for (var g = 0; g < totalNumApps; g++) {
+						a.push([g])
+					}
+					function running(num) {
+						var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+						source.on('value', function(snapshot) {
+							value = snapshot.val(); 
+							a[num].push(value) 
+							socket.emit('requestPopularApps2', a);
+						}); 
+					}
+					for (var i = 1; i < totalNumApps; i++) {
+						running(i)
+					}
+					}
+					requestPopularApps();
+
+					//Resetting the database
+					// await reset();
+
+				})
+			});		
+			//Verify Email
+    		socket.on('verifyemail', function(data) { var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); socket.emit('verificationerror', error);}); });	 
+    	}
+    } else {
+        console.log("user logged out.");
+		//Recieving total number of apps
+		socket.on('appData3', function(data) {
+			var ref = firebase.database().ref('appData');
+			ref.on('value', async function(snapshot) { 
+				data = await snapshot.numChildren();
+				totalNumApps = ((data+1)/2);
+				console.log("Total Apps (no account): "+totalNumApps);
+				socket.emit('appData3', totalNumApps);
+
+				//Recieving request to load Popular Apps
+				async function requestPopularApps() {
+				var a = [];
+				var value;
+				for (var g = 0; g < totalNumApps; g++) {
+					a.push([g])
+				}
+				function running(num) {
+					var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+					source.on('value', function(snapshot) {
+						value = snapshot.val(); 
+						a[num].push(value) 
+						socket.emit('requestPopularApps3', a);
+					}); 
+				}
+				for (var i = 1; i < totalNumApps; i++) {
+					running(i)
+				}
+				}
+				requestPopularApps();
+
+				//Resetting the database
+				// await reset();
+
+			})
+		});	
+    }
+return socket.emit('checkuserstat', user);
+})
+
+
+
+
+
+
+
+
+
 
 		//Recieving request to load Popular Apps
 		socket.on('statusignition', async function(data) {
@@ -250,7 +857,9 @@ function reset() {
 
 	//[DATABASE] Function for click on Navbar Elements
 	function submitnav(name) {
-		var ref = firebase.database().ref('storeData/navbar-click/'+name+"-click");
+		var ref = firebase.database().ref('storeData/navbar-click/'+name+'/'+name+"-click");
+		var ref2 = firebase.database().ref('storeData/navbar-click/'+name+'/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
@@ -287,7 +896,9 @@ function reset() {
 	})
 	//[DATABASE] Function for click on Twitter Name
 	function submitTwitter(name) {
-		var ref = firebase.database().ref('storeData/home-data/twitter/twitter-'+name+"-click");
+		var ref = firebase.database().ref('storeData/home-data/twitter/twitter-'+name+'/twitter-'+name+"-click");
+		var ref2 = firebase.database().ref('storeData/home-data/twitter/twitter-'+name+'/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
@@ -308,6 +919,8 @@ function reset() {
 	//[DATABASE] Function for click on ToS
 	function submitLegal() {
 		var ref = firebase.database().ref('storeData/home-data/legal/legal-click');
+		var ref2 = firebase.database().ref('storeData/home-data/legal/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
@@ -320,7 +933,9 @@ function reset() {
 	})
 	//[DATABASE] Function for click on Request on Home
 	function submitRequest() {
-		var ref = firebase.database().ref('storeData/home-data/submission/request-click');
+		var ref = firebase.database().ref('storeData/home-data/submission/request/request-click');
+		var ref2 = firebase.database().ref('storeData/home-data/submission/request/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
@@ -333,7 +948,9 @@ function reset() {
 	})
 	//[DATABASE] Function for click on Twitter Sources
 	function submitHomeSource(name) {
-		var ref = firebase.database().ref('storeData/home-data/source-list/'+name+'-twitter-click');
+		var ref = firebase.database().ref('storeData/home-data/source-list/'+name+'-list/'+name+'-twitter-click');
+		var ref2 = firebase.database().ref('storeData/home-data/source-list/'+name+'-list/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
@@ -401,56 +1018,72 @@ function reset() {
 
 	//[DATABASE] Adding to App Click when clicking on Sources (Singular Source Click)
 	function clicking(name, source) {
-		var ref = firebase.database().ref('storeData/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'');
+		var ref = firebase.database().ref('storeData/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/app'+name+'-'+source+'-click');
+		var ref2 = firebase.database().ref('storeData/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});
 	}
 	//[DATABASE] Adding to Total App Click when clicking on Sources (Total Source Clicks)
 	function submitAppSourceTotal(num) {
-		var ref = firebase.database().ref('storeData/appGet/app-source-get-total/'+'app'+num+'-total');
+		var ref = firebase.database().ref('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+		var ref2 = firebase.database().ref('storeData/appGet/app-source-get-total/app'+num+'/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
 	//[DATABASE] Adding to Total App Click when clicking on Homescreen
 	function submitgetAppClick(num) {
-		var ref = firebase.database().ref('storeData/appGet/app-get-home/app'+a+'-total');
+		var ref = firebase.database().ref('storeData/appGet/app-get-home/app'+num+'/app'+num+'-total');
+		var ref2 = firebase.database().ref('storeData/appGet/app-get-home/app'+num+'/clientTime');
+		ref2.push().set(clientTime);	
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
 	//[DATABASE] Function that adds refresh counter
 	function countRefresh() {
-		var ref = firebase.database().ref('storeData/refresh-counter');
+		var ref = firebase.database().ref('storeData/refresh/refresh-counter');
+		var ref2 = firebase.database().ref('storeData/refresh/clientTime');
+		ref2.push().set(clientTime);
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
 	//[DATABASE] Function that adds view counter
 	function countView() {
-		var ref = firebase.database().ref('storeData/view-counter');
+		var ref = firebase.database().ref('storeData/view/view-counter');
+		var ref2 = firebase.database().ref('storeData/view/clientTime');
+		ref2.push().set(clientTime);
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
 	//[DATABASE] Adding to Total Click on specific Category OPEN button
 	function submitOpenCategory(a) {
-		var ref = firebase.database().ref('storeData/category-open/'+a+'-open');
+		var ref = firebase.database().ref('storeData/category-open/'+a+'-open/'+a+'-open-clicker');
+		var ref2 = firebase.database().ref('storeData/category-open/'+a+'-open/clientTime');
+		ref2.push().set(clientTime);
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
 	//[DATABASE] Adding to Total Click on specific Source OPEN button
 	function submitOpenSource(a) {
-		var ref = firebase.database().ref('storeData/source-open/'+a+'-open');
+		var ref = firebase.database().ref('storeData/source-open/'+a+'-open/'+a+'-open-clicker');
+		var ref2 = firebase.database().ref('storeData/source-open/'+a+'-open/clientTime');
+		ref2.push().set(clientTime);
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});      
 	}
 
 	function submitReportApp(a) {
-		var ref = firebase.database().ref('storeData/reportApp/app'+a+'-report');
+		var ref = firebase.database().ref('storeData/reportApp/app'+a+'/app'+a+'-report');
+		var ref2 = firebase.database().ref('storeData/reportApp/app'+a+'/clientTime');
+		ref2.push().set(clientTime);
 		ref.transaction(function(currentClicks) {
 		  return (currentClicks || 0) + 1;
 		});   

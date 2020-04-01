@@ -37,12 +37,12 @@ var ignitionopen = document.getElementById('ignition-open');
 var topstoreopen = document.getElementById('topstore-open');
 var appvalleyopen = document.getElementById('appvalley-open');
 var tweakboxopen = document.getElementById('tweakbox-open');
-var iosninjaopen = document.getElementById('iosninja-open');
-var coconutxopen = document.getElementById('coconutx-open');
-var iosgodsopen = document.getElementById('iosgods-open');
-var flekstoreopen = document.getElementById('flekstore-open');
-var emus4uopen = document.getElementById('emus4u-open');
-var iosemusopen = document.getElementById('iosemus-open');
+// var iosninjaopen = document.getElementById('iosninja-open');
+// var coconutxopen = document.getElementById('coconutx-open');
+// var iosgodsopen = document.getElementById('iosgods-open');
+// var flekstoreopen = document.getElementById('flekstore-open');
+// var emus4uopen = document.getElementById('emus4u-open');
+// var iosemusopen = document.getElementById('iosemus-open');
 
 //Variables associated with status of Sources
 var statusignition = document.getElementById('status-ignition');
@@ -285,76 +285,120 @@ function createTag(loadnum, id) {
 
 //Requesting data from database to get data for app
 function loadApp(a) {
-    socket.emit('Number', a);
-    socket.emit('numkey', a); //Listening for number for report app
-    socket.emit('App'+a+'_Name','value');
-    socket.emit('App'+a+'_Image','value');
-    socket.emit('App'+a+'_Description','value');
-    socket.emit('App'+a+'_Developer','value');
-    socket.emit('App'+a+'_Version','value');
-    socket.emit('App'+a+'_Category','value');
-    socket.emit('App'+a+'_Size','value');
-    socket.emit('App'+a+'_Ignition','value');
-    socket.emit('App'+a+'_TopStore','value');
-    socket.emit('App'+a+'_AppValley','value');
-    socket.emit('App'+a+'_Tweakbox','value');
-    socket.emit('App'+a+'_IOSNinja','value');
-    socket.emit('App'+a+'_CoconutX','value');
-    socket.emit('App'+a+'_iOSGods','value');
-    socket.emit('App'+a+'_Emus','value');
-    socket.emit('App'+a+'_Emus4','value');
-    socket.emit('App'+a+'_Flekstore','value');
+    if (userid) {
+        socket.emit('storeData/userProperties/'+userid+'/Number', a);
+        socket.emit('Number', a);
+        socket.emit('numkey', a); //Listening for number for report app
+        socket.emit('App'+a+'_Name','value');
+        socket.emit('App'+a+'_Image','value');
+        socket.emit('App'+a+'_Description','value');
+        socket.emit('App'+a+'_Developer','value');
+        socket.emit('App'+a+'_Version','value');
+        socket.emit('App'+a+'_Category','value');
+        socket.emit('App'+a+'_Size','value');
+        socket.emit('App'+a+'_Ignition','value');
+        socket.emit('App'+a+'_TopStore','value');
+        socket.emit('App'+a+'_AppValley','value');
+        socket.emit('App'+a+'_Tweakbox','value');
+        socket.emit('App'+a+'_IOSNinja','value');
+        socket.emit('App'+a+'_CoconutX','value');
+        socket.emit('App'+a+'_iOSGods','value');
+        socket.emit('App'+a+'_Emus','value');
+        socket.emit('App'+a+'_Emus4','value');
+        socket.emit('App'+a+'_Flekstore','value');
 
-    /*
-    Back button counter
-    Counter = 0: Home Back Button
-    Counter = 1: Category Back button
-    Counter = 2: Search Back button
-    */
-    if (counter == 0) {
-        backhref.href = "#view-1"; //Going back to homepage
-        show_backleft();
-    } else if (counter == 1) { //Going back to category page (specific to when opening) 
-        show_backleft();
-        backhref.href = "#view-5";
-    } else if (counter == 2) { //Going back to search page
-        show_backleft();
-        backhref.href = "#view-4";
-    } else if (counter == 3) { //Going back to sources page
-        show_backleft();
-        backhref.href = "#view-6";
-    } 
+        /*
+        Back button counter
+        Counter = 0: Home Back Button
+        Counter = 1: Category Back button
+        Counter = 2: Search Back button
+        */
+        if (counter == 0) {
+            backhref.href = "#view-1"; //Going back to homepage
+            show_backleft();
+        } else if (counter == 1) { //Going back to category page (specific to when opening) 
+            show_backleft();
+            backhref.href = "#view-5";
+        } else if (counter == 2) { //Going back to search page
+            show_backleft();
+            backhref.href = "#view-4";
+        } else if (counter == 3) { //Going back to sources page
+            show_backleft();
+            backhref.href = "#view-6";
+        } 
+    } else if (userid == 0) {
+        socket.emit('Number', a);
+        socket.emit('numkey', a); //Listening for number for report app
+        socket.emit('App'+a+'_Name','value');
+        socket.emit('App'+a+'_Image','value');
+        socket.emit('App'+a+'_Description','value');
+        socket.emit('App'+a+'_Developer','value');
+        socket.emit('App'+a+'_Version','value');
+        socket.emit('App'+a+'_Category','value');
+        socket.emit('App'+a+'_Size','value');
+        socket.emit('App'+a+'_Ignition','value');
+        socket.emit('App'+a+'_TopStore','value');
+        socket.emit('App'+a+'_AppValley','value');
+        socket.emit('App'+a+'_Tweakbox','value');
+        socket.emit('App'+a+'_IOSNinja','value');
+        socket.emit('App'+a+'_CoconutX','value');
+        socket.emit('App'+a+'_iOSGods','value');
+        socket.emit('App'+a+'_Emus','value');
+        socket.emit('App'+a+'_Emus4','value');
+        socket.emit('App'+a+'_Flekstore','value');
+
+        /*
+        Back button counter
+        Counter = 0: Home Back Button
+        Counter = 1: Category Back button
+        Counter = 2: Search Back button
+        */
+        if (counter == 0) {
+            backhref.href = "#view-1"; //Going back to homepage
+            show_backleft();
+        } else if (counter == 1) { //Going back to category page (specific to when opening) 
+            show_backleft();
+            backhref.href = "#view-5";
+        } else if (counter == 2) { //Going back to search page
+            show_backleft();
+            backhref.href = "#view-4";
+        } else if (counter == 3) { //Going back to sources page
+            show_backleft();
+            backhref.href = "#view-6";
+        }    
+    }
 }
 
-//Sends request for total number of apps variable
-socket.emit('appData','value');
+// //Sends request for total number of apps variable
+// socket.emit('appData','value');
 
-var i = 0;
-socket.on('requestPopularApps', function(data) {
-    var a = data;
-    i++;
-    function sortFunction(a, b) {
-        if (a[1] === b[1]) {
-            return 0;
-        }
-        else {
-            return (a[1] > b[1]) ? -1 : 1;
-        }
-    }
+// var i = 0;
+// socket.on('requestPopularApps', function(data) {
+//     var a = data;
+//     i++;
+//     function sortFunction(a, b) {
+//         if (a[1] === b[1]) {
+//             return 0;
+//         }
+//         else {
+//             return (a[1] > b[1]) ? -1 : 1;
+//         }
+//     }
 
-    a.sort(sortFunction);
-    if (i == (totalNumApps-1)) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
-        createTag(a[1][0], "popular-apps");
-        createTag(a[2][0], "popular-apps");
-        createTag(a[3][0], "popular-apps");
-        createTag(a[4][0], "popular-apps");
-    }
-})
+//     a.sort(sortFunction);
+//     if (i == (totalNumApps-1)) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
+//         createTag(a[1][0], "popular-apps");
+//         createTag(a[2][0], "popular-apps");
+//         createTag(a[3][0], "popular-apps");
+//         createTag(a[4][0], "popular-apps");
+//     }
+// })
 
-//Listens for totalNumApps
-socket.on('appData', function(data) {
-    totalNumApps = (data);
-})
+// //Listens for totalNumApps
+// socket.on('appData', function(data) {
+//     totalNumApps = (data/2);
+//     console.log(totalNumApps);
+// })
 
 //[DATABASE] Sending request to count view
 if (refreshcount == 0) {
@@ -381,29 +425,29 @@ socket.emit('storeData/view-counter','value');
     socket.emit('tweakbox-num', a);
     });
     //[DATABASE] Requesting to database to count the click for IOSNinja Source
-    ninjaValue.addEventListener('click', function() {
-    socket.emit('iosninja-num', a);
-    });
-    //[DATABASE] Requesting to database to count the click for CoconutX Source
-    cocoValue.addEventListener('click', function() {
-    socket.emit('coconutx-num', a);
-    });
-    //[DATABASE] Requesting to database to count the click for IOSGods Source
-    godValue.addEventListener('click', function() {
-    socket.emit('iosgods-num', a);
-    });
-    //[DATABASE] Requesting to database to count the click for IOSEmus Source
-    emusValue.addEventListener('click', function() {
-    socket.emit('iosemus-num', a);
-    });
-    //[DATABASE] Requesting to database to count the click for Emus4u Source
-    emus4Value.addEventListener('click', function() {
-    socket.emit('emus4u-num', a);
-    });
-    //[DATABASE] Requesting to database to count the click for Flekstore Source
-    flekValue.addEventListener('click', function() {
-    socket.emit('flekstore-num', a);
-    });
+    // ninjaValue.addEventListener('click', function() {
+    // socket.emit('iosninja-num', a);
+    // });
+    // //[DATABASE] Requesting to database to count the click for CoconutX Source
+    // cocoValue.addEventListener('click', function() {
+    // socket.emit('coconutx-num', a);
+    // });
+    // //[DATABASE] Requesting to database to count the click for IOSGods Source
+    // godValue.addEventListener('click', function() {
+    // socket.emit('iosgods-num', a);
+    // });
+    // //[DATABASE] Requesting to database to count the click for IOSEmus Source
+    // emusValue.addEventListener('click', function() {
+    // socket.emit('iosemus-num', a);
+    // });
+    // //[DATABASE] Requesting to database to count the click for Emus4u Source
+    // emus4Value.addEventListener('click', function() {
+    // socket.emit('emus4u-num', a);
+    // });
+    // //[DATABASE] Requesting to database to count the click for Flekstore Source
+    // flekValue.addEventListener('click', function() {
+    // socket.emit('flekstore-num', a);
+    // });
 
 /*
 CATEGORIES/APPS PAGE BUTTON LISTENERS
@@ -492,64 +536,64 @@ tweakboxopen.addEventListener('click', function() {
     show_backleftsor(); 
     appCatLoad2(3);
 });
-//Listening for when clicking IOSNinja 'GET' at Source Page
-iosninjaopen.addEventListener('click', function() { 
-    categorynamesor.innerHTML = "IOSNinja";
-    categorytitlesor.innerHTML = "IOSNinja";
-    categorylocsor.id = "IOSNinja";
-    socket.emit('storeData/source-open/IOSNinja-open','value');
-    show_backleftsor(); 
-    appCatLoad2(4);
-});
-//Listening for when clicking CoconutX 'GET' at Source Page
-coconutxopen.addEventListener('click', function() { 
-    categorynamesor.innerHTML = "CoconutX";
-    categorytitlesor.innerHTML = "CoconutX";
-    categorylocsor.id = "CoconutX";
-    socket.emit('storeData/source-open/CoconutX-open','value');
-    show_backleftsor(); 
-    appCatLoad2(5);
-});
-//Listening for when clicking IOSGods 'GET' at Source Page
-iosgodsopen.addEventListener('click', function() { 
-    categorynamesor.innerHTML = "IOSGods";
-    categorytitlesor.innerHTML = "IOSGods";
-    categorylocsor.id = "iOSGods";
-    socket.emit('storeData/source-open/iOSGods-open','value');
-    show_backleftsor(); 
-    appCatLoad2(6);
-});
-//Listening for when clicking FlekStore 'GET' at Source Page
-flekstoreopen.addEventListener('click', function() { 
-    categorynamesor.innerHTML = "FlekStore";
-    categorytitlesor.innerHTML = "FlekStore";
-    categorylocsor.id = "Flekstore";
-    socket.emit('storeData/source-open/Flekstore-open','value');
-    show_backleftsor(); 
-    appCatLoad2(7);
-});
-//Listening for when clicking Emus4u 'GET' at Source Page
-emus4uopen.addEventListener('click', function() { 
-    categorynamesor.innerHTML = "Emus4u";
-    categorytitlesor.innerHTML = "Emus4u";
-    categorylocsor.id = "Emus4";
-    socket.emit('storeData/source-open/Emus4-open','value');
-    show_backleftsor(); 
-    appCatLoad2(8);
-});
-//Listening for when clicking IOSEmus 'GET' at Source Page
-iosemusopen.addEventListener('click', function() { 
-    categorynamesor.innerHTML = "IOSEmus";
-    categorytitlesor.innerHTML = "IOSEmus";
-    categorylocsor.id = "Emus";
-    socket.emit('storeData/source-open/Emus-open','value');
-    show_backleftsor(); 
-    appCatLoad2(9);
-});
+// //Listening for when clicking IOSNinja 'GET' at Source Page
+// iosninjaopen.addEventListener('click', function() { 
+//     categorynamesor.innerHTML = "IOSNinja";
+//     categorytitlesor.innerHTML = "IOSNinja";
+//     categorylocsor.id = "IOSNinja";
+//     socket.emit('storeData/source-open/IOSNinja-open','value');
+//     show_backleftsor(); 
+//     appCatLoad2(4);
+// });
+// //Listening for when clicking CoconutX 'GET' at Source Page
+// coconutxopen.addEventListener('click', function() { 
+//     categorynamesor.innerHTML = "CoconutX";
+//     categorytitlesor.innerHTML = "CoconutX";
+//     categorylocsor.id = "CoconutX";
+//     socket.emit('storeData/source-open/CoconutX-open','value');
+//     show_backleftsor(); 
+//     appCatLoad2(5);
+// });
+// //Listening for when clicking IOSGods 'GET' at Source Page
+// iosgodsopen.addEventListener('click', function() { 
+//     categorynamesor.innerHTML = "IOSGods";
+//     categorytitlesor.innerHTML = "IOSGods";
+//     categorylocsor.id = "iOSGods";
+//     socket.emit('storeData/source-open/iOSGods-open','value');
+//     show_backleftsor(); 
+//     appCatLoad2(6);
+// });
+// //Listening for when clicking FlekStore 'GET' at Source Page
+// flekstoreopen.addEventListener('click', function() { 
+//     categorynamesor.innerHTML = "FlekStore";
+//     categorytitlesor.innerHTML = "FlekStore";
+//     categorylocsor.id = "Flekstore";
+//     socket.emit('storeData/source-open/Flekstore-open','value');
+//     show_backleftsor(); 
+//     appCatLoad2(7);
+// });
+// //Listening for when clicking Emus4u 'GET' at Source Page
+// emus4uopen.addEventListener('click', function() { 
+//     categorynamesor.innerHTML = "Emus4u";
+//     categorytitlesor.innerHTML = "Emus4u";
+//     categorylocsor.id = "Emus4";
+//     socket.emit('storeData/source-open/Emus4-open','value');
+//     show_backleftsor(); 
+//     appCatLoad2(8);
+// });
+// //Listening for when clicking IOSEmus 'GET' at Source Page
+// iosemusopen.addEventListener('click', function() { 
+//     categorynamesor.innerHTML = "IOSEmus";
+//     categorytitlesor.innerHTML = "IOSEmus";
+//     categorylocsor.id = "Emus";
+//     socket.emit('storeData/source-open/Emus-open','value');
+//     show_backleftsor(); 
+//     appCatLoad2(9);
+// });
 
 
 //myArray is for retrieving source data for App
-var myArray = [ignitionValue, topValue, valleyValue, boxValue, ninjaValue, cocoValue, godValue, emusValue, emus4Value, flekValue];
+var myArray = [ignitionValue, topValue, valleyValue, boxValue];
 
 //Retrieving data from database for App
 socket.on('Number', function(data) {
@@ -634,66 +678,6 @@ socket.on('Number', function(data) {
         } else if (data == "none") {
             myArray[3].innerHTML = "NONE";
             myArray[3].setAttribute("onclick", `window.open('none');`);
-        }
-    })
-    //Displaying App Category (IOSNinja) from Database
-    socket.on('App'+a+'_IOSNinja', function(data) {
-        if (data !== "none") {
-            myArray[4].innerHTML = "GET";
-            myArray[4].setAttribute("onclick", `window.open('${data}');`);
-        } else if (data == "none") {
-            myArray[4].innerHTML = "NONE";
-            myArray[4].setAttribute("onclick", `window.open('none');`);
-        }
-    })
-    //Displaying App Category (CoconutX) from Database
-    socket.on('App'+a+'_CoconutX', function(data) {
-        if (data !== "none") {
-            myArray[5].innerHTML = "GET";
-            myArray[5].setAttribute("onclick", `window.open('${data}');`);
-        } else if (data == "none") {
-            myArray[5].innerHTML = "NONE";
-            myArray[5].setAttribute("onclick", `window.open('none');`);
-        }
-    })
-    //Displaying App Category (iOSGods) from Database
-    socket.on('App'+a+'_iOSGods', function(data) {
-        if (data !== "none") {
-            myArray[6].innerHTML = "GET";
-            myArray[6].setAttribute("onclick", `window.open('${data}');`);
-        } else if (data == "none") {
-            myArray[6].innerHTML = "NONE";
-            myArray[6].setAttribute("onclick", `window.open('none');`);
-        }
-    })
-    //Displaying App Category (Emus) from Database
-    socket.on('App'+a+'_Emus', function(data) {
-        if (data !== "none") {
-            myArray[7].innerHTML = "GET";
-            myArray[7].setAttribute("onclick", `window.open('${data}');`);
-        } else if (data == "none") {
-            myArray[7].innerHTML = "NONE";
-            myArray[7].setAttribute("onclick", `window.open('none');`);
-        }
-    })
-    //Displaying App Category (Emus4) from Database
-    socket.on('App'+a+'_Emus4', function(data) {
-        if (data !== "none") {
-            myArray[8].innerHTML = "GET";
-            myArray[8].setAttribute("onclick", `window.open('${data}');`);
-        } else if (data == "none") {
-            myArray[8].innerHTML = "NONE";
-            myArray[8].setAttribute("onclick", `window.open('none');`);
-        }
-    })
-    //Displaying App Category (Flekstore) from Database
-    socket.on('App'+a+'_Flekstore', function(data) {
-        if (data !== "none") {
-            myArray[9].innerHTML = "GET";
-            myArray[9].setAttribute("onclick", `window.open('${data}');`);
-        } else if (data == "none") {
-            myArray[9].innerHTML = "NONE";
-            myArray[9].setAttribute("onclick", `window.open('none');`);
         }
     })
 });

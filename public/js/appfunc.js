@@ -3,12 +3,12 @@ var ignitionValue = document.getElementById('ignition-get')
 var topValue = document.getElementById('top-get')
 var valleyValue = document.getElementById('valley-get')
 var boxValue = document.getElementById('box-get')
-var ninjaValue = document.getElementById('ninja-get')
-var cocoValue = document.getElementById('coco-get')
-var godValue = document.getElementById('god-get')
-var emusValue = document.getElementById('emus-get')
-var emus4Value = document.getElementById('emus4-get')
-var flekValue = document.getElementById('flek-get')
+// var ninjaValue = document.getElementById('ninja-get')
+// var cocoValue = document.getElementById('coco-get')
+// var godValue = document.getElementById('god-get')
+// var emusValue = document.getElementById('emus-get')
+// var emus4Value = document.getElementById('emus4-get')
+// var flekValue = document.getElementById('flek-get')
 var refreshcount = 0;
 var totalNumApps;
 
@@ -43,149 +43,105 @@ var tweakboxopen = document.getElementById('tweakbox-open');
 // var flekstoreopen = document.getElementById('flekstore-open');
 // var emus4uopen = document.getElementById('emus4u-open');
 // var iosemusopen = document.getElementById('iosemus-open');
+var clockElement = document.getElementById("clock");
+
+socket.on('clock-time', function(data) {
+    var showdate1 = data.substr(0, 3); //Shows DAY
+    var showdate2 = data.substr(3, 12); //Shows MONTH/YEAR
+    clockElement.innerHTML = ''+showdate1+''+showdate2;
+})
+
+function refreshPage(){
+    window.location.reload();
+} 
 
 //Variables associated with status of Sources
 var statusignition = document.getElementById('status-ignition');
+var statusignitionapp = document.getElementById('status-ignition-app');
 var statustopstore = document.getElementById('status-topstore');
+var statustopstoreapp = document.getElementById('status-topstore-app');
 var statusappvalley = document.getElementById('status-appvalley');
+var statusappvalleyapp = document.getElementById('status-appvalley-app');
 var statustweakbox = document.getElementById('status-tweakbox');
-var statusiosninja = document.getElementById('status-iosninja');
-var statuscoconutx = document.getElementById('status-coconutx');
-var statusiosgods = document.getElementById('status-iosgods');
-var statusflekstore = document.getElementById('status-flekstore');
-var statusemus4u = document.getElementById('status-emus4u');
-var statusiosemus = document.getElementById('status-iosemus');
+var statustweakboxapp = document.getElementById('status-tweakbox-app');
 
-var signedarr = ['statusignition', 'statustopstore', 'statusappvalley', 'statustweakbox', 'statusiosninja', 'statuscoconutx', 'statusiosgods', 'statusflekstore', 'statusemus4u', 'statusiosemus']
+var signedarr = ['statusignition', 'statustopstore', 'statusappvalley', 'statustweakbox']
 for (var i = 0; i < signedarr.length; i++) {
     socket.emit(signedarr[i], 'value');
 }
 
 socket.on('statusignition', function(data) {
-        if (data == "signed") {
-            statusignition.style.color = "#00ff00";
-            statusignition.innerHTML = "Signed";
-        } else if (data == "!signed") {
-            statusignition.style.color = "#ff0000";
-            statusignition.innerHTML = "Revoked";
-        } else if (data == "unknown") {
-            statusignition.style.color = "#808080";
-            statusignition.innerHTML = "Unknown"; 
-        }
+    if (data == "signed") {
+        statusignition.style.color = "#00ff00";
+        statusignitionapp.innerHTML = "Signed";
+        statusignitionapp.style.color = "#00ff00";
+        statusignitionapp.innerHTML = "Signed";
+    } else if (data == "!signed") {
+        statusignition.style.color = "#ff0000";
+        statusignition.innerHTML = "Revoked";
+        statusignitionapp.style.color = "#ff0000";
+        statusignitionapp.innerHTML = "Revoked";
+    } else if (data == "unknown") {
+        statusignition.style.color = "#808080";
+        statusignition.innerHTML = "Unknown"; 
+        statusignitionapp.style.color = "#808080";
+        statusignitionapp.innerHTML = "Unknown";
+    }
 })
 socket.on('statustopstore', function(data) {
     if (data == "signed") {
         statustopstore.style.color = "#00ff00";
         statustopstore.innerHTML = "Signed";
+        statustopstoreapp.style.color = "#00ff00";
+        statustopstoreapp.innerHTML = "Signed";
     } else if (data == "!signed") {
         statustopstore.style.color = "#ff0000";
         statustopstore.innerHTML = "Revoked";
+        statustopstoreapp.style.color = "#ff0000";
+        statustopstoreapp.innerHTML = "Revoked";
     } else if (data == "unknown") {
         statustopstore.style.color = "#808080";
         statustopstore.innerHTML = "Unknown"; 
+        statustopstoreapp.style.color = "#808080";
+        statustopstoreapp.innerHTML = "Unknown";
     }
 })
 socket.on('statusappvalley', function(data) {
     if (data == "signed") {
         statusappvalley.style.color = "#00ff00";
         statusappvalley.innerHTML = "Signed";
+        statusappvalleyapp.style.color = "#00ff00";
+        statusappvalleyapp.innerHTML = "Signed";
     } else if (data == "!signed") {
         statusappvalley.style.color = "#ff0000";
         statusappvalley.innerHTML = "Revoked";
+        statusappvalleyapp.style.color = "#ff0000";
+        statusappvalleyapp.innerHTML = "Revoked";
     } else if (data == "unknown") {
         statusappvalley.style.color = "#808080";
         statusappvalley.innerHTML = "Unknown"; 
+        statusappvalleyapp.style.color = "#808080";
+        statusappvalleyapp.innerHTML = "Unknown";
     }
 })
 socket.on('statustweakbox', function(data) {
     if (data == "signed") {
         statustweakbox.style.color = "#00ff00";
         statustweakbox.innerHTML = "Signed";
+        statustweakboxapp.style.color = "#00ff00";
+        statustweakboxapp.innerHTML = "Signed";
     } else if (data == "!signed") {
         statustweakbox.style.color = "#ff0000";
         statustweakbox.innerHTML = "Revoked";
+        statustweakboxapp.style.color = "#ff0000";
+        statustweakboxapp.innerHTML = "Revoked";
     } else if (data == "unknown") {
         statustweakbox.style.color = "#808080";
         statustweakbox.innerHTML = "Unknown"; 
+        statustweakboxapp.style.color = "#808080";
+        statustweakboxapp.innerHTML = "Unknown";
     }
 })
-socket.on('statusiosninja', function(data) {
-    if (data == "signed") {
-        statusiosninja.style.color = "#00ff00";
-        statusiosninja.innerHTML = "Signed";
-    } else if (data == "!signed") {
-        statusiosninja.style.color = "#ff0000";
-        statusiosninja.innerHTML = "Revoked";
-    } else if (data == "unknown") {
-        statusiosninja.style.color = "#808080";
-        statusiosninja.innerHTML = "Unknown"; 
-    }
-})
-socket.on('statuscoconutx', function(data) {
-    if (data == "signed") {
-        statuscoconutx.style.color = "#00ff00";
-        statuscoconutx.innerHTML = "Signed";
-    } else if (data == "!signed") {
-        statuscoconutx.style.color = "#ff0000";
-        statuscoconutx.innerHTML = "Revoked";
-    } else if (data == "unknown") {
-        statuscoconutx.style.color = "#808080";
-        statuscoconutx.innerHTML = "Unknown"; 
-    }
-})
-
-socket.on('statusiosgods', function(data) {
-    if (data == "signed") {
-        statusiosgods.style.color = "#00ff00";
-        statusiosgods.innerHTML = "Signed";
-    } else if (data == "!signed") {
-        statusiosgods.style.color = "#ff0000";
-        statusiosgods.innerHTML = "Revoked";
-    } else if (data == "unknown") {
-        statusiosgods.style.color = "#808080";
-        statusiosgods.innerHTML = "Unknown"; 
-    }
-})
-
-socket.on('statusflekstore', function(data) {
-    if (data == "signed") {
-        statusflekstore.style.color = "#00ff00";
-        statusflekstore.innerHTML = "Signed";
-    } else if (data == "!signed") {
-        statusflekstore.style.color = "#ff0000";
-        statusflekstore.innerHTML = "Revoked";
-    } else if (data == "unknown") {
-        statusflekstore.style.color = "#808080";
-        statusflekstore.innerHTML = "Unknown"; 
-    }
-})
-socket.on('statusemus4u', function(data) {
-    if (data == "signed") {
-        statusemus4u.style.color = "#00ff00";
-        statusemus4u.innerHTML = "Signed";
-    } else if (data == "!signed") {
-        statusemus4u.style.color = "#ff0000";
-        statusemus4u.innerHTML = "Revoked";
-    } else if (data == "unknown") {
-        statusemus4u.style.color = "#808080";
-        statusemus4u.innerHTML = "Unknown"; 
-    }
-})
-
-socket.on('statusiosemus', function(data) {
-    if (data == "signed") {
-        statusiosemus.style.color = "#00ff00";
-        statusiosemus.innerHTML = "Signed";
-    } else if (data == "!signed") {
-        statusiosemus.style.color = "#ff0000";
-        statusiosemus.innerHTML = "Revoked";
-    } else if (data == "unknown") {
-        statusiosemus.style.color = "#808080";
-        statusiosemus.innerHTML = "Unknown"; 
-    }
-})
-
-
 
 //Variables associated with Category/Apps page (loading)
 var CategoryArray = ["Jailbreak", "Tweaked", "Entertainment", "Emulators", "Games"]
@@ -215,8 +171,8 @@ async function appCatLoad3(num3) {
     numberval3 = num3;
 }
 //Function that creates tags of apps
-function createTag(loadnum, id) { 
-    return new Promise(resolve => {      
+async function createTag(loadnum, id) { 
+    // return new Promise(resolve => {      
         socket.emit('appNumber',loadnum);
         socket.emit('App'+loadnum+'_Name_View','value');
         socket.emit('App'+loadnum+'_Image_View','value');
@@ -257,10 +213,10 @@ function createTag(loadnum, id) {
         socket.on('App'+loadnum+'_Name_View', function(data) {
             myDiv4.innerHTML = data;
         })
-        socket.on('App'+loadnum+'_Image_View', function(data) {
+        socket.on('App'+loadnum+'_Image_View', async function(data) {
             srcatt.value = data;
-            myImg.setAttribute("srcset", srcatt.value);
-            resolve();
+            await myImg.setAttribute("srcset", srcatt.value);
+            // resolve();
             
         })
         socket.on('App'+loadnum+'_Category_View', function(data) {
@@ -280,11 +236,12 @@ function createTag(loadnum, id) {
         myDiv5.appendChild(myA);
         myA.appendChild(myem)
         myDiv2.appendChild(myDiv6);
-    });
+    // });
 }
 
 //Requesting data from database to get data for app
 function loadApp(a) {
+    valnum = a;
     if (userid) {
         socket.emit('storeData/userProperties/'+userid+'/Number', a);
         socket.emit('Number', a);
@@ -306,7 +263,6 @@ function loadApp(a) {
         socket.emit('App'+a+'_Emus','value');
         socket.emit('App'+a+'_Emus4','value');
         socket.emit('App'+a+'_Flekstore','value');
-
         /*
         Back button counter
         Counter = 0: Home Back Button
@@ -368,6 +324,7 @@ function loadApp(a) {
         }    
     }
 }
+
 
 // //Sends request for total number of apps variable
 // socket.emit('appData','value');
@@ -454,6 +411,7 @@ CATEGORIES/APPS PAGE BUTTON LISTENERS
 */
 //Listening for when clicking Jailbreak 'GET' at Category/Apps Page
 jailbreakopen.addEventListener('click', function() { 
+    removetotalTags();
     categoryname.innerHTML = myCatArray[0];
     categorytitle.innerHTML = myCatArray[0];
     categoryloc.id = myCatArray[0];
@@ -463,6 +421,7 @@ jailbreakopen.addEventListener('click', function() {
 });
 //Listening for when clicking Tweaked 'GET' at Category/Apps Page
 tweakedopen.addEventListener('click', function() { 
+    removetotalTags();
     categoryname.innerHTML = myCatArray[1];
     categorytitle.innerHTML = myCatArray[1];
     categoryloc.id = myCatArray[1];
@@ -472,6 +431,7 @@ tweakedopen.addEventListener('click', function() {
 });
 //Listening for when clicking Entertainment 'GET' at Category/Apps Page
 entertainmentopen.addEventListener('click', function() { 
+    removetotalTags();
     categoryname.innerHTML = myCatArray[2];
     categorytitle.innerHTML = myCatArray[2];
     categoryloc.id = myCatArray[2];
@@ -481,6 +441,7 @@ entertainmentopen.addEventListener('click', function() {
 });
 //Listening for when clicking Emulator 'GET' at Category/Apps Page
 emulatorsopen.addEventListener('click', function() { 
+    removetotalTags();
     categoryname.innerHTML = myCatArray[3];
     categorytitle.innerHTML = myCatArray[3];
     categoryloc.id = myCatArray[3];
@@ -490,6 +451,7 @@ emulatorsopen.addEventListener('click', function() {
 });
 //Listening for when clicking Games/Other 'GET' at Category/Apps Page
 gamesopen.addEventListener('click', function() { 
+    removetotalTags();
     categoryname.innerHTML = myCatArray[4];
     categorytitle.innerHTML = myCatArray[4];
     categoryloc.id = myCatArray[4];
@@ -502,6 +464,7 @@ SOURCES PAGE BUTTON LISTENERS
 */
 //Listening for when clicking Ignition 'GET' at Source Page
 ignitionopen.addEventListener('click', async function() { 
+    removetotalTags();
     categorynamesor.innerHTML = "Ignition";
     categorytitlesor.innerHTML = "Ignition";
     categorylocsor.id = "Ignition";
@@ -511,6 +474,7 @@ ignitionopen.addEventListener('click', async function() {
 });
 //Listening for when clicking TopStore 'GET' at Source Page
 topstoreopen.addEventListener('click', function() { 
+    removetotalTags();
     categorynamesor.innerHTML = "Top Store";
     categorytitlesor.innerHTML = "Top Store";
     categorylocsor.id = "TopStore";
@@ -520,6 +484,7 @@ topstoreopen.addEventListener('click', function() {
 });
 //Listening for when clicking AppValley 'GET' at Source Page
 appvalleyopen.addEventListener('click', function() { 
+    removetotalTags();
     categorynamesor.innerHTML = "App Valley";
     categorytitlesor.innerHTML = "App Valley";
     categorylocsor.id = "AppValley";
@@ -529,6 +494,7 @@ appvalleyopen.addEventListener('click', function() {
 });
 //Listening for when clicking Tweakbox 'GET' at Source Page
 tweakboxopen.addEventListener('click', function() { 
+    removetotalTags();
     categorynamesor.innerHTML = "Tweakbox";
     categorytitlesor.innerHTML = "Tweakbox";
     categorylocsor.id = "Tweakbox";

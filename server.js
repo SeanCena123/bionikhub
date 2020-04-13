@@ -2,6 +2,7 @@
 var express = require('express');
 var app = express();
 const port = process.env.PORT;
+const globemail = process.env.EMAIL;
 var totalNumApps;
 var viewcounter = 0;
 var viewcounter2 = 0;
@@ -141,29 +142,711 @@ function reset() {
 
 const auth = firebase.auth();
 
-//Submitting the 'SIGN IN' button in non-sign in
-socket.on('loginsignin', async function(data) {
-	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; }
-	var usercred = data; await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
-	if (a == 1) { socket.emit('signinuservalid', 'value'); }    
-}); 
-//Submitting the 'SIGN UP' button in non-sign in
-socket.on('signindata', async function(data) {
-	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('userinvalid', error); a = 0; }
-	var usercred = data; await auth.createUserWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
-	if (a == 1) { socket.emit('uservalid', 'value'); var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); }); }    
-}); 
-
 /*
 CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
 */
+// auth.onAuthStateChanged(function(user) {
+//     if (user) {
+//         socket.on('signoutfunc', async function(data) { 
+//         	// await socket.emit('signoutfunc', 'value'); 
+//         	await auth.signOut()
+//         	var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); 
+//         	sourceTime.push().set(clientTime);	 
+//         });	 
+    	
+
+
+
+//     	//Sign out
+// 		if (user.emailVerified == 1) {
+// 			user.favlist = [];
+//        		var email = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-email');
+// 	 		email.set(user.email);
+// 	 		var uid = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
+// 	 		uid.set(user.uid);
+// 			var sourceAddress = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientAddress');
+// 			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientTime');
+// 			sourceAddress.push().set(clientIp);
+// 		    sourceTime.push().set(clientTime);	
+
+
+// 			var myArray = [1, 2, 3, 4, 5];
+// 		    socket.on('hi', function (data) {
+// 		    	socket.emit('hi', myArray);
+//   			});
+
+
+// 		    socket.on('disconnect', function () {
+//       			console.log(socket.id+": Disconnected.");
+// 	      			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientDisconnect');
+// 			    	sourceTime.push().set(clientTime);	
+//   			});
+
+
+// 			// //Automatically running
+//    // 	        var favappnum; //Used to activate other functions after obtaining numcount
+// 			// var numcount; //Global variable used to count the number of apps inside favlist
+// 			// var totalfavcounter = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist');
+// 			// totalfavcounter.on('value', async function(snapshot) {
+// 			// 	numcount = await snapshot.numChildren(); //Gets the total number of apps
+// 			// 	await console.log("Total apps in favlist: "+numcount); //Prints it to the server console
+// 			// 	await socket.emit('numcount', numcount); //Sends request to numcount on the client
+// 			// 	favappnum = 1; //Activates other functions to work
+// 			// });	
+
+
+// 			// //Automatically running
+// 			// totalfavcounter.on('value', async function(snapshot) { //Listening for the total value inside 
+// 			// numcount = await snapshot.numChildren();
+// 			// await socket.emit('numcount', numcount);
+// 	  //  			for (var i = 0; i < numcount; i++) {
+// 	  //  				var favlist = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+// 			// 			favlist.on("value", async function(snapshot) { 
+// 			// 				await user.favlist.push(snapshot.val());	
+// 			// 				await socket.emit('favlist', user.favlist);	
+// 			// 				if (i == numcount) {
+// 			// 					await console.log(user.favlist);		
+// 			// 				}
+// 			// 			}) 
+// 			// }
+// 			// });		
+
+//    // 	        var favappnum; //Used to activate other functions after obtaining numcount
+// 			// var numcount; //Global variable used to count the number of apps inside favlist
+// 			// var totalfavcounter = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist');
+
+// 			// socket.on('favlist4', async function(data) {
+// 			//     var source = await firebase.database().ref().child('storeData/userProperties/'+user.uid+'/favlist/app'+(numcount-1));
+//    //              source.remove();
+//    //              socket.emit('favlist1', 'value')	
+// 			// });	
+
+// 			// socket.on('favlist1', async function(data) {
+// 			// 		await totalfavcounter.on('value', async function(snapshot) {
+// 			// 			numcount = await snapshot.numChildren();
+// 			// 			console.log(numcount);
+// 			// 			socket.emit('favlist1', numcount);
+// 			// 		});		
+// 			// });						
+
+// 			// socket.on('favlist2', async function(data) {
+// 			// 	user.favlist = [];
+// 			// 	console.log("numcount before: "+numcount);
+// 		 //   			for (var i = 0; i < numcount; i++) {
+// 		 //   				var favlist = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+// 			// 				favlist.on("value", async function(snapshot) { 
+// 			// 					await user.favlist.push(snapshot.val());	
+// 			// 					// await socket.emit('favlist', user.favlist);	
+// 			// 					if (i == numcount) {
+// 			// 						await console.log(user.favlist);		
+// 			// 						socket.emit('favlist3', user.favlist);	
+// 			// 					}
+// 			// 				}) 
+// 			// 		}
+// 			// });			
+
+
+
+// 			// socket.on('favlist5', async function(data) {
+// 			// 	var counter = 1;
+// 			// 	var number;
+// 			// 		if (numcount < 10 ) {
+// 			// 			for (var i = 0; i < numcount; i++) {
+// 			// 				var favlistnum = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+// 			// 				favlistnum.on("value", function(snapshot) {
+// 			// 					number = snapshot.val();
+// 			// 					if (number == data) {
+// 			// 						if (counter == 1) {
+// 			// 							counter = 0;
+// 			// 						}
+// 			// 					}
+// 			// 				})
+// 			// 			}
+// 			// 			if (counter == 1) {
+// 			// 				var ref1 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+numcount);
+// 			// 				ref1.set(data);
+// 			// 				var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/added/app'+data+'/clientTime');
+// 			// 				ref2.push().set(clientTime);
+// 			// 			} 
+// 			// 		}
+// 			// });	
+
+
+// 			// socket.on('removefavapp', async function(data) {
+// 			// if (favappnum == 1) {
+
+// 			// totalfavcounter.on('value', async function(snapshot) {
+// 			// 	// numcount = await 0;
+// 			// 	numcount = await snapshot.numChildren();
+// 			// });	
+
+// 			// 	var ref2 = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/removed/app'+user.favlist[(numcount-1)]+'/clientTime');
+// 			// 	ref2.push().set(clientTime);
+//    //           	await user.favlist.pop();
+//    //              await console.log(user.favlist);
+//    //              // await socket.emit('removefavapp', 'value');
+
+//    //              var source = await firebase.database().ref().child('storeData/userProperties/'+user.uid+'/favlist/app'+(numcount-1));
+//    //              await source.remove();
+
+// 			// }
+// 			// });	
+
+// 			// socket.on('favlistadding', function(data) {
+// 			// 	var favlist =  firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+numcount);
+// 			// 	var counter = 1;
+// 			// 	var number;
+// 			// 	user.favlist = [];
+// 			// 	if (favappnum == 1) {
+// 			// 		if (numcount < 10) {
+// 			// 			for (var i = 0; i < numcount; i++) {
+// 			// 				var favlistnum = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+// 			// 				favlistnum.on("value", function(snapshot) {
+// 			// 					number = snapshot.val();
+// 			// 					if (number == data) {
+// 			// 						if (counter == 1) {
+// 			// 							counter = 0;
+// 			// 						}
+// 			// 					}
+// 			// 				})
+// 			// 			}
+// 			// 		if (counter == 1) {
+// 			// 			favlist.set(data);
+// 			// 			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/added/app'+data+'/clientTime');
+// 			// 			ref2.push().set(clientTime);
+// 			// 		} 
+// 			// 		} 
+// 			// 	}
+// 			// });	
+
+// 	//[DATABASE] Adding to App Click when clicking on Sources (Singular Source Click)
+// 	function clicking(name, source) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/app'+name+'-'+source+'-click');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/clientTime');
+// 		ref2.push().set(clientTime);	
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});
+// 	}
+// 	//[DATABASE] Adding to Total App Click when clicking on Sources (Total Source Clicks)
+// 	function submitAppSourceTotal(num) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/clientTime');
+// 		ref2.push().set(clientTime);	
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE] Adding to Total App Click when clicking on Homescreen
+// 	function submitgetAppClick(num) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/app'+a+'-total');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/clientTime');
+// 		ref2.push().set(clientTime);	
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+
+// 	socket.on('storeData/userProperties/'+user.uid+'/Number', function(data) {
+// 		a=data;
+// 		data = submitgetAppClick(a);
+// 		console.log('storeData/appGet/app-get-home/app'+a+'/app'+a+'-total ADDED');
+// 	});
+
+// 	socket.on('ignition-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[0]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[0]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('topstore-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[1]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[1]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('appvalley-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[2]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[2]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('tweakbox-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[3]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[3]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('iosninja-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[4]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[4]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('coconutx-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[5]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[5]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('iosgods-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[6]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[6]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('flekstore-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[7]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[7]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('emus4u-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[8]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[8]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+// 	socket.on('iosemus-num', function(data) {
+// 		var b = data;
+// 		data = clicking(b, label[9]);
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[9]+' ADDED');
+// 		submitAppSourceTotal(b)
+// 		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+// 	});
+
+// 	//[DATABASE] Adding to Total Click on specific Category OPEN button
+// 	function submitOpenCategory(a) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/'+a+'-open-clicker');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/clientTime');
+// 		ref2.push().set(clientTime);	
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE] Adding to Total Click on specific Source OPEN button
+// 	function submitOpenSource(a) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/'+a+'-open-clicker');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/clientTime');
+// 		ref2.push().set(clientTime);
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE] Listening to if clicked on Jailbreak open category on apps page
+// 	socket.on('storeData/userProperties/'+user.uid+'/category-open/Jailbreak-open', function(data) {
+// 		console.log('storeData/category-open/Jailbreak-open ADDED');
+// 		data = submitOpenCategory('Jailbreak');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on Tweaked open category on apps page
+// 	socket.on('storeData/userProperties/'+user.uid+'/category-open/Tweaked-open', function(data) {
+// 		console.log('storeData/category-open/Tweaked-open ADDED');
+// 		data = submitOpenCategory('Tweaked');
+// 	});	
+// 	//[DATABASE] Listening to if clicked on Entertainment open category on apps page
+// 	socket.on('storeData/userProperties/'+user.uid+'/category-open/Entertainment-open', function(data) {
+// 		console.log('storeData/category-open/Entertainment-open ADDED');
+// 		data = submitOpenCategory('Entertainment');
+// 	});			
+// 	//[DATABASE] Listening to if clicked on Emulators open category on apps page
+// 	socket.on('storeData/userProperties/'+user.uid+'/category-open/Emulators-open', function(data) {
+// 		console.log('storeData/category-open/Emulators-open ADDED');
+// 		data = submitOpenCategory('Emulators');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on Games open category on apps page
+// 	socket.on('storeData/userProperties/'+user.uid+'/category-open/Games-open', function(data) {
+// 		console.log('storeData/category-open/Games-open ADDED');
+// 		data = submitOpenCategory('Games');
+// 	});			
+
+	
+// 	//[DATABASE] Listening to if clicked on Ignition open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/Ignition-open', function(data) {
+// 		console.log('storeData/source-open/Ignition-open ADDED');
+// 		data = submitOpenSource('Ignition');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on TopStore open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/TopStore-open', function(data) {
+// 		console.log('storeData/source-open/TopStore-open ADDED');
+// 		data = submitOpenSource('TopStore');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on AppValley open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/AppValley-open', function(data) {
+// 		console.log('storeData/source-open/AppValley-open ADDED');
+// 		data = submitOpenSource('AppValley');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on Tweakbox open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/Tweakbox-open', function(data) {
+// 		console.log('storeData/source-open/Tweakbox-open ADDED');
+// 		data = submitOpenSource('Tweakbox');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on IOSNinja open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/IOSNinja-open', function(data) {
+// 		console.log('storeData/source-open/IOSNinja-open ADDED');
+// 		data = submitOpenSource('IOSNinja');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on CoconutX open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/CoconutX-open', function(data) {
+// 		console.log('storeData/source-open/CoconutX-open ADDED');
+// 		data = submitOpenSource('CoconutX');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on iOSGods open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/iOSGods-open', function(data) {
+// 		console.log('storeData/source-open/iOSGods-open ADDED');
+// 		data = submitOpenSource('iOSGods');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on Flekstore open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/Flekstore-open', function(data) {
+// 		console.log('storeData/source-open/Flekstore-open ADDED');
+// 		data = submitOpenSource('Flekstore');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on Emus4 open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus4-open', function(data) {
+// 		console.log('storeData/source-open/Emus4-open ADDED');
+// 		data = submitOpenSource('Emus4');
+// 	});		
+// 	//[DATABASE] Listening to if clicked on Emus open on source page
+// 	socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus-open', function(data) {
+// 		console.log('storeData/source-open/Emus-open ADDED');
+// 		data = submitOpenSource('Emus');
+// 	});	
+// //[DATABASE] Function that adds refresh counter
+// function countRefresh() {
+// 	var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/refresh-counter');
+// 	var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/clientTime');
+// 	ref2.push().set(clientTime);
+// 	ref.transaction(function(currentClicks) {
+// 	  return (currentClicks || 0) + 1;
+// 	});      
+// }
+// //[DATABASE] Function that adds view counter
+// function countView() {
+// 	var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/view-counter/');
+// 	var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/clientTime');
+
+// 	ref2.push().set(clientTime);
+// 	ref.transaction(function(currentClicks) {
+// 	  return (currentClicks || 0) + 1;
+// 	});      
+// }
+// //[DATABASE] Listening for refresh click
+// 	socket.on('storeData/userProperties/'+user.uid+'/refresh-counter', function(data) {
+// 		countRefresh();
+// 	})
+// //[DATABASE] Listening for view click
+// socket.on('storeData/userProperties/'+user.uid+'/view-counter', function(data) {
+// 	if (viewcounter2 == 0) {
+// 		countView();
+// 		viewcounter2 = 1;
+// 	}
+// })
+// //[DATABASE] Function for click on Twitter Name
+// 	function submitTwitter(name) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/twitter-'+name+'-click');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/clientTime');
+
+// 		ref2.push().set(clientTime);
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+
+// 	//[DATABASE] Listening for Click on Bionik Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-bionik-click', function(data) {
+// 		data = submitTwitter('bionik');
+// 		console.log('home-data/twitter/twitter-bionik-click ADDED');
+// 	})
+// 	//[DATABASE] Listening for Click on DJFeelOfficial Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-djfeelofficial-click', function(data) {
+// 		data = submitTwitter('djfeelofficial');
+// 		console.log('home-data/twitter/twitter-djfeelofficial-click ADDED');
+// 	})
+// 	//[DATABASE] Function for click on ToS
+// 	function submitLegal() {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/clientTime');
+// 		ref2.push().set(clientTime);	
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE] Listening for Click on ToS Page
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click', function(data) {
+// 		data = submitLegal();
+// 		console.log('home-data/twitter/legal-click ADDED');
+// 	})
+// 	//[DATABASE] Function for click on Request on Home
+// 	function submitRequest() {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/request-click');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/clientTime');
+// 		ref2.push().set(clientTime);	
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE] Listening for Click on Request on Home
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/submission/request-click', function(data) {
+// 		data = submitRequest();
+// 		console.log('home-data/submission/request-click ADDED');
+// 	})
+// 	//[DATABASE] Function for click on Twitter Sources
+// 	function submitHomeSource(name) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/'+name+'-twitter-click');
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/clientTime');
+// 		ref2.push().set(clientTime);
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE]Listening for Click on Ignition Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/ignition-twitter-click', function(data) {
+// 		data = submitHomeSource('Ignition');
+// 		console.log('home-data/source-list/ignition-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on TopStore Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/topstore-twitter-click', function(data) {
+// 		data = submitHomeSource('TopStore');
+// 		console.log('home-data/source-list/topstore-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on AppValley Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/appvalley-twitter-click', function(data) {
+// 		data = submitHomeSource('AppValley');
+// 		console.log('home-data/source-list/appvalley-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on Tweakbox Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/tweakbox-twitter-click', function(data) {
+// 		data = submitHomeSource('Tweakbox');
+// 		console.log('home-data/source-list/tweakbox-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on IOSNinja Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosninja-twitter-click', function(data) {
+// 		data = submitHomeSource('IOSNinja');
+// 		console.log('home-data/source-list/iosninja-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on CoconutX Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/coconutx-twitter-click', function(data) {
+// 		data = submitHomeSource('CoconutX');
+// 		socket.emit('home-data/source-list/coconutx-twitter-click', data);
+// 		console.log('home-data/source-list/coconutx-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on IOSGods Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosgods-twitter-click', function(data) {
+// 		data = submitHomeSource('IOSGods');
+// 		console.log('home-data/source-list/iosgods-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on FlekStore Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/flekstore-twitter-click', function(data) {
+// 		data = submitHomeSource('FlekStore');
+// 		console.log('home-data/source-list/flekstore-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on Emus4u Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/emus4u-twitter-click', function(data) {
+// 		data = submitHomeSource('Emus4u');
+// 		console.log('home-data/source-list/emus4u-twitter-click ADDED');
+// 	})
+// 	//[DATABASE]Listening for Click on IOSEmus Twitter
+// 	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosemus-twitter-click', function(data) {
+// 		data = submitHomeSource('IOSEmus');
+// 		console.log('home-data/source-list/iosemus-twitter-click ADDED');
+// 	})
+// 	function submitReportApp(a) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/app'+a+"-report");
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/clientTime');
+// 		ref2.push().set(clientTime);
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});   
+// 	}
+// 		socket.on('report-num', function(data) {
+// 		var b = data;
+// 		console.log('storeData/userProperties/'+user.uid+'/reportApp/app'+b+"-report");
+// 		submitReportApp(b);
+// 	});
+// 	//[DATABASE] Function for click on Navbar Elements
+// 	function submitnav(name) {
+// 		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/'+name+"-click");
+// 		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/clientTime');
+// 		ref2.push().set(clientTime);
+// 		ref.transaction(function(currentClicks) {
+// 		  return (currentClicks || 0) + 1;
+// 		});      
+// 	}
+// 	//[DATABASE] Listening for Click on Home Navbar
+// 	socket.on('navbar-click/home-click', function(data) {
+// 		data = submitnav('home');
+// 		console.log('navbar-click/home-click ADDED');
+// 	})
+// 	//[DATABASE] Listening for Click on Apps Navbar
+// 	socket.on('navbar-click/apps-click', function(data) {
+// 		data = submitnav('apps');
+// 		console.log('navbar-click/apps-click ADDED');
+// 	})
+// 	//[DATABASE] Listening for Click on Sources Navbar
+// 	socket.on('navbar-click/stores-click', function(data) {
+// 		data = submitnav('stores');
+// 		console.log('navbar-click/stores-click ADDED');
+// 	})
+// 	//[DATABASE] Listening for Click on Updates Navbar
+// 	socket.on('navbar-click/updates-click', function(data) {
+// 		data = submitnav('updates');
+// 		console.log('navbar-click/updates-click ADDED');
+// 	})
+// 	//[DATABASE] Listening for Click on Search Navbar
+// 	socket.on('navbar-click/search-click', function(data) {
+// 		data = submitnav('search');
+// 		console.log('navbar-click/search-click ADDED');
+// 	})
+
+//     		console.log("User Logged In. (Verified Account)");
+// 			//Recieving total number of apps
+// 			socket.on('appData1', function(data) {
+// 				var ref = firebase.database().ref('appData');
+// 				ref.on('value', async function(snapshot) { 
+// 					data = await snapshot.numChildren();
+// 					totalNumApps = (data+1);
+// 					console.log("Total Apps (verified account): "+totalNumApps);
+// 					socket.emit('appData1', totalNumApps);
+
+// 					//Recieving request to load Popular Apps
+// 					async function requestPopularApps() {
+// 					var a = [];
+// 					var value;
+// 					for (var g = 0; g < totalNumApps; g++) {
+// 						a.push([g])
+// 					}
+// 					function running(num) {
+// 						var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+// 						source.on('value', function(snapshot) {
+// 							value = snapshot.val(); 
+// 							a[num].push(value) 
+// 							socket.emit('requestPopularApps1', a);
+// 						}); 
+// 					}
+// 					for (var i = 1; i < totalNumApps; i++) {
+// 						running(i)
+// 					}
+// 					}
+// 					requestPopularApps();
+
+// 					//Resetting the database
+// 					// await reset();
+
+// 				})
+// 			});	
+//     	} else if (user.emailVerified == 0) {
+//        		console.log("User Logged In. (Not Verified Account)");
+// 	    	//Recieving total number of apps
+// 			socket.on('appData2', function(data) {
+// 				var ref = firebase.database().ref('appData');
+// 				ref.on('value', async function(snapshot) { 
+// 					data = await snapshot.numChildren();
+// 					totalNumApps = ((data+1)/2);
+// 					console.log("Total Apps (!verified account): "+totalNumApps);
+// 					socket.emit('appData2', totalNumApps);
+
+// 					//Recieving request to load Popular Apps
+// 					async function requestPopularApps() {
+// 					var a = [];
+// 					var value;
+// 					for (var g = 0; g < totalNumApps; g++) {
+// 						a.push([g])
+// 					}
+// 					function running(num) {
+// 						var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+// 						source.on('value', function(snapshot) {
+// 							value = snapshot.val(); 
+// 							a[num].push(value) 
+// 							socket.emit('requestPopularApps2', a);
+// 						}); 
+// 					}
+// 					for (var i = 1; i < totalNumApps; i++) {
+// 						running(i)
+// 					}
+// 					}
+// 					requestPopularApps();
+
+// 					//Resetting the database
+// 					// await reset();
+
+// 				})
+// 			});		
+// 			//Verify Email
+//     		socket.on('verifyemail', function(data) { var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); socket.emit('verificationerror', error);}); });	 
+//     	} 
+//     } else {
+//        		console.log("User Logged In. (No Account)");
+// 	    	//Recieving total number of apps
+// 		socket.on('appData3', function(data) {
+// 			var ref = firebase.database().ref('appData');
+// 			ref.on('value', async function(snapshot) { 
+// 				data = await snapshot.numChildren();
+// 				totalNumApps = ((data+1)/2);
+// 				console.log("Total Apps (no account): "+totalNumApps);
+// 				socket.emit('appData3', totalNumApps);
+
+// 				//Recieving request to load Popular Apps
+// 				async function requestPopularApps() {
+// 				var a = [];
+// 				var value;
+// 				for (var g = 0; g < totalNumApps; g++) {
+// 					a.push([g])
+// 				}
+// 				function running(num) {
+// 					var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+// 					source.on('value', function(snapshot) {
+// 						value = snapshot.val(); 
+// 						a[num].push(value) 
+// 						socket.emit('requestPopularApps3', a);
+// 					}); 
+// 				}
+// 				for (var i = 1; i < totalNumApps; i++) {
+// 					running(i)
+// 				}
+// 				}
+// 				requestPopularApps();
+
+// 				//Resetting the database
+// 				// await reset();
+
+// 			})
+// 		});	
+
+
+//     	}
+// 	return socket.emit('checkuserstat', user);
+// })
+
 auth.onAuthStateChanged(user => {
-    if (user) {
-    	//Sign out
-		if (user.emailVerified == 1) {
-       		user.favlist = [];
-        	socket.on('signoutfunc', function(data) { auth.signOut().then(() => { console.log("User signed out."); socket.emit('signoutfunc', 'value'); user.favlist = []; }); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime);	 });	 
-	 		var email = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-email');
+var ref = firebase.database().ref('appData');
+	if (user) {
+        if (user.emailVerified == 1) {
+        	if (user.email == globemail) {
+        		var adminData = 
+        		['<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+user.email+'. <br> Email Verification: '+user.emailVerified+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br>                                                       <div class="content-block-title"><h1>Update Services</h1></div>    <div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">ALL</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="source-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="source-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="source-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div><div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">IGNITION</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="ignition-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="ignition-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="ignition-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">TOPSTORE</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="topstore-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="topstore-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="topstore-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">APPVALLEY</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="appvalley-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="appvalley-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="appvalley-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">TWEAKBOX</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="tweakbox-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="tweakbox-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="tweakbox-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">IOSNINJA</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="iosninja-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="iosninja-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="iosninja-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">COCONUTX</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="coconutx-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="coconutx-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="coconutx-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">IOSGODS</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="iosgods-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="iosgods-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="iosgods-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">FLEKSTORE</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="flekstore-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="flekstore-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="flekstore-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">EMUS4U</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="emus4u-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="emus4u-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="emus4u-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">IOSEMUS</div></div></a><div class="accordion-item-content"><div class="block"><div class="card-header"><font color="#00ff00">Signed</font><a class="button button-fill button-round" id="iosemus-signed-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#ff0000">Revoked</font><a class="button button-fill button-round" id="iosemus-revoked-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> <div class="card-header"><font color="#808080">Unknown</font><a class="button button-fill button-round" id="iosemus-unknown-click" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">UPDATE</a></div> </div></div></div></div></div></div>                                                                           <div class="content-block-title"><h1 class="text color-text-flow"> ADD APP TO DATABASE </h1></div><div class="list-block inset" style="margin-top: -3px"><ul><!-- Text inputs --><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Name</div><div class="item-input"><input id="addapp-name" type="email" placeholder="Enter Name"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Image</div><div class="item-input"><input id="addapp-image" type="email" placeholder="Enter Image"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Size</div><div class="item-input"><input id="addapp-size" type="email" placeholder="Enter Size"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Version</div><div class="item-input"><input id="addapp-version" type="email" placeholder="Enter Version"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Category</div><div class="item-input"><input id="addapp-category" type="email" placeholder="Enter Category"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Description</div><div class="item-input"><input id="addapp-description" type="email" placeholder="Enter Developer"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">App Developer</div><div class="item-input"><input id="addapp-developer" type="email" placeholder="Enter Developer"></div></div></div></li></ul></div> <div class="list-block inset" style="margin-top: -3px"><ul><!-- Text inputs --><li><div class="item-content"><div class="item-inner"><div class="item-title label">Ignition Source</div><div class="item-input"><input id="addapp-ignition" type="email" placeholder="Enter Ignition Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">TopStore Source</div><div class="item-input"><input id="addapp-topstore" type="email" placeholder="Enter TopStore Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">AppValley Source</div><div class="item-input"><input id="addapp-appvalley" type="email" placeholder="Enter AppValley Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">TweakBox Source</div><div class="item-input"><input id="addapp-tweakbox" type="email" placeholder="Enter TweakBox Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">IOSNinja Source</div><div class="item-input"><input id="addapp-iosninja" type="email" placeholder="Enter IOSNinja Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">CoconutX Source</div><div class="item-input"><input id="addapp-coconutx" type="email" placeholder="Enter CoconutX Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">IOSGods Source</div><div class="item-input"><input id="addapp-iosgods" type="email" placeholder="Enter IOSGods Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">FlekStore Source</div><div class="item-input"><input id="addapp-flekstore" type="email" placeholder="Enter FlekStore Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">Emus4u Source</div><div class="item-input"><input id="addapp-emus4u" type="email" placeholder="Enter Emus4u Source"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">IOSEmus Source</div><div class="item-input"><input id="addapp-iosemus" type="email" placeholder="Enter IOSEmus Source"></div></div></div></li></ul></div> <a href="#" class="tab-link"><i id="addapp-submit" class="icon button button-fill button-big" style="margin-top: 0px; width: 100%;">SUBMIT</i></a><br><br>                                                                                                         <div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">REMOVE USERS</div></div></a><div class="accordion-item-content"><form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;"><div class="searchbar-input"><input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a></div><a href="#" class="searchbar-cancel">Cancel</a></form><div class="searchbar-overlay"></div><div class="content-block searchbar-not-found"><div class="content-block-inner">Nothing found</div></div><div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn"><ul><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="block"><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li></div>                         </div></div>                         </ul>       </div></div>  </div></div>'
+            
+        		];
+        		socket.emit('adminAccount', globemail);
+        		socket.emit('adminData', adminData);
+        	}
+
+
+
+	        console.log("user logged in (verified account)");
+	        socket.on('signoutfunc', async function(data) { auth.signOut(); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime); activeUser.remove(); });	
+
+       		var email = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-email');
 	 		email.set(user.email);
 	 		var uid = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
 	 		uid.set(user.uid);
@@ -171,565 +854,379 @@ auth.onAuthStateChanged(user => {
 			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientTime');
 			sourceAddress.push().set(clientIp);
 		    sourceTime.push().set(clientTime);	
+		    socket.emit('clock-time', clientTime);
+			var activeUser = firebase.database().ref('storeData/activeUsers/'+user.uid);
+			activeUser.push().set(user.email);
 
-		    socket.on('disconnect', function () {
-      			console.log(socket.id+": Disconnected.");
-	      			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientDisconnect');
-			    	sourceTime.push().set(clientTime);	
-  			});
+	        //Loading Apps and Popular Apps
+			ref.on('value', async function(snapshot) { 
+				data = await snapshot.numChildren();
+				totalNumApps = (data+1);
+				console.log("Total Apps (verified account): "+totalNumApps);
+				socket.emit('appDataAccount', totalNumApps);
 
-
-			//Automatically running
-   	        var favappnum; //Used to activate other functions after obtaining numcount
-			var numcount; //Global variable used to count the number of apps inside favlist
-			var totalfavcounter = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist');
-			totalfavcounter.on('value', async function(snapshot) {
-				numcount = await snapshot.numChildren(); //Gets the total number of apps
-				await console.log("Total apps in favlist: "+numcount); //Prints it to the server console
-				await socket.emit('numcount', numcount); //Sends request to numcount on the client
-				favappnum = 1; //Activates other functions to work
-			});	
-
-
-			//Automatically running
-			totalfavcounter.on('value', async function(snapshot) { //Listening for the total value inside 
-			numcount = await snapshot.numChildren();
-			await socket.emit('numcount', numcount);
-	   			for (var i = 0; i < numcount; i++) {
-	   				var favlist = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
-						favlist.on("value", async function(snapshot) { 
-							await user.favlist.push(snapshot.val());	
-							await socket.emit('favlist', user.favlist);	
-							if (i == numcount) {
-								await console.log(user.favlist);		
-							}
-						}) 
-			}
-			});		
-
-
-			socket.on('removefavapp', async function(data) {
-			if (favappnum == 1) {
-
-			totalfavcounter.on('value', function(snapshot) {
-				numcount = snapshot.numChildren();
-			});	
-
-				var ref2 = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/removed/app'+user.favlist[(numcount-1)]+'/clientTime');
-				ref2.push().set(clientTime);
-             	await user.favlist.pop();
-                await console.log(user.favlist);
-                await socket.emit('removefavapp', 'value');
-
-                var source = await firebase.database().ref().child('storeData/userProperties/'+user.uid+'/favlist/app'+(numcount-1));
-                await source.remove();
-
-			}
-			});	
-
-			socket.on('favlistadding', function(data) {
-				var favlist =  firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+numcount);
-				var counter = 1;
-				var number;
-				user.favlist = [];
-				if (favappnum == 1) {
-					if (numcount < 10) {
-						for (var i = 0; i < numcount; i++) {
-							var favlistnum = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
-							favlistnum.on("value", function(snapshot) {
-								number = snapshot.val();
-								if (number == data) {
-									if (counter == 1) {
-										counter = 0;
-									}
-								}
-							})
-						}
-					if (counter == 1) {
-						favlist.set(data);
-						var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/added/app'+data+'/clientTime');
-						ref2.push().set(clientTime);
-					} 
-					} 
+				//Recieving request to load Popular Apps
+				async function requestPopularApps() { var a = []; var value; for (var g = 0; g < totalNumApps; g++) { a.push([g]) } function running(num) { var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total'); source.on('value', function(snapshot) {
+						value = snapshot.val(); 
+						a[num].push(value) 
+						socket.emit('requestPopularAppsAccount', a);
+					}); 
 				}
-			});	
+				for (var i = 1; i < totalNumApps; i++) {
+					running(i)
+				}
+				}
+				requestPopularApps(); })
 
-	//[DATABASE] Adding to App Click when clicking on Sources (Singular Source Click)
-	function clicking(name, source) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/app'+name+'-'+source+'-click');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/clientTime');
-		ref2.push().set(clientTime);	
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});
-	}
-	//[DATABASE] Adding to Total App Click when clicking on Sources (Total Source Clicks)
-	function submitAppSourceTotal(num) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/clientTime');
-		ref2.push().set(clientTime);	
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE] Adding to Total App Click when clicking on Homescreen
-	function submitgetAppClick(num) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/app'+a+'-total');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/clientTime');
-		ref2.push().set(clientTime);	
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
+			//Getting total favlist children
+			var favref = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist');
+			favref.on('value', async function(snapshot) { 
+				numcount = await snapshot.numChildren();	
 
-	socket.on('storeData/userProperties/'+user.uid+'/Number', function(data) {
-		a=data;
-		data = submitgetAppClick(a);
-		console.log('storeData/appGet/app-get-home/app'+a+'/app'+a+'-total ADDED');
-	});
+				user.favlist = [];
+		   			for (var i = 0; i < numcount; i++) {
+		   				var favlist = await firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+i);
+							favlist.on("value", async function(snapshot) { 
+								await user.favlist.push(snapshot.val());	
+								if (i == numcount) {
+									await console.log(user.favlist);		
+									socket.emit('favlist1', user.favlist);	
+								}
+							}) 
+					} })
+			socket.on('favlist4', async function(data) {
+			    var source = await firebase.database().ref().child('storeData/userProperties/'+user.uid+'/favlist/app'+(numcount-1));
+			    source.remove(); });	
+			socket.on('favlist5', async function(data) {
+	            var ref1 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist/app'+numcount);
+	            ref1.set(data);
+	            var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/favlist-activity/added/app'+data+'/clientTime');
+	            ref2.push().set(clientTime); });
 
-	socket.on('ignition-num', function(data) {
-		var b = data;
-		data = clicking(b, label[0]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[0]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('topstore-num', function(data) {
-		var b = data;
-		data = clicking(b, label[1]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[1]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('appvalley-num', function(data) {
-		var b = data;
-		data = clicking(b, label[2]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[2]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('tweakbox-num', function(data) {
-		var b = data;
-		data = clicking(b, label[3]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[3]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('iosninja-num', function(data) {
-		var b = data;
-		data = clicking(b, label[4]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[4]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('coconutx-num', function(data) {
-		var b = data;
-		data = clicking(b, label[5]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[5]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('iosgods-num', function(data) {
-		var b = data;
-		data = clicking(b, label[6]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[6]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('flekstore-num', function(data) {
-		var b = data;
-		data = clicking(b, label[7]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[7]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('emus4u-num', function(data) {
-		var b = data;
-		data = clicking(b, label[8]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[8]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-	socket.on('iosemus-num', function(data) {
-		var b = data;
-		data = clicking(b, label[9]);
-		console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[9]+' ADDED');
-		submitAppSourceTotal(b)
-		console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
-	});
-
-	//[DATABASE] Adding to Total Click on specific Category OPEN button
-	function submitOpenCategory(a) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/'+a+'-open-clicker');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/clientTime');
-		ref2.push().set(clientTime);	
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE] Adding to Total Click on specific Source OPEN button
-	function submitOpenSource(a) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/'+a+'-open-clicker');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/clientTime');
-		ref2.push().set(clientTime);
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE] Listening to if clicked on Jailbreak open category on apps page
-	socket.on('storeData/userProperties/'+user.uid+'/category-open/Jailbreak-open', function(data) {
-		console.log('storeData/category-open/Jailbreak-open ADDED');
-		data = submitOpenCategory('Jailbreak');
-	});		
-	//[DATABASE] Listening to if clicked on Tweaked open category on apps page
-	socket.on('storeData/userProperties/'+user.uid+'/category-open/Tweaked-open', function(data) {
-		console.log('storeData/category-open/Tweaked-open ADDED');
-		data = submitOpenCategory('Tweaked');
-	});	
-	//[DATABASE] Listening to if clicked on Entertainment open category on apps page
-	socket.on('storeData/userProperties/'+user.uid+'/category-open/Entertainment-open', function(data) {
-		console.log('storeData/category-open/Entertainment-open ADDED');
-		data = submitOpenCategory('Entertainment');
-	});			
-	//[DATABASE] Listening to if clicked on Emulators open category on apps page
-	socket.on('storeData/userProperties/'+user.uid+'/category-open/Emulators-open', function(data) {
-		console.log('storeData/category-open/Emulators-open ADDED');
-		data = submitOpenCategory('Emulators');
-	});		
-	//[DATABASE] Listening to if clicked on Games open category on apps page
-	socket.on('storeData/userProperties/'+user.uid+'/category-open/Games-open', function(data) {
-		console.log('storeData/category-open/Games-open ADDED');
-		data = submitOpenCategory('Games');
-	});			
-
-	
-	//[DATABASE] Listening to if clicked on Ignition open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/Ignition-open', function(data) {
-		console.log('storeData/source-open/Ignition-open ADDED');
-		data = submitOpenSource('Ignition');
-	});		
-	//[DATABASE] Listening to if clicked on TopStore open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/TopStore-open', function(data) {
-		console.log('storeData/source-open/TopStore-open ADDED');
-		data = submitOpenSource('TopStore');
-	});		
-	//[DATABASE] Listening to if clicked on AppValley open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/AppValley-open', function(data) {
-		console.log('storeData/source-open/AppValley-open ADDED');
-		data = submitOpenSource('AppValley');
-	});		
-	//[DATABASE] Listening to if clicked on Tweakbox open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/Tweakbox-open', function(data) {
-		console.log('storeData/source-open/Tweakbox-open ADDED');
-		data = submitOpenSource('Tweakbox');
-	});		
-	//[DATABASE] Listening to if clicked on IOSNinja open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/IOSNinja-open', function(data) {
-		console.log('storeData/source-open/IOSNinja-open ADDED');
-		data = submitOpenSource('IOSNinja');
-	});		
-	//[DATABASE] Listening to if clicked on CoconutX open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/CoconutX-open', function(data) {
-		console.log('storeData/source-open/CoconutX-open ADDED');
-		data = submitOpenSource('CoconutX');
-	});		
-	//[DATABASE] Listening to if clicked on iOSGods open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/iOSGods-open', function(data) {
-		console.log('storeData/source-open/iOSGods-open ADDED');
-		data = submitOpenSource('iOSGods');
-	});		
-	//[DATABASE] Listening to if clicked on Flekstore open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/Flekstore-open', function(data) {
-		console.log('storeData/source-open/Flekstore-open ADDED');
-		data = submitOpenSource('Flekstore');
-	});		
-	//[DATABASE] Listening to if clicked on Emus4 open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus4-open', function(data) {
-		console.log('storeData/source-open/Emus4-open ADDED');
-		data = submitOpenSource('Emus4');
-	});		
-	//[DATABASE] Listening to if clicked on Emus open on source page
-	socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus-open', function(data) {
-		console.log('storeData/source-open/Emus-open ADDED');
-		data = submitOpenSource('Emus');
-	});	
-//[DATABASE] Function that adds refresh counter
-function countRefresh() {
-	var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/refresh-counter');
-	var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/clientTime');
-	ref2.push().set(clientTime);
-	ref.transaction(function(currentClicks) {
-	  return (currentClicks || 0) + 1;
-	});      
-}
-//[DATABASE] Function that adds view counter
-function countView() {
-	var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/view-counter/');
-	var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/clientTime');
-
-	ref2.push().set(clientTime);
-	ref.transaction(function(currentClicks) {
-	  return (currentClicks || 0) + 1;
-	});      
-}
-//[DATABASE] Listening for refresh click
-	socket.on('storeData/userProperties/'+user.uid+'/refresh-counter', function(data) {
-		countRefresh();
-	})
-//[DATABASE] Listening for view click
-socket.on('storeData/userProperties/'+user.uid+'/view-counter', function(data) {
-	if (viewcounter2 == 0) {
-		countView();
-		viewcounter2 = 1;
-	}
-})
-//[DATABASE] Function for click on Twitter Name
-	function submitTwitter(name) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/twitter-'+name+'-click');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/clientTime');
-
-		ref2.push().set(clientTime);
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-
-	//[DATABASE] Listening for Click on Bionik Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-bionik-click', function(data) {
-		data = submitTwitter('bionik');
-		console.log('home-data/twitter/twitter-bionik-click ADDED');
-	})
-	//[DATABASE] Listening for Click on DJFeelOfficial Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-djfeelofficial-click', function(data) {
-		data = submitTwitter('djfeelofficial');
-		console.log('home-data/twitter/twitter-djfeelofficial-click ADDED');
-	})
-	//[DATABASE] Function for click on ToS
-	function submitLegal() {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/clientTime');
-		ref2.push().set(clientTime);	
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE] Listening for Click on ToS Page
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click', function(data) {
-		data = submitLegal();
-		console.log('home-data/twitter/legal-click ADDED');
-	})
-	//[DATABASE] Function for click on Request on Home
-	function submitRequest() {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/request-click');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/clientTime');
-		ref2.push().set(clientTime);	
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE] Listening for Click on Request on Home
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/submission/request-click', function(data) {
-		data = submitRequest();
-		console.log('home-data/submission/request-click ADDED');
-	})
-	//[DATABASE] Function for click on Twitter Sources
-	function submitHomeSource(name) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/'+name+'-twitter-click');
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/clientTime');
-		ref2.push().set(clientTime);
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE]Listening for Click on Ignition Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/ignition-twitter-click', function(data) {
-		data = submitHomeSource('Ignition');
-		console.log('home-data/source-list/ignition-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on TopStore Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/topstore-twitter-click', function(data) {
-		data = submitHomeSource('TopStore');
-		console.log('home-data/source-list/topstore-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on AppValley Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/appvalley-twitter-click', function(data) {
-		data = submitHomeSource('AppValley');
-		console.log('home-data/source-list/appvalley-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on Tweakbox Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/tweakbox-twitter-click', function(data) {
-		data = submitHomeSource('Tweakbox');
-		console.log('home-data/source-list/tweakbox-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on IOSNinja Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosninja-twitter-click', function(data) {
-		data = submitHomeSource('IOSNinja');
-		console.log('home-data/source-list/iosninja-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on CoconutX Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/coconutx-twitter-click', function(data) {
-		data = submitHomeSource('CoconutX');
-		socket.emit('home-data/source-list/coconutx-twitter-click', data);
-		console.log('home-data/source-list/coconutx-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on IOSGods Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosgods-twitter-click', function(data) {
-		data = submitHomeSource('IOSGods');
-		console.log('home-data/source-list/iosgods-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on FlekStore Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/flekstore-twitter-click', function(data) {
-		data = submitHomeSource('FlekStore');
-		console.log('home-data/source-list/flekstore-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on Emus4u Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/emus4u-twitter-click', function(data) {
-		data = submitHomeSource('Emus4u');
-		console.log('home-data/source-list/emus4u-twitter-click ADDED');
-	})
-	//[DATABASE]Listening for Click on IOSEmus Twitter
-	socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosemus-twitter-click', function(data) {
-		data = submitHomeSource('IOSEmus');
-		console.log('home-data/source-list/iosemus-twitter-click ADDED');
-	})
-	function submitReportApp(a) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/app'+a+"-report");
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/clientTime');
-		ref2.push().set(clientTime);
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});   
-	}
-		socket.on('report-num', function(data) {
-		var b = data;
-		console.log('storeData/userProperties/'+user.uid+'/reportApp/app'+b+"-report");
-		submitReportApp(b);
-	});
-	//[DATABASE] Function for click on Navbar Elements
-	function submitnav(name) {
-		var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/'+name+"-click");
-		var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/clientTime');
-		ref2.push().set(clientTime);
-		ref.transaction(function(currentClicks) {
-		  return (currentClicks || 0) + 1;
-		});      
-	}
-	//[DATABASE] Listening for Click on Home Navbar
-	socket.on('navbar-click/home-click', function(data) {
-		data = submitnav('home');
-		console.log('navbar-click/home-click ADDED');
-	})
-	//[DATABASE] Listening for Click on Apps Navbar
-	socket.on('navbar-click/apps-click', function(data) {
-		data = submitnav('apps');
-		console.log('navbar-click/apps-click ADDED');
-	})
-	//[DATABASE] Listening for Click on Sources Navbar
-	socket.on('navbar-click/stores-click', function(data) {
-		data = submitnav('stores');
-		console.log('navbar-click/stores-click ADDED');
-	})
-	//[DATABASE] Listening for Click on Updates Navbar
-	socket.on('navbar-click/updates-click', function(data) {
-		data = submitnav('updates');
-		console.log('navbar-click/updates-click ADDED');
-	})
-	//[DATABASE] Listening for Click on Search Navbar
-	socket.on('navbar-click/search-click', function(data) {
-		data = submitnav('search');
-		console.log('navbar-click/search-click ADDED');
-	})
-
-    		console.log("User Logged In. (Verified Account)");
-			//Recieving total number of apps
-			socket.on('appData1', function(data) {
-				var ref = firebase.database().ref('appData');
-				ref.on('value', async function(snapshot) { 
-					data = await snapshot.numChildren();
-					totalNumApps = (data+1);
-					console.log("Total Apps (verified account): "+totalNumApps);
-					socket.emit('appData1', totalNumApps);
-
-					//Recieving request to load Popular Apps
-					async function requestPopularApps() {
-					var a = [];
-					var value;
-					for (var g = 0; g < totalNumApps; g++) {
-						a.push([g])
-					}
-					function running(num) {
-						var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
-
-						source.on('value', function(snapshot) {
-							value = snapshot.val(); 
-							a[num].push(value) 
-							socket.emit('requestPopularApps1', a);
-						}); 
-					}
-					for (var i = 1; i < totalNumApps; i++) {
-						running(i)
-					}
-					}
-					requestPopularApps();
-
-					//Resetting the database
-					// await reset();
-
-				})
-			});	
-			return socket.emit('checkuserstat', user);
-    	} else if (user.emailVerified == 0) {
-       		console.log("User Logged In. (Not Verified Account)");
-	    	//Recieving total number of apps
-			socket.on('appData2', function(data) {
-				var ref = firebase.database().ref('appData');
-				ref.on('value', async function(snapshot) { 
-					data = await snapshot.numChildren();
-					totalNumApps = ((data+1)/2);
-					console.log("Total Apps (!verified account): "+totalNumApps);
-					socket.emit('appData2', totalNumApps);
-
-					//Recieving request to load Popular Apps
-					async function requestPopularApps() {
-					var a = [];
-					var value;
-					for (var g = 0; g < totalNumApps; g++) {
-						a.push([g])
-					}
-					function running(num) {
-						var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
-
-						source.on('value', function(snapshot) {
-							value = snapshot.val(); 
-							a[num].push(value) 
-							socket.emit('requestPopularApps2', a);
-						}); 
-					}
-					for (var i = 1; i < totalNumApps; i++) {
-						running(i)
-					}
-					}
-					requestPopularApps();
-
-					//Resetting the database
-					// await reset();
-
-				})
+            //Obtaining Data
+		    socket.on('disconnect', function () { console.log(socket.id+": Disconnected."); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientDisconnect'); sourceTime.push().set(clientTime); activeUser.remove(); });
+			function clicking(name, source) { var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/app'+name+'-'+source+'-click'); var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-click/app'+name+'/app'+name+'-'+source+'/clientTime'); ref2.push().set(clientTime); ref.transaction(function(currentClicks) { return (currentClicks || 0) + 1; }); }
+			function submitAppSourceTotal(num) { var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/app'+num+'-total'); var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-source-get-total/app'+num+'/clientTime'); ref2.push().set(clientTime); ref.transaction(function(currentClicks) { return (currentClicks || 0) + 1; }); }
+			function submitgetAppClick(num) { var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/app'+a+'-total'); var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/appGet/app-get-home/app'+a+'/clientTime'); ref2.push().set(clientTime); ref.transaction(function(currentClicks) { return (currentClicks || 0) + 1; }); }
+			socket.on('storeData/userProperties/'+user.uid+'/Number', function(data) {
+			a=data;
+			data = submitgetAppClick(a);
+			console.log('storeData/appGet/app-get-home/app'+a+'/app'+a+'-total ADDED');
+			});
+			socket.on('ignition-num', function(data) {
+			var b = data;
+			data = clicking(b, label[0]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[0]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('topstore-num', function(data) {
+			var b = data;
+			data = clicking(b, label[1]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[1]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('appvalley-num', function(data) {
+			var b = data;
+			data = clicking(b, label[2]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[2]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('tweakbox-num', function(data) {
+			var b = data;
+			data = clicking(b, label[3]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[3]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('iosninja-num', function(data) {
+			var b = data;
+			data = clicking(b, label[4]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[4]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('coconutx-num', function(data) {
+			var b = data;
+			data = clicking(b, label[5]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[5]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('iosgods-num', function(data) {
+			var b = data;
+			data = clicking(b, label[6]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[6]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('flekstore-num', function(data) {
+			var b = data;
+			data = clicking(b, label[7]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[7]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('emus4u-num', function(data) {
+			var b = data;
+			data = clicking(b, label[8]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[8]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			socket.on('iosemus-num', function(data) {
+			var b = data;
+			data = clicking(b, label[9]);
+			console.log('storeData/userProperties/'+user.uid+'/app-source-click/app'+b+'/app'+b+'-'+label[9]+' ADDED');
+			submitAppSourceTotal(b)
+			console.log('storeData/userProperties/'+user.uid+'/app-source-get-total/app'+b+'-total ADDED');
+			});
+			function submitOpenCategory(a) {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/'+a+'-open-clicker');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/category-open/'+a+'-open/clientTime');
+			ref2.push().set(clientTime);	
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			function submitOpenSource(a) {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/'+a+'-open-clicker');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/source-open/'+a+'-open/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('storeData/userProperties/'+user.uid+'/category-open/Jailbreak-open', function(data) {
+			console.log('storeData/category-open/Jailbreak-open ADDED');
+			data = submitOpenCategory('Jailbreak');
 			});		
-			//Verify Email
+			socket.on('storeData/userProperties/'+user.uid+'/category-open/Tweaked-open', function(data) {
+			console.log('storeData/category-open/Tweaked-open ADDED');
+			data = submitOpenCategory('Tweaked');
+			});	
+			socket.on('storeData/userProperties/'+user.uid+'/category-open/Entertainment-open', function(data) {
+			console.log('storeData/category-open/Entertainment-open ADDED');
+			data = submitOpenCategory('Entertainment');
+			});			
+			socket.on('storeData/userProperties/'+user.uid+'/category-open/Emulators-open', function(data) {
+			console.log('storeData/category-open/Emulators-open ADDED');
+			data = submitOpenCategory('Emulators');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/category-open/Games-open', function(data) {
+			console.log('storeData/category-open/Games-open ADDED');
+			data = submitOpenCategory('Games');
+			});			
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/Ignition-open', function(data) {
+			console.log('storeData/source-open/Ignition-open ADDED');
+			data = submitOpenSource('Ignition');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/TopStore-open', function(data) {
+			console.log('storeData/source-open/TopStore-open ADDED');
+			data = submitOpenSource('TopStore');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/AppValley-open', function(data) {
+			console.log('storeData/source-open/AppValley-open ADDED');
+			data = submitOpenSource('AppValley');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/Tweakbox-open', function(data) {
+			console.log('storeData/source-open/Tweakbox-open ADDED');
+			data = submitOpenSource('Tweakbox');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/IOSNinja-open', function(data) {
+			console.log('storeData/source-open/IOSNinja-open ADDED');
+			data = submitOpenSource('IOSNinja');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/CoconutX-open', function(data) {
+			console.log('storeData/source-open/CoconutX-open ADDED');
+			data = submitOpenSource('CoconutX');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/iOSGods-open', function(data) {
+			console.log('storeData/source-open/iOSGods-open ADDED');
+			data = submitOpenSource('iOSGods');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/Flekstore-open', function(data) {
+			console.log('storeData/source-open/Flekstore-open ADDED');
+			data = submitOpenSource('Flekstore');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus4-open', function(data) {
+			console.log('storeData/source-open/Emus4-open ADDED');
+			data = submitOpenSource('Emus4');
+			});		
+			socket.on('storeData/userProperties/'+user.uid+'/source-open/Emus-open', function(data) {
+			console.log('storeData/source-open/Emus-open ADDED');
+			data = submitOpenSource('Emus');
+			});	
+			function countRefresh() {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/refresh-counter');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/refresh/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			function countView() {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/view-counter/');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/view/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('storeData/userProperties/'+user.uid+'/refresh-counter', function(data) {
+			countRefresh();
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/view-counter', function(data) {
+			if (viewcounter2 == 0) {
+			countView();
+			viewcounter2 = 1;
+			}
+			})
+			function submitTwitter(name) {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/twitter-'+name+'-click');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-'+name+'/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-bionik-click', function(data) {
+			data = submitTwitter('bionik');
+			console.log('home-data/twitter/twitter-bionik-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/twitter/twitter-djfeelofficial-click', function(data) {
+			data = submitTwitter('djfeelofficial');
+			console.log('home-data/twitter/twitter-djfeelofficial-click ADDED');
+			})
+			function submitLegal() {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/legal/clientTime');
+			ref2.push().set(clientTime);	
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/legal/legal-click', function(data) {
+			data = submitLegal();
+			console.log('home-data/twitter/legal-click ADDED');
+			})
+			function submitRequest() {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/request-click');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/submission/request/clientTime');
+			ref2.push().set(clientTime);	
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/submission/request-click', function(data) {
+			data = submitRequest();
+			console.log('home-data/submission/request-click ADDED');
+			})
+			function submitHomeSource(name) {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/'+name+'-twitter-click');
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/home-data/source-list/'+name+'-list/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/ignition-twitter-click', function(data) {
+			data = submitHomeSource('Ignition');
+			console.log('home-data/source-list/ignition-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/topstore-twitter-click', function(data) {
+			data = submitHomeSource('TopStore');
+			console.log('home-data/source-list/topstore-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/appvalley-twitter-click', function(data) {
+			data = submitHomeSource('AppValley');
+			console.log('home-data/source-list/appvalley-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/tweakbox-twitter-click', function(data) {
+			data = submitHomeSource('Tweakbox');
+			console.log('home-data/source-list/tweakbox-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosninja-twitter-click', function(data) {
+			data = submitHomeSource('IOSNinja');
+			console.log('home-data/source-list/iosninja-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/coconutx-twitter-click', function(data) {
+			data = submitHomeSource('CoconutX');
+			socket.emit('home-data/source-list/coconutx-twitter-click', data);
+			console.log('home-data/source-list/coconutx-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosgods-twitter-click', function(data) {
+			data = submitHomeSource('IOSGods');
+			console.log('home-data/source-list/iosgods-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/flekstore-twitter-click', function(data) {
+			data = submitHomeSource('FlekStore');
+			console.log('home-data/source-list/flekstore-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/emus4u-twitter-click', function(data) {
+			data = submitHomeSource('Emus4u');
+			console.log('home-data/source-list/emus4u-twitter-click ADDED');
+			})
+			socket.on('storeData/userProperties/'+user.uid+'/home-data/source-list/iosemus-twitter-click', function(data) {
+			data = submitHomeSource('IOSEmus');
+			console.log('home-data/source-list/iosemus-twitter-click ADDED');
+			})
+			function submitReportApp(a) {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/app'+a+"-report");
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/reportApp/app'+a+'/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			  return (currentClicks || 0) + 1;
+			});   
+			}
+			socket.on('report-num', function(data) {
+			var b = data;
+			console.log('storeData/userProperties/'+user.uid+'/reportApp/app'+b+"-report");
+			submitReportApp(b);
+			});
+			function submitnav(name) {
+			var ref = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/'+name+"-click");
+			var ref2 = firebase.database().ref('storeData/userProperties/'+user.uid+'/navbar-click/'+name+'/clientTime');
+			ref2.push().set(clientTime);
+			ref.transaction(function(currentClicks) {
+			return (currentClicks || 0) + 1;
+			});      
+			}
+			socket.on('navbar-click/home-click', function(data) {
+			data = submitnav('home');
+			console.log('navbar-click/home-click ADDED');
+			})
+			socket.on('navbar-click/apps-click', function(data) {
+			data = submitnav('apps');
+			console.log('navbar-click/apps-click ADDED');
+			})
+			socket.on('navbar-click/stores-click', function(data) {
+			data = submitnav('stores');
+			console.log('navbar-click/stores-click ADDED');
+			})
+			socket.on('navbar-click/updates-click', function(data) {
+			data = submitnav('updates');
+			console.log('navbar-click/updates-click ADDED');
+			})
+			socket.on('navbar-click/search-click', function(data) {
+			data = submitnav('search');
+			console.log('navbar-click/search-click ADDED');
+			})
+
+        } else if (user.emailVerified == 0) {
+	        console.log("user logged in (!verified account)");
+	        socket.on('signoutfunc', async function(data) { auth.signOut() });	
     		socket.on('verifyemail', function(data) { var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); socket.emit('verificationerror', error);}); });	 
-    	}
-    } else {
-        console.log("user logged out.");
-		//Recieving total number of apps
-		socket.on('appData3', function(data) {
-			var ref = firebase.database().ref('appData');
+ 	
+
+	        //Loading Apps and Popular Apps
 			ref.on('value', async function(snapshot) { 
 				data = await snapshot.numChildren();
 				totalNumApps = ((data+1)/2);
-				console.log("Total Apps (no account): "+totalNumApps);
-				socket.emit('appData3', totalNumApps);
+				console.log("Total Apps (!verified account): "+totalNumApps);
+				socket.emit('appDataNoAccount', totalNumApps);
 
 				//Recieving request to load Popular Apps
 				async function requestPopularApps() {
@@ -744,21 +1241,50 @@ socket.on('storeData/userProperties/'+user.uid+'/view-counter', function(data) {
 					source.on('value', function(snapshot) {
 						value = snapshot.val(); 
 						a[num].push(value) 
-						socket.emit('requestPopularApps3', a);
+						socket.emit('requestPopularAppsNoAccount', a);
 					}); 
 				}
 				for (var i = 1; i < totalNumApps; i++) {
 					running(i)
 				}
 				}
-				requestPopularApps();
+				requestPopularApps(); })
 
-				//Resetting the database
-				// await reset();
+        }
 
-			})
-		});	
-    }
+	} else {
+		console.log("user logged out");
+
+        //Loading Apps and Popular Apps
+		ref.on('value', async function(snapshot) { 
+			data = await snapshot.numChildren();
+			totalNumApps = ((data+1)/2);
+			console.log("Total Apps (no account): "+totalNumApps);
+			socket.emit('appDataNoAccount', totalNumApps);
+
+			//Recieving request to load Popular Apps
+			async function requestPopularApps() {
+			var a = [];
+			var value;
+			for (var g = 0; g < totalNumApps; g++) {
+				a.push([g])
+			}
+			function running(num) {
+				var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+				source.on('value', function(snapshot) {
+					value = snapshot.val(); 
+					a[num].push(value) 
+					socket.emit('requestPopularAppsNoAccount', a);
+				}); 
+			}
+			for (var i = 1; i < totalNumApps; i++) {
+				running(i)
+			}
+			}
+			requestPopularApps(); })
+
+	}
 return socket.emit('checkuserstat', user);
 })
 
@@ -766,7 +1292,57 @@ return socket.emit('checkuserstat', user);
 
 
 
+// console.log("User Logged In. (No Account)");
+	    	//Recieving total number of apps
+		// socket.on('appData3', function(data) {
+		// 	var ref = firebase.database().ref('appData');
+		// 	ref.on('value', async function(snapshot) { 
+		// 		data = await snapshot.numChildren();
+		// 		totalNumApps = ((data+1)/2);
+		// 		console.log("Total Apps (no account): "+totalNumApps);
+		// 		socket.emit('appData3', totalNumApps);
 
+		// 		//Recieving request to load Popular Apps
+		// 		async function requestPopularApps() {
+		// 		var a = [];
+		// 		var value;
+		// 		for (var g = 0; g < totalNumApps; g++) {
+		// 			a.push([g])
+		// 		}
+		// 		function running(num) {
+		// 			var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+		// 			source.on('value', function(snapshot) {
+		// 				value = snapshot.val(); 
+		// 				a[num].push(value) 
+		// 				socket.emit('requestPopularApps3', a);
+		// 			}); 
+		// 		}
+		// 		for (var i = 1; i < totalNumApps; i++) {
+		// 			running(i)
+		// 		}
+		// 		}
+		// 		requestPopularApps();
+
+		// 		//Resetting the database
+		// 		// await reset();
+
+		// 	})
+		// });	
+
+
+//Submitting the 'SIGN IN' button in non-sign in
+socket.on('loginsignin', async function(data) {
+	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; }
+	var usercred = data; await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
+	if (a == 1) { socket.emit('signinuservalid', 'value'); }    
+}); 
+//Submitting the 'SIGN UP' button in non-sign in
+socket.on('signindata', async function(data) {
+	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('userinvalid', error); a = 0; }
+	var usercred = data; await auth.createUserWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
+	if (a == 1) { socket.emit('uservalid', 'value'); var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); }); }    
+}); 
 
 
 

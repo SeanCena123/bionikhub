@@ -43,6 +43,12 @@
         <div class="pages navbar-through">
             <div data-page="index-1" class="page">
                 <div class="page-content">
+
+                    <div class="content-block-title" style="margin-top: -10px; margin-left: 5px; font-size: 15px;">
+                        <h3 id="clock"></h3>
+                    </div>
+
+<!--                 <span id="clock" class="card-header"></span> -->
                     <div class="content-block-title">
                         <center>     
                             <p style="text-align:center;">
@@ -739,7 +745,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">Ignition</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-ignition">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-ignition">Locked</div>
                                         </div>
                                         </li>
                                         
@@ -751,7 +757,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">Top Store</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-topstore">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-topstore">Locked</div>
                                         </div>
                                         </li>
     
@@ -763,7 +769,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">Appvalley</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-appvalley">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-appvalley">Locked</div>
                                         </div>
                                         </li>
     
@@ -775,7 +781,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">Tweakbox</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-tweakbox">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-tweakbox">Locked</div>
                                         </div>
                                         </li>
     
@@ -787,7 +793,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">IOSNinja</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-iosninja">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-iosninja">Locked</div>
                                         </div>
                                         </li>
     
@@ -799,7 +805,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">CoconutX</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-coconutx">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-coconutx">Locked</div>
                                         </div>
                                         </li>
     
@@ -811,7 +817,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">IOSGods</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-iosgods">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-iosgods">Locked</div>
                                         </div>
                                         </li>
     
@@ -823,7 +829,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">FlekSt0re</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-flekstore">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-flekstore">Locked</div>
                                         </div>
                                         </li>
     
@@ -835,7 +841,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">Emus4u</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-emus4u">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-emus4u">Locked</div>
                                         </div>
                                         </li>
     
@@ -847,7 +853,7 @@
                                             <div class="item-title-row">
                                                 <div id="app1" class="item-title">IOSEmus</div>
                                             </div>
-                                            <div class="app-subtitle" id="status-iosemus">3rd Party Appstore</div>
+                                            <div class="app-subtitle" id="status-iosemus">Locked</div>
                                         </div>
                                         </li>
                                          
@@ -968,7 +974,7 @@
                                                                 <a  id="ignition-get" onclick="window.open('');" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
                                                             </div>
                                                         </div>
-                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                        <div class="app-subtitle" id="status-ignition-app">3rd Party Appstore</div>
                                                     </div>
                                                     </li>
     
@@ -998,7 +1004,7 @@
                                                                 <a id="top-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
                                                             </div>
                                                         </div>
-                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                        <div class="app-subtitle" id="status-topstore-app">3rd Party Appstore</div>
                                                     </div>
                                                     </li>
     
@@ -1028,7 +1034,7 @@
                                                                 <a id="valley-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
                                                             </div>
                                                         </div>
-                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                        <div class="app-subtitle" id="status-appvalley-app">3rd Party Appstore</div>
                                                     </div>
                                                     </li>
     
@@ -1058,7 +1064,7 @@
                                                                 <a id="box-get" onclick="window.open('')" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a>
                                                             </div>
                                                         </div>
-                                                        <div class="app-subtitle">3rd Party Appstore</div>
+                                                        <div class="app-subtitle" id="status-tweakbox-app">3rd Party Appstore</div>
                                                     </div>
                                                     </li>
     

@@ -43,13 +43,6 @@ var tweakboxopen = document.getElementById('tweakbox-open');
 // var flekstoreopen = document.getElementById('flekstore-open');
 // var emus4uopen = document.getElementById('emus4u-open');
 // var iosemusopen = document.getElementById('iosemus-open');
-var clockElement = document.getElementById("clock");
-
-socket.on('clock-time', function(data) {
-    var showdate1 = data.substr(0, 3); //Shows DAY
-    var showdate2 = data.substr(3, 12); //Shows MONTH/YEAR
-    clockElement.innerHTML = ''+showdate1+''+showdate2;
-})
 
 function refreshPage(){
     window.location.reload();

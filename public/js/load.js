@@ -62,6 +62,7 @@ var popularapps = document.getElementById('popular-apps');
 var searchapps = document.getElementById('search-apps');
 var userfav = document.getElementById('user-fav');
 var sourcelimit = document.getElementById('source-limit');
+var clockElement = document.getElementById("clock");
 var globemail;
 var admindata;
 var sourceactive;
@@ -122,13 +123,22 @@ socket.on('checkuserstat', function(data) {
 
         if (useremailver == 1) {
 
-            if (data.email == globemail) {
-                console.log("user logged in (admin account)");
-                console.log(admindata);
-                signincontent.innerHTML = admindata[0];
-            } else {
+        //     if (data.email == globemail) {
+        //         console.log("user logged in (admin account)");
+        //         console.log(admindata);
+        //         signincontent.innerHTML = admindata[0];
+        //     } else {
+        //         signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
+        //     }
+
                 signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
-            }
+
+            socket.on('clock-time', function(data) {
+                var showdate1 = data.substr(0, 3); //Shows DAY
+                var showdate2 = data.substr(3, 12); //Shows MONTH/YEAR
+                clockElement.style.visibility = "visible";
+                clockElement.innerHTML = ''+showdate1+''+showdate2;
+            })
 
             userid = data.uid;
             console.log("user logged in (verified account)");
@@ -619,6 +629,9 @@ socket.on('checkuserstat', function(data) {
         //Loading Popular Apps
         var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
+        socket.on('clock-time', function(data) {
+            clockElement.style.visibility = "hidden";
+        })
 
         //Changes UI of Account Page
         accountname.innerHTML = "Sign In";
@@ -1643,6 +1656,12 @@ async function removeTags(i) {
 }
 //Function that removes all the tags from Source/Categories/Apps Pages when exiting
 function removetotalTags() {
+for (var i = 0; i < (myCatArray.length); i++) {
+    removeTags(i);
+}
+}
+//Function that removes all the tags from Source/Categories/Apps Pages when exiting
+function removetotalTags2() {
 for (var i = 0; i < (myCatArray.length-1); i++) {
     removeTags(i);
 }
@@ -1764,7 +1783,7 @@ search.addEventListener('click', function() {
     sourcesfont.style.color = "#FFFFFF";
     updatesfont.style.color = "#FFFFFF";
     searchfont.style.color = "#1A72FF";
-    removetotalTags();
+    removetotalTags2();
     hide();
     appCatLoad3(0);
 });

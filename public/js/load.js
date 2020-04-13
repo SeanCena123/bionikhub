@@ -83,6 +83,7 @@ var totalNumApps;
 // var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
 socket.on('appDataNoAccount', async function(data) { 
+    await removeTags("search-apps");
     totalNumApps = data; 
     console.log(totalNumApps); 
 
@@ -90,6 +91,7 @@ socket.on('appDataNoAccount', async function(data) {
 
 });
 socket.on('appDataAccount', async function(data) { 
+    await removeTags("search-apps");
     totalNumApps = data; 
     console.log(totalNumApps); 
 

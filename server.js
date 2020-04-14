@@ -1216,8 +1216,6 @@ var ref = firebase.database().ref('appData');
 	        console.log("user logged in (!verified account)");
 	        socket.on('signoutfunc', async function(data) { auth.signOut() });	
     		socket.on('verifyemail', function(data) { var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); socket.emit('verificationerror', error);}); });	 
- 	
-		    socket.emit('clock-time', clientTime);
 
 	        //Loading Apps and Popular Apps
 			ref.on('value', async function(snapshot) { 
@@ -1259,8 +1257,6 @@ var ref = firebase.database().ref('appData');
 			totalNumApps = ((data+1)/2);
 			console.log("Total Apps (no account): "+totalNumApps);
 			socket.emit('appDataNoAccount', totalNumApps);
-
-		    socket.emit('clock-time', clientTime);
 
 			//Recieving request to load Popular Apps
 			async function requestPopularApps() {

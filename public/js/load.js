@@ -62,12 +62,12 @@ var popularapps = document.getElementById('popular-apps');
 var searchapps = document.getElementById('search-apps');
 var userfav = document.getElementById('user-fav');
 var sourcelimit = document.getElementById('source-limit');
-var clockElement = document.getElementById("clock");
 var globemail;
 var admindata;
 var sourceactive;
 var favarray;
 var userid;
+var showclock = document.getElementById("show-clock");
 
 socket.on('adminAccount', async function(data) { 
     globemail = await data;
@@ -83,19 +83,19 @@ var totalNumApps;
 // var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
 socket.on('appDataNoAccount', async function(data) { 
-    await removeTags("search-apps");
+    removeTags("search-apps");
     totalNumApps = data; 
     console.log(totalNumApps); 
 
-    for (var i = 1; i < totalNumApps; i++) { createTag(i, "search-apps"); }
+    // for (var i = 1; i < totalNumApps; i++) { createTag(i, "search-apps"); }
 
 });
 socket.on('appDataAccount', async function(data) { 
-    await removeTags("search-apps");
+    removeTags("search-apps");
     totalNumApps = data; 
     console.log(totalNumApps); 
 
-    for (var i = 1; i < totalNumApps; i++) { createTag(i, "search-apps"); }
+    // for (var i = 1; i < totalNumApps; i++) { createTag(i, "search-apps"); }
 
 });
 
@@ -111,7 +111,16 @@ socket.on('favlist1', async function(data) {
     }
 });
 
+            socket.on('clock-time', async function(data) {
+                showclock.innerHTML = await '<div class="content-block-title" style="margin-top: -10px; margin-left: 5px; font-size: 15px;"><h3 id="clock"></h3></div>';
+                var clockElement = await document.getElementById("clock");
 
+                var showdate1 = data.substr(0, 3); //Shows DAY
+                var showdate2 = data.substr(3, 12); //Shows MONTH/YEAR
+                clockElement.style.visibility = "visible";
+                clockElement.innerHTML = ''+showdate1+''+showdate2;
+
+            });
 
 socket.on('checkuserstat', function(data) {
     if (data) {
@@ -133,14 +142,7 @@ socket.on('checkuserstat', function(data) {
         //         signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
         //     }
 
-                signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
-
-            socket.on('clock-time', function(data) {
-                var showdate1 = data.substr(0, 3); //Shows DAY
-                var showdate2 = data.substr(3, 12); //Shows MONTH/YEAR
-                clockElement.style.visibility = "visible";
-                clockElement.innerHTML = ''+showdate1+''+showdate2;
-            })
+            signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
 
             userid = data.uid;
             console.log("user logged in (verified account)");
@@ -607,6 +609,8 @@ socket.on('checkuserstat', function(data) {
         } else if (useremailver == 0) {
             console.log("user logged in (!verified account)");
 
+            showclock.innerHTML = '';
+
             //Loading Popular Apps
             var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
@@ -627,6 +631,8 @@ socket.on('checkuserstat', function(data) {
         console.log("user logged out");
         while (popularapps.firstChild) { popularapps.removeChild(popularapps.firstChild); a=0; }
         while (searchapps.firstChild) { searchapps.removeChild(searchapps.firstChild); a=0; }
+
+        showclock.innerHTML = '';
 
         //Loading Popular Apps
         var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })

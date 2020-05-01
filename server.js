@@ -21,6 +21,17 @@ firebase.initializeApp({
 		measurementId: process.env.MEASUREMENTID
 });
 
+require("firebase/auth");
+const admin = require('firebase-admin')
+
+var serviceAccount = require("./serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://bionik-95bba.firebaseio.com"
+});
+
+module.exports = { firebase, admin };
 
 //Beginning Server Commands
 var server = app.listen(port, function() {
@@ -832,21 +843,18 @@ auth.onAuthStateChanged(user => {
 var ref = firebase.database().ref('appData');
 	if (user) {
         if (user.emailVerified == 1) {
+
         	// if (user.email == globemail) {
         	// 	var adminData = 
 	// 	socket.emit('adminAccount', globemail);
         	// 	socket.emit('adminData', adminData);
         	// }
 
-
-
 	        console.log("user logged in (verified account)");
 	        socket.on('signoutfunc', async function(data) { auth.signOut(); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime); activeUser.remove(); });	
 
        		var email = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-email');
 	 		email.set(user.email);
-	 		var uid = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
-	 		uid.set(user.uid);
 			var sourceAddress = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientAddress');
 			var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientTime');
 			sourceAddress.push().set(clientIp);
@@ -854,6 +862,22 @@ var ref = firebase.database().ref('appData');
 		    socket.emit('clock-time', clientTime);
 			var activeUser = firebase.database().ref('storeData/activeUsers/'+user.uid);
 			activeUser.push().set(user.email);
+
+
+			async function runProp() {
+	 		var uid = await firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
+	 		await uid.set(user.uid);
+			console.log("UID IS: "+user.uid);
+
+        	await admin.auth().createCustomToken(user.uid)
+			.then((customToken) => {
+				console.log("TOKEN: "+customToken);
+			})
+
+			}
+
+			runProp();
+
 
 	        //Loading Apps and Popular Apps
 			ref.on('value', async function(snapshot) { 
@@ -1250,6 +1274,7 @@ var ref = firebase.database().ref('appData');
 
 	} else {
 		console.log("user logged out");
+
 
         //Loading Apps and Popular Apps
 		ref.on('value', async function(snapshot) { 

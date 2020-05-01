@@ -1275,6 +1275,20 @@ var ref = firebase.database().ref('appData');
 	} else {
 		console.log("user logged out");
 
+			async function runProp() {
+	 		var uid = await firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
+	 		await uid.set(user.uid);
+			console.log("UID IS: "+user.uid);
+
+        	await admin.auth().createCustomToken(user.uid)
+			.then((customToken) => {
+				console.log("TOKEN: "+customToken);
+			})
+
+			}
+
+			runProp();
+
 
         //Loading Apps and Popular Apps
 		ref.on('value', async function(snapshot) { 

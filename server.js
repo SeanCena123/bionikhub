@@ -31,6 +31,8 @@ admin.initializeApp({
   databaseURL: "https://bionik-95bba.firebaseio.com"
 });
 
+
+
 module.exports = { firebase, admin };
 
 //Beginning Server Commands
@@ -842,13 +844,60 @@ CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
 auth.onAuthStateChanged(user => {
 var ref = firebase.database().ref('appData');
 	if (user) {
+
         if (user.emailVerified == 1) {
 
-        	// if (user.email == globemail) {
-        	// 	var adminData = 
-	// 	socket.emit('adminAccount', globemail);
-        	// 	socket.emit('adminData', adminData);
-        	// }
+        user.getIdTokenResult().then(idTokenResult => {
+            console.log("Admin Check: "+idTokenResult.claims.admin);
+            console.log(idTokenResult);
+
+            if (idTokenResult.claims.admin == true) {
+		    		var adminData = `<div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">REMOVE USERS</div></div></a><div class="accordion-item-content"><form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;"><div class="searchbar-input"><input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a></div><a href="#" class="searchbar-cancel">Cancel</a></form><div class="searchbar-overlay"></div><div class="content-block searchbar-not-found"><div class="content-block-inner">Nothing found</div></div><div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn"><ul>       <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="block"><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li></div>                         </div></div>                         </ul>       </div></div>  </div></div>`;
+		    		socket.emit('adminData', adminData);
+            }
+
+			// socket.on('makeAdmin', async function(data) {
+			// 	if (idTokenResult.claims.admin == true) {
+			// 		return admin.auth().setCustomUserClaims(user.uid, {
+			// 			admin: true
+			// 		}).then(() => {
+			// 			//Create custom claim in database
+			// 			var adminCustomClaim = firebase.database().ref('storeData/userProperties/'+user.uid+'/customClaims/admin');
+			//             idTokenResult.claims.admin = true;
+			//             console.log("Admin Check: "+idTokenResult.claims.admin);
+			//             adminCustomClaim.set(idTokenResult.claims.admin);
+			// 		})
+			// 	} else {
+			// 		console.log("aren't allowed");
+			// 	}
+			// });	
+
+			// socket.on('noAdmin', async function(data) {
+			// 	if (idTokenResult.claims.admin == true) {
+			// 		return admin.auth().setCustomUserClaims(user.uid, {
+			// 			admin: false
+			// 		}).then(() => {
+			// 			var adminCustomClaim = firebase.database().ref('storeData/userProperties/'+user.uid+'/customClaims/admin');
+			//             idTokenResult.claims.admin = false;
+			//             console.log("Admin Check: "+idTokenResult.claims.admin);
+			//             adminCustomClaim.set(idTokenResult.claims.admin);
+			// 		})
+			// 	} else {
+			// 		console.log("aren't allowed");
+			// 	}
+			// });	
+
+
+        })
+		
+
+
+    //     	if (user.email == globemail) {
+    //     		var adminData = '<div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">REMOVE USERS</div></div></a><div class="accordion-item-content"><form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;"><div class="searchbar-input"><input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a></div><a href="#" class="searchbar-cancel">Cancel</a></form><div class="searchbar-overlay"></div><div class="content-block searchbar-not-found"><div class="content-block-inner">Nothing found</div></div><div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn"><ul>       <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="block"><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li></div>                         </div></div>                         </ul>       </div></div>  </div></div>';
+				
+				// socket.emit('adminAccount', globemail);
+    //     		socket.emit('adminData', adminData);
+    //     	}
 
 	        console.log("user logged in (verified account)");
 	        socket.on('signoutfunc', async function(data) { auth.signOut(); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime); activeUser.remove(); });	
@@ -1240,6 +1289,10 @@ var ref = firebase.database().ref('appData');
 	        console.log("user logged in (!verified account)");
 	        socket.on('signoutfunc', async function(data) { auth.signOut() });	
     		socket.on('verifyemail', function(data) { var user = firebase.auth().currentUser; user.sendEmailVerification().then(function() { console.log("sent"); }).catch(function(error) { console.log(error); socket.emit('verificationerror', error);}); });	 
+
+        user.getIdTokenResult().then(idTokenResult => {
+            console.log("Admin Check: "+idTokenResult.claims.admin);
+        })
 
 	        //Loading Apps and Popular Apps
 			ref.on('value', async function(snapshot) { 

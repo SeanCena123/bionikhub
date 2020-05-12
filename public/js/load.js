@@ -123,7 +123,8 @@ socket.on('checkuserstat', function(data) {
         function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
         while (popularapps.firstChild) { popularapps.removeChild(popularapps.firstChild); a=0; }
         while (searchapps.firstChild) { searchapps.removeChild(searchapps.firstChild); a=0; }
-        userfav.innerHTML = '';
+        // userfav.innerHTML = '';
+        accountPageChangeAccount();
 
         if (useremailver == 1) {
         console.log(data);
@@ -132,13 +133,13 @@ socket.on('checkuserstat', function(data) {
         // socket.emit('makeAdmin', data.email);
 
         //Make Admin   
-        twitterbionik.addEventListener('click', function() {
-            socket.emit('makeAdmin', data.email);
-        });
-        //Don't Make Admin   
-        twitterdjfeel.addEventListener('click', function() {
-            socket.emit('noAdmin', data.email);
-        });
+        // twitterbionik.addEventListener('click', function() {
+        //     socket.emit('makeAdmin', data.email);
+        // });
+        // //Don't Make Admin   
+        // twitterdjfeel.addEventListener('click', function() {
+        //     socket.emit('noAdmin', data.email);
+        // });
 
 
 
@@ -148,15 +149,16 @@ socket.on('checkuserstat', function(data) {
             //     console.log(admindata);
             //     signincontent.innerHTML = admindata[0];
             // } else {
-            //     signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
+                signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
             // }
-            socket.on('adminData', async function(data) { 
-                admindata = await data;
-                console.log("admin working");
-                console.log(admindata);
-                admincontent.innerHTML = `${admindata}`;
-            })
-            signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
+            // socket.on('adminData', async function(data) { 
+            //     admindata = await data;
+            //     console.log("admin working");
+            //     console.log(admindata);
+            //     admincontent.innerHTML = `${admindata}`;
+            // })
+
+            // signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
                 
 
             // if (data.email == globemail) {
@@ -170,484 +172,484 @@ socket.on('checkuserstat', function(data) {
             userid = data.uid;
             console.log("user logged in (verified account)");
 
-            //Loading Popular Apps
-            var i = 0; socket.on('requestPopularAppsAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
+            // //Loading Popular Apps
+            // var i = 0; socket.on('requestPopularAppsAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
-            //Changes UI of Account Page
-            userfav.innerHTML = '<div class="card" style="margin-top: -10px"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">Add to Favourites</div> <div class="" style="margin-right: 20px;"> <a id="fav-app-add" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">ADD</a> </div> </div> <div class="app-subtitle">Easy access to apps</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> </div><br>';
+            // //Changes UI of Account Page
+            // userfav.innerHTML = '<div class="card" style="margin-top: -10px"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">Add to Favourites</div> <div class="" style="margin-right: 20px;"> <a id="fav-app-add" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">ADD</a> </div> </div> <div class="app-subtitle">Easy access to apps</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> </div><br>';
             var signout = document.getElementById('signout');
             signout.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
 
-            //Adding and Removing Favourite Apps
-            var removefavapp = document.getElementById('remove-fav-app');
-            removefavapp.addEventListener('click', async function() {
-                var favlist = document.getElementById('fav-list');  
-                favlist.innerHTML = '';  
-                favarray.pop();
-                async function run(i) {
-                    await createTag(favarray[i], "fav-list");
-                }
-                for (var i = 0; i < favarray.length; i++) {
-                    run(i);
-                }      
-                socket.emit('favlist4', 'value') }); 
-            var favappadd = document.getElementById('fav-app-add');   
-            favappadd.addEventListener('click', async function() { 
-                var counter = 1;
-                    if (favarray.length < 10 ) {
-                        for (var i = 0; i < favarray.length; i++) {
-                                if (valnum == favarray[i]) {
-                                    if (counter == 1) {
-                                        counter = 0;
-                                    }
-                                }
-                        }
-                        if (counter == 1) {
-                            console.log("success");
-                            favarray.push(valnum);
-                            console.log(favarray);
-                            socket.emit('favlist5', valnum);
-                        } 
-                    } });  
+            // //Adding and Removing Favourite Apps
+            // var removefavapp = document.getElementById('remove-fav-app');
+            // removefavapp.addEventListener('click', async function() {
+            //     var favlist = document.getElementById('fav-list');  
+            //     favlist.innerHTML = '';  
+            //     favarray.pop();
+            //     async function run(i) {
+            //         await createTag(favarray[i], "fav-list");
+            //     }
+            //     for (var i = 0; i < favarray.length; i++) {
+            //         run(i);
+            //     }      
+            //     socket.emit('favlist4', 'value') }); 
+            // var favappadd = document.getElementById('fav-app-add');   
+            // favappadd.addEventListener('click', async function() { 
+            //     var counter = 1;
+            //         if (favarray.length < 10 ) {
+            //             for (var i = 0; i < favarray.length; i++) {
+            //                     if (valnum == favarray[i]) {
+            //                         if (counter == 1) {
+            //                             counter = 0;
+            //                         }
+            //                     }
+            //             }
+            //             if (counter == 1) {
+            //                 console.log("success");
+            //                 favarray.push(valnum);
+            //                 console.log(favarray);
+            //                 socket.emit('favlist5', valnum);
+            //             } 
+            //         } });  
 
-            //Adding the extra sources  
-            sourcelimit.innerHTML = '<li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSNinja</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosninja-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">CoconutX</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="coconutx-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSGods</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosgods-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">FlekSt0re</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="flekstore-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">Emus4u</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="emus4u-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSEmus</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosemus-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li>'; 
-            var iosninjaopen = document.getElementById('iosninja-open');
-            var coconutxopen = document.getElementById('coconutx-open');
-            var iosgodsopen = document.getElementById('iosgods-open');
-            var flekstoreopen = document.getElementById('flekstore-open');
-            var emus4uopen = document.getElementById('emus4u-open');
-            var iosemusopen = document.getElementById('iosemus-open');
-            iosninjaopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "IOSNinja"; categorytitlesor.innerHTML = "IOSNinja"; categorylocsor.id = "IOSNinja"; socket.emit('storeData/source-open/IOSNinja-open','value'); show_backleftsor(); appCatLoad2(4); });
-            coconutxopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "CoconutX"; categorytitlesor.innerHTML = "CoconutX"; categorylocsor.id = "CoconutX"; socket.emit('storeData/source-open/CoconutX-open','value'); show_backleftsor(); appCatLoad2(5); });
-            iosgodsopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "IOSGods"; categorytitlesor.innerHTML = "IOSGods"; categorylocsor.id = "iOSGods"; socket.emit('storeData/source-open/iOSGods-open','value'); show_backleftsor(); appCatLoad2(6); });
-            flekstoreopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "FlekStore"; categorytitlesor.innerHTML = "FlekStore"; categorylocsor.id = "Flekstore"; socket.emit('storeData/source-open/Flekstore-open','value'); show_backleftsor(); appCatLoad2(7); });
-            emus4uopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "Emus4u"; categorytitlesor.innerHTML = "Emus4u"; categorylocsor.id = "Emus4"; socket.emit('storeData/source-open/Emus4-open','value'); show_backleftsor(); appCatLoad2(8); });
-            iosemusopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "IOSEmus"; categorytitlesor.innerHTML = "IOSEmus"; categorylocsor.id = "Emus"; socket.emit('storeData/source-open/Emus-open','value'); show_backleftsor(); appCatLoad2(9); });
-            var newsourceauth = document.getElementById('new-sourceauth');
-            newsourceauth.innerHTML = '<div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">IOSNinja</div> <div class="" style="margin-right: 20px;"> <a id="ninja-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-iosninja-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">CoconutX</div> <div class="" style="margin-right: 20px;"> <a id="coco-get" onclick="myElement()" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-coconutx-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">IOSGods</div> <div class="" style="margin-right: 20px;"> <a id="god-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-iosgods-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">FlekSt0re</div> <div class="" style="margin-right: 20px;"> <a id="flek-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-flekstore-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">Emus4u</div> <div class="" style="margin-right: 20px;"> <a id="emus4-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-emus4u-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">IOSEmus</div> <div class="" style="margin-right: 20px;"> <a id="emus-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-iosemus-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div>';
-            var ninjaValue = document.getElementById('ninja-get')
-            var cocoValue = document.getElementById('coco-get')
-            var godValue = document.getElementById('god-get')
-            var emusValue = document.getElementById('emus-get')
-            var emus4Value = document.getElementById('emus4-get')
-            var flekValue = document.getElementById('flek-get')
-            var myArray = [ignitionValue, topValue, valleyValue, boxValue, ninjaValue, cocoValue, godValue, emusValue, emus4Value, flekValue];
-            socket.on('Number', function(data) {
-                a=data;
+            // //Adding the extra sources  
+            // sourcelimit.innerHTML = '<li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSNinja</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosninja-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">CoconutX</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="coconutx-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSGods</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosgods-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">FlekSt0re</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="flekstore-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">Emus4u</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="emus4u-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSEmus</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosemus-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li>'; 
+            // var iosninjaopen = document.getElementById('iosninja-open');
+            // var coconutxopen = document.getElementById('coconutx-open');
+            // var iosgodsopen = document.getElementById('iosgods-open');
+            // var flekstoreopen = document.getElementById('flekstore-open');
+            // var emus4uopen = document.getElementById('emus4u-open');
+            // var iosemusopen = document.getElementById('iosemus-open');
+            // iosninjaopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "IOSNinja"; categorytitlesor.innerHTML = "IOSNinja"; categorylocsor.id = "IOSNinja"; socket.emit('storeData/source-open/IOSNinja-open','value'); show_backleftsor(); appCatLoad2(4); });
+            // coconutxopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "CoconutX"; categorytitlesor.innerHTML = "CoconutX"; categorylocsor.id = "CoconutX"; socket.emit('storeData/source-open/CoconutX-open','value'); show_backleftsor(); appCatLoad2(5); });
+            // iosgodsopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "IOSGods"; categorytitlesor.innerHTML = "IOSGods"; categorylocsor.id = "iOSGods"; socket.emit('storeData/source-open/iOSGods-open','value'); show_backleftsor(); appCatLoad2(6); });
+            // flekstoreopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "FlekStore"; categorytitlesor.innerHTML = "FlekStore"; categorylocsor.id = "Flekstore"; socket.emit('storeData/source-open/Flekstore-open','value'); show_backleftsor(); appCatLoad2(7); });
+            // emus4uopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "Emus4u"; categorytitlesor.innerHTML = "Emus4u"; categorylocsor.id = "Emus4"; socket.emit('storeData/source-open/Emus4-open','value'); show_backleftsor(); appCatLoad2(8); });
+            // iosemusopen.addEventListener('click', function() { removetotalTags(); categorynamesor.innerHTML = "IOSEmus"; categorytitlesor.innerHTML = "IOSEmus"; categorylocsor.id = "Emus"; socket.emit('storeData/source-open/Emus-open','value'); show_backleftsor(); appCatLoad2(9); });
+            // var newsourceauth = document.getElementById('new-sourceauth');
+            // newsourceauth.innerHTML = '<div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">IOSNinja</div> <div class="" style="margin-right: 20px;"> <a id="ninja-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-iosninja-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">CoconutX</div> <div class="" style="margin-right: 20px;"> <a id="coco-get" onclick="myElement()" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-coconutx-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">IOSGods</div> <div class="" style="margin-right: 20px;"> <a id="god-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-iosgods-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">FlekSt0re</div> <div class="" style="margin-right: 20px;"> <a id="flek-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-flekstore-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">Emus4u</div> <div class="" style="margin-right: 20px;"> <a id="emus4-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-emus4u-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">IOSEmus</div> <div class="" style="margin-right: 20px;"> <a id="emus-get" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">GET</a> </div> </div> <div class="app-subtitle" id="status-iosemus-app">3rd Party Appstore</div> </div> </li> </div> </div> </div> </div> </div> </div> </div>';
+            // var ninjaValue = document.getElementById('ninja-get')
+            // var cocoValue = document.getElementById('coco-get')
+            // var godValue = document.getElementById('god-get')
+            // var emusValue = document.getElementById('emus-get')
+            // var emus4Value = document.getElementById('emus4-get')
+            // var flekValue = document.getElementById('flek-get')
+            // var myArray = [ignitionValue, topValue, valleyValue, boxValue, ninjaValue, cocoValue, godValue, emusValue, emus4Value, flekValue];
+            // socket.on('Number', function(data) {
+            //     a=data;
 
-                //Displaying App Name from Database
-                socket.on('App'+a+'_Name', function(data) {
-                    var appName1 = document.getElementById("appname_1")
-                    var appName2 = document.getElementById("appname_2")
-                    appName1.innerHTML = data;
-                    appName2.innerHTML = data;
-                })
-                //Displaying App Image from Database
-                socket.on('App'+a+'_Image', function(data) {
-                    var appImage = document.getElementById('frontimage')
-                    var att = document.createAttribute("srcset")
-                    att.value = data;
-                    appImage.setAttribute("srcset", att.value);
-                })
-                //Displaying App Description from Database
-                socket.on('App'+a+'_Description', function(data) {
-                    var appDescription = document.getElementById("description")
-                    appDescription.innerHTML = data;
-                })
-                //Displaying App Developer from Database
-                socket.on('App'+a+'_Developer', function(data) {
-                    var appDeveloper1 = document.getElementById("developer_1")
-                    var appDeveloper2 = document.getElementById("developer_2")
-                    appDeveloper1.innerHTML = data;
-                    appDeveloper2.innerHTML = data;
-                })
-                //Displaying App Version from Database
-                socket.on('App'+a+'_Version', function(data) {
-                    var appVersion = document.getElementById("version")
-                    appVersion.innerHTML = data;
-                })
-                //Displaying App Category from Database
-                socket.on('App'+a+'_Category', function(data) {
-                    var appCategory = document.getElementById("category")
-                    appCategory.innerHTML = data;
-                })
-                //Displaying App Size from Database
-                socket.on('App'+a+'_Size', function(data) {
-                    var appSize = document.getElementById("size")
-                    appSize.innerHTML = data;
-                })
-                //Displaying App Category (Ignition) from Database
-                socket.on('App'+a+'_Ignition', function(data) {
-                    if (data !== "none") {
-                        myArray[0].innerHTML = "GET";
-                        myArray[0].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[0].innerHTML = "NONE";
-                        myArray[0].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (TopStore) from Database
-                socket.on('App'+a+'_TopStore', function(data) {
-                    if (data !== "none") {
-                        myArray[1].setAttribute("onclick", `window.open('${data}');`);
-                        myArray[1].innerHTML = "GET";
-                    } else if (data == "none") {
-                        myArray[1].innerHTML = "NONE";
-                        myArray[1].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (AppValley) from Database
-                socket.on('App'+a+'_AppValley', function(data) {
-                    if (data !== "none") {
-                        myArray[2].innerHTML = "GET";
-                        myArray[2].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[2].innerHTML = "NONE";
-                        myArray[2].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (Tweakbox) from Database
-                socket.on('App'+a+'_Tweakbox', function(data) {
-                    if (data !== "none") {
-                        myArray[3].innerHTML = "GET";
-                        myArray[3].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[3].innerHTML = "NONE";
-                        myArray[3].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (IOSNinja) from Database
-                socket.on('App'+a+'_IOSNinja', function(data) {
-                    if (data !== "none") {
-                        myArray[4].innerHTML = "GET";
-                        myArray[4].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[4].innerHTML = "NONE";
-                        myArray[4].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (CoconutX) from Database
-                socket.on('App'+a+'_CoconutX', function(data) {
-                    if (data !== "none") {
-                        myArray[5].innerHTML = "GET";
-                        myArray[5].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[5].innerHTML = "NONE";
-                        myArray[5].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (iOSGods) from Database
-                socket.on('App'+a+'_iOSGods', function(data) {
-                    if (data !== "none") {
-                        myArray[6].innerHTML = "GET";
-                        myArray[6].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[6].innerHTML = "NONE";
-                        myArray[6].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (Emus) from Database
-                socket.on('App'+a+'_Emus', function(data) {
-                    if (data !== "none") {
-                        myArray[7].innerHTML = "GET";
-                        myArray[7].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[7].innerHTML = "NONE";
-                        myArray[7].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (Emus4) from Database
-                socket.on('App'+a+'_Emus4', function(data) {
-                    if (data !== "none") {
-                        myArray[8].innerHTML = "GET";
-                        myArray[8].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[8].innerHTML = "NONE";
-                        myArray[8].setAttribute("onclick", `window.open('none');`);
-                    }
-                })
-                //Displaying App Category (Flekstore) from Database
-                socket.on('App'+a+'_Flekstore', function(data) {
-                    if (data !== "none") {
-                        myArray[9].innerHTML = "GET";
-                        myArray[9].setAttribute("onclick", `window.open('${data}');`);
-                    } else if (data == "none") {
-                        myArray[9].innerHTML = "NONE";
-                        myArray[9].setAttribute("onclick", `window.open('none');`);
-                    }
-                }) });
+            //     //Displaying App Name from Database
+            //     socket.on('App'+a+'_Name', function(data) {
+            //         var appName1 = document.getElementById("appname_1")
+            //         var appName2 = document.getElementById("appname_2")
+            //         appName1.innerHTML = data;
+            //         appName2.innerHTML = data;
+            //     })
+            //     //Displaying App Image from Database
+            //     socket.on('App'+a+'_Image', function(data) {
+            //         var appImage = document.getElementById('frontimage')
+            //         var att = document.createAttribute("srcset")
+            //         att.value = data;
+            //         appImage.setAttribute("srcset", att.value);
+            //     })
+            //     //Displaying App Description from Database
+            //     socket.on('App'+a+'_Description', function(data) {
+            //         var appDescription = document.getElementById("description")
+            //         appDescription.innerHTML = data;
+            //     })
+            //     //Displaying App Developer from Database
+            //     socket.on('App'+a+'_Developer', function(data) {
+            //         var appDeveloper1 = document.getElementById("developer_1")
+            //         var appDeveloper2 = document.getElementById("developer_2")
+            //         appDeveloper1.innerHTML = data;
+            //         appDeveloper2.innerHTML = data;
+            //     })
+            //     //Displaying App Version from Database
+            //     socket.on('App'+a+'_Version', function(data) {
+            //         var appVersion = document.getElementById("version")
+            //         appVersion.innerHTML = data;
+            //     })
+            //     //Displaying App Category from Database
+            //     socket.on('App'+a+'_Category', function(data) {
+            //         var appCategory = document.getElementById("category")
+            //         appCategory.innerHTML = data;
+            //     })
+            //     //Displaying App Size from Database
+            //     socket.on('App'+a+'_Size', function(data) {
+            //         var appSize = document.getElementById("size")
+            //         appSize.innerHTML = data;
+            //     })
+            //     //Displaying App Category (Ignition) from Database
+            //     socket.on('App'+a+'_Ignition', function(data) {
+            //         if (data !== "none") {
+            //             myArray[0].innerHTML = "GET";
+            //             myArray[0].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[0].innerHTML = "NONE";
+            //             myArray[0].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (TopStore) from Database
+            //     socket.on('App'+a+'_TopStore', function(data) {
+            //         if (data !== "none") {
+            //             myArray[1].setAttribute("onclick", `window.open('${data}');`);
+            //             myArray[1].innerHTML = "GET";
+            //         } else if (data == "none") {
+            //             myArray[1].innerHTML = "NONE";
+            //             myArray[1].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (AppValley) from Database
+            //     socket.on('App'+a+'_AppValley', function(data) {
+            //         if (data !== "none") {
+            //             myArray[2].innerHTML = "GET";
+            //             myArray[2].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[2].innerHTML = "NONE";
+            //             myArray[2].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (Tweakbox) from Database
+            //     socket.on('App'+a+'_Tweakbox', function(data) {
+            //         if (data !== "none") {
+            //             myArray[3].innerHTML = "GET";
+            //             myArray[3].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[3].innerHTML = "NONE";
+            //             myArray[3].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (IOSNinja) from Database
+            //     socket.on('App'+a+'_IOSNinja', function(data) {
+            //         if (data !== "none") {
+            //             myArray[4].innerHTML = "GET";
+            //             myArray[4].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[4].innerHTML = "NONE";
+            //             myArray[4].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (CoconutX) from Database
+            //     socket.on('App'+a+'_CoconutX', function(data) {
+            //         if (data !== "none") {
+            //             myArray[5].innerHTML = "GET";
+            //             myArray[5].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[5].innerHTML = "NONE";
+            //             myArray[5].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (iOSGods) from Database
+            //     socket.on('App'+a+'_iOSGods', function(data) {
+            //         if (data !== "none") {
+            //             myArray[6].innerHTML = "GET";
+            //             myArray[6].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[6].innerHTML = "NONE";
+            //             myArray[6].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (Emus) from Database
+            //     socket.on('App'+a+'_Emus', function(data) {
+            //         if (data !== "none") {
+            //             myArray[7].innerHTML = "GET";
+            //             myArray[7].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[7].innerHTML = "NONE";
+            //             myArray[7].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (Emus4) from Database
+            //     socket.on('App'+a+'_Emus4', function(data) {
+            //         if (data !== "none") {
+            //             myArray[8].innerHTML = "GET";
+            //             myArray[8].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[8].innerHTML = "NONE";
+            //             myArray[8].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     })
+            //     //Displaying App Category (Flekstore) from Database
+            //     socket.on('App'+a+'_Flekstore', function(data) {
+            //         if (data !== "none") {
+            //             myArray[9].innerHTML = "GET";
+            //             myArray[9].setAttribute("onclick", `window.open('${data}');`);
+            //         } else if (data == "none") {
+            //             myArray[9].innerHTML = "NONE";
+            //             myArray[9].setAttribute("onclick", `window.open('none');`);
+            //         }
+            //     }) });
 
 
-            //Obtaining Data
-            jailbreakopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Jailbreak-open','value'); });
-            tweakedopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Tweaked-open','value'); });
-            entertainmentopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Entertainment-open','value'); });
-            emulatorsopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Emulators-open','value'); });
-            gamesopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Games-open','value'); });
-            ignitionopen.addEventListener('click', async function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Ignition-open','value'); });
-            topstoreopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/TopStore-open','value'); });
-            appvalleyopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/AppValley-open','value'); });
-            tweakboxopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Tweakbox-open','value'); });
-            iosninjaopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/IOSNinja-open','value'); });
-            coconutxopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/CoconutX-open','value'); });
-            iosgodsopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/iOSGods-open','value'); });
-            flekstoreopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Flekstore-open','value'); });
-            emus4uopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Emus4-open','value'); });
-            iosemusopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Emus-open','value'); });  
-            var refreshcount = 0; if (refreshcount == 0) { socket.emit('storeData/userProperties/'+data.uid+'/refresh-counter','value'); refreshcount = 1; }
-            socket.emit('storeData/userProperties/'+data.uid+'/view-counter','value');
-            twitterbionik.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/twitter/twitter-bionik-click','value'); });
-            twitterdjfeel.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/twitter/twitter-djfeelofficial-click','value'); });
-            twitterignition.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/ignition-twitter-click','value'); });
-            twittertopstore.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/topstore-twitter-click','value'); });
-            twitterappvalley.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/appvalley-twitter-click','value'); });
-            twittertweakbox.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/tweakbox-twitter-click','value'); });
-            twitteriosninja.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/iosninja-twitter-click','value'); });
-            twittercoconutx.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/coconutx-twitter-click','value'); });
-            twitteriosgods.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/iosgods-twitter-click','value'); });
-            twitterflekstore.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/flekstore-twitter-click','value'); });
-            twitteremus4u.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/emus4u-twitter-click','value'); });
-            twitteriosemus.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/iosemus-twitter-click','value'); });
-            legalbutton.addEventListener('click', function() { backlefttos.style.visibility = 'visible'; socket.emit('storeData/userProperties/'+data.uid+'/home-data/legal/legal-click','value'); });
-            submissionbutton.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/submission/request-click','value'); });
-            iconright.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/reportApp/app'+keyval+"-report", keyval) });
-            home.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/home-click','value'); });
-            apps.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/apps-click','value'); }); 
-            stores.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/stores-click','value'); });
-            updates.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/updates-click','value'); });
-            search.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/search-click','value'); });
+            // //Obtaining Data
+            // jailbreakopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Jailbreak-open','value'); });
+            // tweakedopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Tweaked-open','value'); });
+            // entertainmentopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Entertainment-open','value'); });
+            // emulatorsopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Emulators-open','value'); });
+            // gamesopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/category-open/Games-open','value'); });
+            // ignitionopen.addEventListener('click', async function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Ignition-open','value'); });
+            // topstoreopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/TopStore-open','value'); });
+            // appvalleyopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/AppValley-open','value'); });
+            // tweakboxopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Tweakbox-open','value'); });
+            // iosninjaopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/IOSNinja-open','value'); });
+            // coconutxopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/CoconutX-open','value'); });
+            // iosgodsopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/iOSGods-open','value'); });
+            // flekstoreopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Flekstore-open','value'); });
+            // emus4uopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Emus4-open','value'); });
+            // iosemusopen.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/source-open/Emus-open','value'); });  
+            // var refreshcount = 0; if (refreshcount == 0) { socket.emit('storeData/userProperties/'+data.uid+'/refresh-counter','value'); refreshcount = 1; }
+            // socket.emit('storeData/userProperties/'+data.uid+'/view-counter','value');
+            // twitterbionik.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/twitter/twitter-bionik-click','value'); });
+            // twitterdjfeel.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/twitter/twitter-djfeelofficial-click','value'); });
+            // twitterignition.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/ignition-twitter-click','value'); });
+            // twittertopstore.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/topstore-twitter-click','value'); });
+            // twitterappvalley.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/appvalley-twitter-click','value'); });
+            // twittertweakbox.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/tweakbox-twitter-click','value'); });
+            // twitteriosninja.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/iosninja-twitter-click','value'); });
+            // twittercoconutx.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/coconutx-twitter-click','value'); });
+            // twitteriosgods.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/iosgods-twitter-click','value'); });
+            // twitterflekstore.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/flekstore-twitter-click','value'); });
+            // twitteremus4u.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/emus4u-twitter-click','value'); });
+            // twitteriosemus.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/source-list/iosemus-twitter-click','value'); });
+            // legalbutton.addEventListener('click', function() { backlefttos.style.visibility = 'visible'; socket.emit('storeData/userProperties/'+data.uid+'/home-data/legal/legal-click','value'); });
+            // submissionbutton.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/home-data/submission/request-click','value'); });
+            // iconright.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/reportApp/app'+keyval+"-report", keyval) });
+            // home.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/home-click','value'); });
+            // apps.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/apps-click','value'); }); 
+            // stores.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/stores-click','value'); });
+            // updates.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/updates-click','value'); });
+            // search.addEventListener('click', function() { socket.emit('storeData/userProperties/'+data.uid+'/navbar-click/search-click','value'); });
 
-            //Variables associated with status of Sources
-            var statusignition = document.getElementById('status-ignition');
-            var statusignitionapp = document.getElementById('status-ignition-app');
-            var statustopstore = document.getElementById('status-topstore');
-            var statustopstoreapp = document.getElementById('status-topstore-app');
-            var statusappvalley = document.getElementById('status-appvalley');
-            var statusappvalleyapp = document.getElementById('status-appvalley-app');
-            var statustweakbox = document.getElementById('status-tweakbox');
-            var statustweakboxapp = document.getElementById('status-tweakbox-app');
-            var statusiosninja = document.getElementById('status-iosninja');
-            var statusiosninjaapp = document.getElementById('status-iosninja-app');
-            var statuscoconutx = document.getElementById('status-coconutx');
-            var statuscoconutxapp = document.getElementById('status-coconutx-app');
-            var statusiosgods = document.getElementById('status-iosgods');
-            var statusiosgodsapp = document.getElementById('status-iosgods-app');
-            var statusflekstore = document.getElementById('status-flekstore');
-            var statusflekstoreapp = document.getElementById('status-flekstore-app');
-            var statusemus4u = document.getElementById('status-emus4u');
-            var statusemus4uapp = document.getElementById('status-emus4u-app');
-            var statusiosemus = document.getElementById('status-iosemus');
-            var statusiosemusapp = document.getElementById('status-iosemus-app');
+            // //Variables associated with status of Sources
+            // var statusignition = document.getElementById('status-ignition');
+            // var statusignitionapp = document.getElementById('status-ignition-app');
+            // var statustopstore = document.getElementById('status-topstore');
+            // var statustopstoreapp = document.getElementById('status-topstore-app');
+            // var statusappvalley = document.getElementById('status-appvalley');
+            // var statusappvalleyapp = document.getElementById('status-appvalley-app');
+            // var statustweakbox = document.getElementById('status-tweakbox');
+            // var statustweakboxapp = document.getElementById('status-tweakbox-app');
+            // var statusiosninja = document.getElementById('status-iosninja');
+            // var statusiosninjaapp = document.getElementById('status-iosninja-app');
+            // var statuscoconutx = document.getElementById('status-coconutx');
+            // var statuscoconutxapp = document.getElementById('status-coconutx-app');
+            // var statusiosgods = document.getElementById('status-iosgods');
+            // var statusiosgodsapp = document.getElementById('status-iosgods-app');
+            // var statusflekstore = document.getElementById('status-flekstore');
+            // var statusflekstoreapp = document.getElementById('status-flekstore-app');
+            // var statusemus4u = document.getElementById('status-emus4u');
+            // var statusemus4uapp = document.getElementById('status-emus4u-app');
+            // var statusiosemus = document.getElementById('status-iosemus');
+            // var statusiosemusapp = document.getElementById('status-iosemus-app');
 
-            var signedarr = ['statusignition', 'statustopstore', 'statusappvalley', 'statustweakbox', 'statusiosninja', 'statuscoconutx', 'statusiosgods', 'statusflekstore', 'statusemus4u', 'statusiosemus']
-            for (var i = 0; i < signedarr.length; i++) {
-                socket.emit(signedarr[i], 'value');
-            }
+            // var signedarr = ['statusignition', 'statustopstore', 'statusappvalley', 'statustweakbox', 'statusiosninja', 'statuscoconutx', 'statusiosgods', 'statusflekstore', 'statusemus4u', 'statusiosemus']
+            // for (var i = 0; i < signedarr.length; i++) {
+            //     socket.emit(signedarr[i], 'value');
+            // }
 
-            socket.on('statusignition', function(data) {
-                if (data == "signed") {
-                    statusignition.style.color = "#00ff00";
-                    statusignitionapp.innerHTML = "Signed";
-                    statusignitionapp.style.color = "#00ff00";
-                    statusignitionapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusignition.style.color = "#ff0000";
-                    statusignition.innerHTML = "Revoked";
-                    statusignitionapp.style.color = "#ff0000";
-                    statusignitionapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusignition.style.color = "#808080";
-                    statusignition.innerHTML = "Unknown"; 
-                    statusignitionapp.style.color = "#808080";
-                    statusignitionapp.innerHTML = "Unknown";
-                }
-            })
-            socket.on('statustopstore', function(data) {
-                if (data == "signed") {
-                    statustopstore.style.color = "#00ff00";
-                    statustopstore.innerHTML = "Signed";
-                    statustopstoreapp.style.color = "#00ff00";
-                    statustopstoreapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statustopstore.style.color = "#ff0000";
-                    statustopstore.innerHTML = "Revoked";
-                    statustopstoreapp.style.color = "#ff0000";
-                    statustopstoreapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statustopstore.style.color = "#808080";
-                    statustopstore.innerHTML = "Unknown"; 
-                    statustopstoreapp.style.color = "#808080";
-                    statustopstoreapp.innerHTML = "Unknown";
-                }
-            })
-            socket.on('statusappvalley', function(data) {
-                if (data == "signed") {
-                    statusappvalley.style.color = "#00ff00";
-                    statusappvalley.innerHTML = "Signed";
-                    statusappvalleyapp.style.color = "#00ff00";
-                    statusappvalleyapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusappvalley.style.color = "#ff0000";
-                    statusappvalley.innerHTML = "Revoked";
-                    statusappvalleyapp.style.color = "#ff0000";
-                    statusappvalleyapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusappvalley.style.color = "#808080";
-                    statusappvalley.innerHTML = "Unknown"; 
-                    statusappvalleyapp.style.color = "#808080";
-                    statusappvalleyapp.innerHTML = "Unknown";
-                }
-            })
-            socket.on('statustweakbox', function(data) {
-                if (data == "signed") {
-                    statustweakbox.style.color = "#00ff00";
-                    statustweakbox.innerHTML = "Signed";
-                    statustweakboxapp.style.color = "#00ff00";
-                    statustweakboxapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statustweakbox.style.color = "#ff0000";
-                    statustweakbox.innerHTML = "Revoked";
-                    statustweakboxapp.style.color = "#ff0000";
-                    statustweakboxapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statustweakbox.style.color = "#808080";
-                    statustweakbox.innerHTML = "Unknown"; 
-                    statustweakboxapp.style.color = "#808080";
-                    statustweakboxapp.innerHTML = "Unknown";
-                }
-            })
-            socket.on('statusiosninja', function(data) {
-                if (data == "signed") {
-                    statusiosninja.style.color = "#00ff00";
-                    statusiosninja.innerHTML = "Signed";
-                    statusiosninjaapp.style.color = "#00ff00";
-                    statusiosninjaapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusiosninja.style.color = "#ff0000";
-                    statusiosninja.innerHTML = "Revoked";
-                    statusiosninjaapp.style.color = "#ff0000";
-                    statusiosninjaapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusiosninja.style.color = "#808080";
-                    statusiosninja.innerHTML = "Unknown"; 
-                    statusiosninjaapp.style.color = "#808080";
-                    statusiosninjaapp.innerHTML = "Unknown";
-                }
-            })
-            socket.on('statuscoconutx', function(data) {
-                if (data == "signed") {
-                    statuscoconutx.style.color = "#00ff00";
-                    statuscoconutx.innerHTML = "Signed";
-                    statuscoconutxapp.style.color = "#00ff00";
-                    statuscoconutxapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statuscoconutx.style.color = "#ff0000";
-                    statuscoconutx.innerHTML = "Revoked";
-                    statuscoconutxapp.style.color = "#ff0000";
-                    statuscoconutxapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statuscoconutx.style.color = "#808080";
-                    statuscoconutx.innerHTML = "Unknown"; 
-                    statuscoconutxapp.style.color = "#808080";
-                    statuscoconutxapp.innerHTML = "Unknown";
-                }
-            })
+            // socket.on('statusignition', function(data) {
+            //     if (data == "signed") {
+            //         statusignition.style.color = "#00ff00";
+            //         statusignitionapp.innerHTML = "Signed";
+            //         statusignitionapp.style.color = "#00ff00";
+            //         statusignitionapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusignition.style.color = "#ff0000";
+            //         statusignition.innerHTML = "Revoked";
+            //         statusignitionapp.style.color = "#ff0000";
+            //         statusignitionapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusignition.style.color = "#808080";
+            //         statusignition.innerHTML = "Unknown"; 
+            //         statusignitionapp.style.color = "#808080";
+            //         statusignitionapp.innerHTML = "Unknown";
+            //     }
+            // })
+            // socket.on('statustopstore', function(data) {
+            //     if (data == "signed") {
+            //         statustopstore.style.color = "#00ff00";
+            //         statustopstore.innerHTML = "Signed";
+            //         statustopstoreapp.style.color = "#00ff00";
+            //         statustopstoreapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statustopstore.style.color = "#ff0000";
+            //         statustopstore.innerHTML = "Revoked";
+            //         statustopstoreapp.style.color = "#ff0000";
+            //         statustopstoreapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statustopstore.style.color = "#808080";
+            //         statustopstore.innerHTML = "Unknown"; 
+            //         statustopstoreapp.style.color = "#808080";
+            //         statustopstoreapp.innerHTML = "Unknown";
+            //     }
+            // })
+            // socket.on('statusappvalley', function(data) {
+            //     if (data == "signed") {
+            //         statusappvalley.style.color = "#00ff00";
+            //         statusappvalley.innerHTML = "Signed";
+            //         statusappvalleyapp.style.color = "#00ff00";
+            //         statusappvalleyapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusappvalley.style.color = "#ff0000";
+            //         statusappvalley.innerHTML = "Revoked";
+            //         statusappvalleyapp.style.color = "#ff0000";
+            //         statusappvalleyapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusappvalley.style.color = "#808080";
+            //         statusappvalley.innerHTML = "Unknown"; 
+            //         statusappvalleyapp.style.color = "#808080";
+            //         statusappvalleyapp.innerHTML = "Unknown";
+            //     }
+            // })
+            // socket.on('statustweakbox', function(data) {
+            //     if (data == "signed") {
+            //         statustweakbox.style.color = "#00ff00";
+            //         statustweakbox.innerHTML = "Signed";
+            //         statustweakboxapp.style.color = "#00ff00";
+            //         statustweakboxapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statustweakbox.style.color = "#ff0000";
+            //         statustweakbox.innerHTML = "Revoked";
+            //         statustweakboxapp.style.color = "#ff0000";
+            //         statustweakboxapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statustweakbox.style.color = "#808080";
+            //         statustweakbox.innerHTML = "Unknown"; 
+            //         statustweakboxapp.style.color = "#808080";
+            //         statustweakboxapp.innerHTML = "Unknown";
+            //     }
+            // })
+            // socket.on('statusiosninja', function(data) {
+            //     if (data == "signed") {
+            //         statusiosninja.style.color = "#00ff00";
+            //         statusiosninja.innerHTML = "Signed";
+            //         statusiosninjaapp.style.color = "#00ff00";
+            //         statusiosninjaapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusiosninja.style.color = "#ff0000";
+            //         statusiosninja.innerHTML = "Revoked";
+            //         statusiosninjaapp.style.color = "#ff0000";
+            //         statusiosninjaapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusiosninja.style.color = "#808080";
+            //         statusiosninja.innerHTML = "Unknown"; 
+            //         statusiosninjaapp.style.color = "#808080";
+            //         statusiosninjaapp.innerHTML = "Unknown";
+            //     }
+            // })
+            // socket.on('statuscoconutx', function(data) {
+            //     if (data == "signed") {
+            //         statuscoconutx.style.color = "#00ff00";
+            //         statuscoconutx.innerHTML = "Signed";
+            //         statuscoconutxapp.style.color = "#00ff00";
+            //         statuscoconutxapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statuscoconutx.style.color = "#ff0000";
+            //         statuscoconutx.innerHTML = "Revoked";
+            //         statuscoconutxapp.style.color = "#ff0000";
+            //         statuscoconutxapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statuscoconutx.style.color = "#808080";
+            //         statuscoconutx.innerHTML = "Unknown"; 
+            //         statuscoconutxapp.style.color = "#808080";
+            //         statuscoconutxapp.innerHTML = "Unknown";
+            //     }
+            // })
 
-            socket.on('statusiosgods', function(data) {
-                if (data == "signed") {
-                    statusiosgods.style.color = "#00ff00";
-                    statusiosgods.innerHTML = "Signed";
-                    statusiosgodsapp.style.color = "#00ff00";
-                    statusiosgodsapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusiosgods.style.color = "#ff0000";
-                    statusiosgods.innerHTML = "Revoked";
-                    statusiosgodsapp.style.color = "#ff0000";
-                    statusiosgodsapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusiosgods.style.color = "#808080";
-                    statusiosgods.innerHTML = "Unknown"; 
-                    statusiosgodsapp.style.color = "#808080";
-                    statusiosgodsapp.innerHTML = "Unknown";
-                }
-            })
+            // socket.on('statusiosgods', function(data) {
+            //     if (data == "signed") {
+            //         statusiosgods.style.color = "#00ff00";
+            //         statusiosgods.innerHTML = "Signed";
+            //         statusiosgodsapp.style.color = "#00ff00";
+            //         statusiosgodsapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusiosgods.style.color = "#ff0000";
+            //         statusiosgods.innerHTML = "Revoked";
+            //         statusiosgodsapp.style.color = "#ff0000";
+            //         statusiosgodsapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusiosgods.style.color = "#808080";
+            //         statusiosgods.innerHTML = "Unknown"; 
+            //         statusiosgodsapp.style.color = "#808080";
+            //         statusiosgodsapp.innerHTML = "Unknown";
+            //     }
+            // })
 
-            socket.on('statusflekstore', function(data) {
-                if (data == "signed") {
-                    statusflekstore.style.color = "#00ff00";
-                    statusflekstore.innerHTML = "Signed";
-                    statusflekstoreapp.style.color = "#00ff00";
-                    statusflekstoreapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusflekstore.style.color = "#ff0000";
-                    statusflekstore.innerHTML = "Revoked";
-                    statusflekstoreapp.style.color = "#ff0000";
-                    statusflekstoreapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusflekstore.style.color = "#808080";
-                    statusflekstore.innerHTML = "Unknown"; 
-                    statusflekstoreapp.style.color = "#808080";
-                    statusflekstoreapp.innerHTML = "Unknown";
-                }
-            })
-            socket.on('statusemus4u', function(data) {
-                if (data == "signed") {
-                    statusemus4u.style.color = "#00ff00";
-                    statusemus4u.innerHTML = "Signed";
-                    statusemus4uapp.style.color = "#00ff00";
-                    statusemus4uapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusemus4u.style.color = "#ff0000";
-                    statusemus4u.innerHTML = "Revoked";
-                    statusemus4uapp.style.color = "#ff0000";
-                    statusemus4uapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusemus4u.style.color = "#808080";
-                    statusemus4u.innerHTML = "Unknown"; 
-                    statusemus4uapp.style.color = "#808080";
-                    statusemus4uapp.innerHTML = "Unknown";
-                }
-            })
+            // socket.on('statusflekstore', function(data) {
+            //     if (data == "signed") {
+            //         statusflekstore.style.color = "#00ff00";
+            //         statusflekstore.innerHTML = "Signed";
+            //         statusflekstoreapp.style.color = "#00ff00";
+            //         statusflekstoreapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusflekstore.style.color = "#ff0000";
+            //         statusflekstore.innerHTML = "Revoked";
+            //         statusflekstoreapp.style.color = "#ff0000";
+            //         statusflekstoreapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusflekstore.style.color = "#808080";
+            //         statusflekstore.innerHTML = "Unknown"; 
+            //         statusflekstoreapp.style.color = "#808080";
+            //         statusflekstoreapp.innerHTML = "Unknown";
+            //     }
+            // })
+            // socket.on('statusemus4u', function(data) {
+            //     if (data == "signed") {
+            //         statusemus4u.style.color = "#00ff00";
+            //         statusemus4u.innerHTML = "Signed";
+            //         statusemus4uapp.style.color = "#00ff00";
+            //         statusemus4uapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusemus4u.style.color = "#ff0000";
+            //         statusemus4u.innerHTML = "Revoked";
+            //         statusemus4uapp.style.color = "#ff0000";
+            //         statusemus4uapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusemus4u.style.color = "#808080";
+            //         statusemus4u.innerHTML = "Unknown"; 
+            //         statusemus4uapp.style.color = "#808080";
+            //         statusemus4uapp.innerHTML = "Unknown";
+            //     }
+            // })
 
-            socket.on('statusiosemus', function(data) {
-                if (data == "signed") {
-                    statusiosemus.style.color = "#00ff00";
-                    statusiosemus.innerHTML = "Signed";
-                    statusiosemusapp.style.color = "#00ff00";
-                    statusiosemusapp.innerHTML = "Signed";
-                } else if (data == "!signed") {
-                    statusiosemus.style.color = "#ff0000";
-                    statusiosemus.innerHTML = "Revoked";
-                    statusiosemusapp.style.color = "#ff0000";
-                    statusiosemusapp.innerHTML = "Revoked";
-                } else if (data == "unknown") {
-                    statusiosemus.style.color = "#808080";
-                    statusiosemus.innerHTML = "Unknown"; 
-                    statusiosemusapp.style.color = "#808080";
-                    statusiosemusapp.innerHTML = "Unknown";
-                }
-            })
+            // socket.on('statusiosemus', function(data) {
+            //     if (data == "signed") {
+            //         statusiosemus.style.color = "#00ff00";
+            //         statusiosemus.innerHTML = "Signed";
+            //         statusiosemusapp.style.color = "#00ff00";
+            //         statusiosemusapp.innerHTML = "Signed";
+            //     } else if (data == "!signed") {
+            //         statusiosemus.style.color = "#ff0000";
+            //         statusiosemus.innerHTML = "Revoked";
+            //         statusiosemusapp.style.color = "#ff0000";
+            //         statusiosemusapp.innerHTML = "Revoked";
+            //     } else if (data == "unknown") {
+            //         statusiosemus.style.color = "#808080";
+            //         statusiosemus.innerHTML = "Unknown"; 
+            //         statusiosemusapp.style.color = "#808080";
+            //         statusiosemusapp.innerHTML = "Unknown";
+            //     }
+            // })
 
         } else if (useremailver == 0) {
             console.log("user logged in (!verified account)");
-            admincontent.innerHTML = "";
+            // admincontent.innerHTML = "";
 
-            showclock.innerHTML = '';
+            // showclock.innerHTML = '';
 
-            //Loading Popular Apps
-            var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
+            // //Loading Popular Apps
+            // var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
-            //Changes UI of Account Page
-            signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header"> Note: Please verify your account. We have sent you an email regarding your verification. <br> After verifying, make sure to relogin. </div><a href="#" class="tab-link"> <i id="verify-email" class="icon button button-fill button-big" style="margin-top: 10px; width: 100%;">Send Verification</i></a><a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 13px; width: 100%;">Logout</i></a>';
-            var signout = document.getElementById('signout');
-            signout.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
-            var verifyemail = document.getElementById('verify-email');
-            socket.on('verificationerror', function(data) { verifyemail.className = "icon button button-fill button-big color-red"; });
-            verifyemail.addEventListener('click', function() { socket.emit('verifyemail', 'value'); }); 
+            // //Changes UI of Account Page
+            // signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header"> Note: Please verify your account. We have sent you an email regarding your verification. <br> After verifying, make sure to relogin. </div><a href="#" class="tab-link"> <i id="verify-email" class="icon button button-fill button-big" style="margin-top: 10px; width: 100%;">Send Verification</i></a><a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 13px; width: 100%;">Logout</i></a>';
+            // var signout = document.getElementById('signout');
+            // signout.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
+            // var verifyemail = document.getElementById('verify-email');
+            // socket.on('verificationerror', function(data) { verifyemail.className = "icon button button-fill button-big color-red"; });
+            // verifyemail.addEventListener('click', function() { socket.emit('verifyemail', 'value'); }); 
 
-            //Adding the extra sources 
-            sourcelimit.innerHTML = '';
+            // //Adding the extra sources 
+            // sourcelimit.innerHTML = '';
 
         }
 

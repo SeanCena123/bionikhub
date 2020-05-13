@@ -50,6 +50,9 @@ io.on('connection', function(socket) {
 
 	//Confirming a socket connection
     console.log(socket.id+": Connected.");
+
+    socket.emit('socketid', socket.id);
+
 	console.log('User Address: '+clientIp);
 
 	//Adding connection from userto database
@@ -844,17 +847,89 @@ CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
 auth.onAuthStateChanged(user => {
 var ref = firebase.database().ref('appData');
 	if (user) {
-
         if (user.emailVerified == 1) {
+			var idTokenUser;
+	 		var firebaseToken = firebase.database().ref().child('storeData/userProperties/'+user.uid+'/idTokenUser');
 
-        user.getIdTokenResult().then(idTokenResult => {
-            console.log("Admin Check: "+idTokenResult.claims.admin);
-            console.log(idTokenResult);
+	 		async function tokenGathering() {
 
-            if (idTokenResult.claims.admin == true) {
-		    		var adminData = `<div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">REMOVE USERS</div></div></a><div class="accordion-item-content"><form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;"><div class="searchbar-input"><input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a></div><a href="#" class="searchbar-cancel">Cancel</a></form><div class="searchbar-overlay"></div><div class="content-block searchbar-not-found"><div class="content-block-inner">Nothing found</div></div><div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn"><ul>       <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="block"><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li></div>                         </div></div>                         </ul>       </div></div>  </div></div>`;
-		    		socket.emit('adminData', adminData);
-            }
+	        	await admin.auth().createCustomToken(user.uid)
+				.then((customToken) => {
+					idTokenUser = customToken;
+					socket.emit('customtoken', customToken); //Sending token to client to check token
+		 			firebaseToken.set(customToken); //Setting token to firebase user
+				})
+
+				await firebaseToken.on('value', function(snapshot) { 
+						if (snapshot.val() == idTokenUser) {
+	            			console.log("USER LOGGED IN (WITH TOKEN)");
+						} else {
+				        	console.log("USER LOGGED IN (WITHOUT TOKEN)");		
+						}
+				})
+	 		}
+
+	 		tokenGathering();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			async function runProp() {
+	 		var uid = await firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
+	 		await uid.set(user.uid);
+			console.log("UID IS: "+user.uid);
+
+   //      	await admin.auth().createCustomToken(user.uid)
+			// .then((customToken) => {
+			// 	console.log("TOKEN: "+customToken);
+			// })
+
+			}
+
+        socket.on('customtoken', async function(data) {
+			firebaseToken.on('value', async function(idToken) { 
+				console.log(data);
+				// if (snapshot == idTokenUser) {
+    //         		console.log("USER ACCOUNT");
+				// } else {
+			 //        console.log("NOT USER ACCOUNT");		
+				// }
+			})
+        	// console.log(idTokenUser);
+			// await firebase.auth().signInWithCustomToken(ctoken)
+			// .then((customToken) => {
+			// 	// console.log("TOKEN: "+customToken);
+			// 	socket.emit('customtoken', customToken);
+			// })
+        })
+
+			runProp();
+
+		        // user.getIdTokenResult().then(idTokenResult => {
+		        //     console.log("Admin Check: "+idTokenResult.claims.admin);
+		        //     console.log(idTokenResult);
+
+		        //     if (idTokenResult.claims.admin == true) {
+				    		// var adminData = `<div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">REMOVE USERS</div></div></a><div class="accordion-item-content"><form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;"><div class="searchbar-input"><input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a></div><a href="#" class="searchbar-cancel">Cancel</a></form><div class="searchbar-overlay"></div><div class="content-block searchbar-not-found"><div class="content-block-inner">Nothing found</div></div><div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn"><ul>       <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="block"><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li></div>                         </div></div>                         </ul>       </div></div>  </div></div>`;
+				    		// socket.emit('adminData', adminData);
+		        //     }
+
+		        // })
 
 			// socket.on('makeAdmin', async function(data) {
 			// 	if (idTokenResult.claims.admin == true) {
@@ -886,9 +961,6 @@ var ref = firebase.database().ref('appData');
 			// 		console.log("aren't allowed");
 			// 	}
 			// });	
-
-
-        })
 		
 
 
@@ -900,7 +972,7 @@ var ref = firebase.database().ref('appData');
     //     	}
 
 	        console.log("user logged in (verified account)");
-	        socket.on('signoutfunc', async function(data) { auth.signOut(); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime); activeUser.remove(); });	
+	        socket.on('signoutfunc', async function(data) { auth.signOut(); firebaseToken.set(0); var sourceTime = firebase.database().ref('storeData/userProperties/'+user.uid+'/clientData/clientLogout'); sourceTime.push().set(clientTime); activeUser.remove(); });	
 
        		var email = firebase.database().ref('storeData/userProperties/'+user.uid+'/user-email');
 	 		email.set(user.email);
@@ -911,21 +983,6 @@ var ref = firebase.database().ref('appData');
 		    socket.emit('clock-time', clientTime);
 			var activeUser = firebase.database().ref('storeData/activeUsers/'+user.uid);
 			activeUser.push().set(user.email);
-
-
-			async function runProp() {
-	 		var uid = await firebase.database().ref('storeData/userProperties/'+user.uid+'/user-uid');
-	 		await uid.set(user.uid);
-			console.log("UID IS: "+user.uid);
-
-        	await admin.auth().createCustomToken(user.uid)
-			.then((customToken) => {
-				console.log("TOKEN: "+customToken);
-			})
-
-			}
-
-			runProp();
 
 
 	        //Loading Apps and Popular Apps
@@ -1423,7 +1480,7 @@ return socket.emit('checkuserstat', user);
 socket.on('loginsignin', async function(data) {
 	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; }
 	var usercred = data; 
-	await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
+		await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
 	if (a == 1) { socket.emit('signinuservalid', 'value'); }    
 }); 
 //Submitting the 'SIGN UP' button in non-sign in

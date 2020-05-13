@@ -74,6 +74,10 @@ var totalNumApps;
 
 var titlechange = document.getElementById("title-change");
 
+        socket.on('socketid', function(data) { 
+            console.log(data);
+        });
+
 // //Loading Popular Apps
 // var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
@@ -129,9 +133,34 @@ socket.on('checkuserstat', function(data) {
         accountPageChangeAccount();
 
         if (useremailver == 1) {
+            var idToken;
+            socket.on('customtoken', function(data) {
+                idToken = data;
+                console.log(idToken);
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
         twitterbionik.addEventListener('click', function() {
-            titlechange.innerHTML = "TESTING";
+            socket.emit('customtoken', 'value');
         });
 
         console.log(data);
@@ -687,8 +716,72 @@ socket.on('checkuserstat', function(data) {
         //Adding the extra sources 
         sourcelimit.innerHTML = '';
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //Authentication Login 
-        var loginsignin = document.getElementById('loginsignin'); var loginemail = document.getElementById('loginemail'); var loginpassword = document.getElementById('loginpassword'); var inputquery2 = document.getElementById('inputquery2'); loginsignin.addEventListener('click', function() { var usercred = []; var emailsignval = loginemail.value; var passwordsignval = loginpassword.value; usercred.push(emailsignval, passwordsignval); socket.emit('loginsignin',usercred); inputquery2.removeChild(inputquery2.lastChild); });   var newsourceauth = document.getElementById('new-sourceauth'); newsourceauth.innerHTML = ''; socket.on('signinuservalid', function(data) { loginemail.value = ""; loginpassword.value = ""; document.getElementById("clicker").click(); });
+        var loginsignin = document.getElementById('loginsignin'); 
+        var loginemail = document.getElementById('loginemail'); 
+        var loginpassword = document.getElementById('loginpassword'); 
+        var inputquery2 = document.getElementById('inputquery2'); 
+        loginsignin.addEventListener('click', function() { 
+            var usercred = []; 
+            var emailsignval = loginemail.value; 
+            var passwordsignval = loginpassword.value; 
+            usercred.push(emailsignval, passwordsignval); 
+            socket.emit('loginsignin',usercred); 
+            inputquery2.removeChild(inputquery2.lastChild); 
+        });   
+
+        var newsourceauth = document.getElementById('new-sourceauth'); 
+        newsourceauth.innerHTML = ''; 
+        socket.on('signinuservalid', function(data) { 
+            loginemail.value = ""; 
+            loginpassword.value = ""; 
+            document.getElementById("clicker").click(); 
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 })

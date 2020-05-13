@@ -72,6 +72,8 @@ var showclock = document.getElementById("show-clock");
 
 var totalNumApps;
 
+var titlechange = document.getElementById("title-change");
+
 // //Loading Popular Apps
 // var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
 
@@ -127,6 +129,12 @@ socket.on('checkuserstat', function(data) {
         accountPageChangeAccount();
 
         if (useremailver == 1) {
+
+        Make Admin   
+        twitterbionik.addEventListener('click', function() {
+            titlechange.innerHTML = "TESTING";
+        });
+
         console.log(data);
 
 

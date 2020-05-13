@@ -1422,7 +1422,8 @@ return socket.emit('checkuserstat', user);
 //Submitting the 'SIGN IN' button in non-sign in
 socket.on('loginsignin', async function(data) {
 	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; }
-	var usercred = data; await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
+	var usercred = data; 
+	await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
 	if (a == 1) { socket.emit('signinuservalid', 'value'); }    
 }); 
 //Submitting the 'SIGN UP' button in non-sign in

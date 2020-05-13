@@ -129,8 +129,7 @@ socket.on('checkuserstat', function(data) {
         accountPageChangeAccount();
 
         if (useremailver == 1) {
-
-        Make Admin   
+ 
         twitterbionik.addEventListener('click', function() {
             titlechange.innerHTML = "TESTING";
         });

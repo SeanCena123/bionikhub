@@ -860,11 +860,14 @@ var ref = firebase.database().ref('appData');
 		 			firebaseToken.set(customToken); //Setting token to firebase user
 				})
 
-				await firebaseToken.on('value', function(snapshot) { 
+				await firebaseToken.on('value', async function(snapshot) { 
 						if (snapshot.val() == idTokenUser) {
 	            			console.log("USER LOGGED IN (WITH TOKEN)");
+	            			var adminData = await `<div class="card"><div class="accordion-item"><a href="#" class="item-content item-link"><div class="item-inner"><div class="item-tite card-header">REMOVE USERS</div></div></a><div class="accordion-item-content"><form data-search-list=".list-block-search" data-search-in=".item-title" class="searchbar searchbar-init searchbar-active" style="padding:0px;"><div class="searchbar-input"><input type="search" style="background-color:#e8e8ea;" placeholder="Search"><a href="#" class="searchbar-clear"></a></div><a href="#" class="searchbar-cancel">Cancel</a></form><div class="searchbar-overlay"></div><div class="content-block searchbar-not-found"><div class="content-block-inner">Nothing found</div></div><div class="list-block list-block-search searchbar-found media-list lazy lazy-fadeIn"><ul>       <div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="block"><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li><li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">EMAIL</div><div style="margin-right: 20px;"><a class="tab-link" href="#view-app"><em class="button button-fill button-round" onclick="loadApp(2)" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">REMOVE</em></a></div></div><div class="app-subtitle" style="font-size: 12px;">USER.UID</div><div class="app-subtitle" style="font-size: 12px;">NAME</div><div class="app-subtitle" style="font-size: 12px;">ACTIVITY</div><div class="app-subtitle" style="font-size: 12px;">COMMENTS</div></div></li></div>                         </div></div>                         </ul>       </div></div>  </div></div>`;
+							await socket.emit('adminData', adminData);
 						} else {
-				        	console.log("USER LOGGED IN (WITHOUT TOKEN)");		
+				        	console.log("USER LOGGED IN (WITHOUT TOKEN)");
+							await socket.emit('adminData', '');		
 						}
 				})
 	 		}

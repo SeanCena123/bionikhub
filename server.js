@@ -863,19 +863,11 @@ var ref = firebase.database().ref('appData');
 					currentToken = idToken;
 					console.log(currentToken);
 				}).then(() => {
-					socket.emit('userProperties', user);
-					// if (currentToken == user.accessToken)
+					socket.emit('userProperties', currentToken);
 				});
 
 	        console.log("user logged in (verified account)");
 			// admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
-			// admin.auth().setCustomUserClaims(user.uid, {
-			// 	login: true
-			// }).then(() => {
-		 //        user.getIdTokenResult().then(idTokenResult => {
-		 //            console.log("Login CustomClaim: "+idTokenResult.claims.login);
-		 //        })
-			// });
 
 
         } else if (user.emailVerified == 0) {

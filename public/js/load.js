@@ -127,15 +127,15 @@ socket.on('checkuserstat', function(data) {
             // function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
             accountname.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
 
-            socket.on('userProperties', function(datavalue) {
-                    function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
-                    console.log("success")
-            })
 
-            socket.on('userPropertiesNo', function(datavalue) {
-                    function accountPageChangeAccount2() { accountname.innerHTML = "Sign In"; accountinname.innerHTML = "Sign In"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount2();
-                    console.log("no login")
-            })
+            socket.emit('portray', 'value');
+
+            socket.on('display', function(data) {
+                function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } }
+                accountPageChange();
+            });
+
+
 
     } else {
         console.log("user logged out");

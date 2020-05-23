@@ -848,19 +848,33 @@ auth.onAuthStateChanged(user => {
 var ref = firebase.database().ref('appData');
 	if (user) {
         if (user.emailVerified == 1) {
-			var loginref = firebase.database().ref('storeData/userProperties/'+user.uid+'/loginref');
-			loginref.on('value', function(snapshot) { 
-				if (snapshot.val() == 0) {
-					console.log(snapshot.val());
-					socket.emit('userProperties', 'value');
-					return loginref.set(1);
-				} else {
-					console.log("failed");
-					socket.emit('userPropertiesNo', 'value');
-				}
-			});
-
+        	var currentToken;
+        	console.log("user logged in (verified account)");
 			// admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
+
+		socket.on('portray', async function(data) {
+
+		   	await firebase.auth().currentUser.getIdToken(true).then(async function(idToken){
+		    	currentToken = await idToken;
+		    	console.log(currentToken);
+		    })	
+			await admin.auth().verifyIdToken(currentToken).then(function(decodedToken) {
+			    let uid = decodedToken.uid;
+			    socket.emit('display', 'value');
+			})
+		});
+
+
+
+
+// var user = firebase.auth().currentUser;
+//    admin.auth().verifyIdToken(token)
+//   .then(function (decodedToken) {
+//       if(decodedToken.uid === user.uid)
+//       {
+//       	console.log("GOOD")
+//       }
+//    })
 
 
         } else if (user.emailVerified == 0) {

@@ -860,8 +860,11 @@ var ref = firebase.database().ref('appData');
 
 		socket.on('portray', async function(data) {
 			await admin.auth().verifyIdToken(currentToken).then(function(decodedToken) {
-			    let uid = decodedToken.uid;
-			    socket.emit('display', 'value');
+			    let val = decodedToken.uid;
+			    console.log(val);
+			    if (val == user.uid) {
+			    	socket.emit('display', 'value');
+			    }
 			})
 		});
 

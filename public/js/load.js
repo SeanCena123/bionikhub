@@ -127,8 +127,9 @@ socket.on('checkuserstat', function(data) {
             // function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
             accountname.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
 
-
-            socket.emit('portray', 'value');
+            socket.on('portray', function(data) {
+                socket.emit('portray', 'value');
+            });
 
             socket.on('display', function(data) {
                 function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } }

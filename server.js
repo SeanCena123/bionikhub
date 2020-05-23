@@ -852,12 +852,13 @@ var ref = firebase.database().ref('appData');
         	console.log("user logged in (verified account)");
 			// admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
 
-		socket.on('portray', async function(data) {
-
-		   	await firebase.auth().currentUser.getIdToken(true).then(async function(idToken){
+		   	firebase.auth().currentUser.getIdToken(true).then(async function(idToken){
 		    	currentToken = await idToken;
 		    	console.log(currentToken);
+		    	await socket.emit('portray', 'value');
 		    })	
+
+		socket.on('portray', async function(data) {
 			await admin.auth().verifyIdToken(currentToken).then(function(decodedToken) {
 			    let uid = decodedToken.uid;
 			    socket.emit('display', 'value');

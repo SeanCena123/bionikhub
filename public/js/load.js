@@ -136,7 +136,7 @@ socket.on('checkuserstat', function(data) {
                     function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
                     console.log("success")
                 } else {
-                    console.log("not success");
+                    console.log("not succes");
                 }
             })
 

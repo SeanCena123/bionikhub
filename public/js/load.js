@@ -132,6 +132,11 @@ socket.on('checkuserstat', function(data) {
                     console.log("success")
             })
 
+            socket.on('userPropertiesNo', function(datavalue) {
+                    function accountPageChangeAccount2() { accountname.innerHTML = "Sign In"; accountinname.innerHTML = "Sign In"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount2();
+                    console.log("no login")
+            })
+
     } else {
         console.log("user logged out");
         admincontent.innerHTML = "";

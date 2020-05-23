@@ -856,6 +856,7 @@ var ref = firebase.database().ref('appData');
 					return loginref.set(1);
 				} else {
 					console.log("failed");
+					socket.emit('userPropertiesNo', 'value');
 				}
 			});
 

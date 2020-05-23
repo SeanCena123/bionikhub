@@ -846,6 +846,7 @@ CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
 
 auth.onAuthStateChanged(user => {
 var ref = firebase.database().ref('appData');
+var user = firebase.auth().currentUser;
 	if (user) {
         if (user.emailVerified == 1) {
         	var currentToken;

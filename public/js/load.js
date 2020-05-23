@@ -128,12 +128,8 @@ socket.on('checkuserstat', function(data) {
             accountname.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
 
             socket.on('userProperties', function(datavalue) {
-                if (datavalue) {
                     function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
                     console.log("success")
-                } else {
-                    console.log("not succes");
-                }
             })
 
     } else {

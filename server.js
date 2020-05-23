@@ -848,25 +848,17 @@ auth.onAuthStateChanged(user => {
 var ref = firebase.database().ref('appData');
 	if (user) {
         if (user.emailVerified == 1) {
-        	var currentToken;
-	        socket.on('signoutfunc', async function(data) {  	
-				admin.auth().verifyIdToken(currentToken).then((user) => {
+			var loginref = firebase.database().ref('storeData/userProperties/'+user.uid+'/loginref');
+			loginref.on('value', function(snapshot) { 
+				if (snapshot.val() == 0) {
+					console.log(snapshot.val());
+					socket.emit('userProperties', 'value');
+					return loginref.set(1);
+				} else {
+					console.log("failed");
+				}
+			});
 
-				      admin.auth().setCustomUserClaims(user.uid, {
-				        login: false
-				      })
-				  });
-			// await auth.signOut();  
-	        });	
-
-				firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-					currentToken = idToken;
-					console.log(currentToken);
-				}).then(() => {
-					socket.emit('userProperties', currentToken);
-				});
-
-	        console.log("user logged in (verified account)");
 			// admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
 
 

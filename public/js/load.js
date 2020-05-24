@@ -121,119 +121,195 @@ socket.on('favlist1', async function(data) {
 
             });
 
-socket.on('checkuserstat', function(data) {
-    if (data) {
-        console.log("logged in (user verified)")
-            // function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
-            accountname.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
-
-            socket.on('portray', function(data) {
-                socket.emit('portray', 'value');
-            });
-
-            socket.on('display', function(data) {
-                function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } }
-                accountPageChange();
-            });
-
-
-
-    } else {
-        console.log("user logged out");
-        admincontent.innerHTML = "";
-        while (popularapps.firstChild) { popularapps.removeChild(popularapps.firstChild); a=0; }
-        while (searchapps.firstChild) { searchapps.removeChild(searchapps.firstChild); a=0; }
-
-        showclock.innerHTML = '';
-
-        //Loading Popular Apps
-        var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
-
-        socket.on('clock-time', function(data) {
-            clockElement.style.visibility = "hidden";
-        })
-
-        //Changes UI of Account Page
-        accountname.innerHTML = "Sign In";
-        accountinname.innerHTML = "Sign In";
-        signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> SIGN IN </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Login into BionikHub to gain more apps and features. </div><div class="list-block media-list"></div></div><div class="list-block inset" style="margin-top: -3px"><ul><!-- Text inputs --><li><div class="item-content"><div class="item-inner"><div class="item-title label">Email</div><div class="item-input"><input id="loginemail" type="email" placeholder="Enter Email"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">Password</div><div class="item-input"><input id="loginpassword" type="password" placeholder="Enter Password"></div></div></div></li></ul></div> <div id="inputquery2"></div><a href="#" class="tab-link"><i id="loginsignin" class="icon button button-fill button-big" style="margin-top: 0px; width: 100%;">Sign In</i></a><br><br><a href="#view-signup" href="#" class="tab-link"> <i class="icon button button-fill color-green button-big" style="margin-top: -5px; width: 100%;">Sign Up</i></a><a href="#view-1" id="clicker" class="tab-link"></a>';
-
-        //Resetting the sources page (View-Page App)
-        var newsourceauth = document.getElementById('new-sourceauth');
-        newsourceauth.innerHTML = '';
-
-        //Adding the extra sources 
-        sourcelimit.innerHTML = '';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //Authentication Login 
-        var loginsignin = document.getElementById('loginsignin'); 
-        var loginemail = document.getElementById('loginemail'); 
-        var loginpassword = document.getElementById('loginpassword'); 
-        var inputquery2 = document.getElementById('inputquery2'); 
-        loginsignin.addEventListener('click', function() { 
-            var usercred = []; 
-            var emailsignval = loginemail.value; 
-            var passwordsignval = loginpassword.value; 
-            usercred.push(emailsignval, passwordsignval); 
-            socket.emit('loginsignin',usercred); 
-            inputquery2.removeChild(inputquery2.lastChild); 
-        });   
-
-        var newsourceauth = document.getElementById('new-sourceauth'); 
-        newsourceauth.innerHTML = ''; 
-        socket.on('signinuservalid', function(data) { 
-            loginemail.value = ""; 
-            loginpassword.value = ""; 
-            document.getElementById("clicker").click(); 
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+var auth;
+socket.on('credentialfirebase', async function(data) {
+await firebase.initializeApp({
+        apiKey: data[0],
+        authDomain: data[1],
+        databaseURL: data[2],
+        projectId: data[3],
+        storageBucket: data[4],
+        messagingSenderId: data[5],
+        appId: data[6],
+        measurementId: data[7]
+});
+console.log("initialised");
+auth = await firebase.auth();
+console.log(auth);
+await socket.emit('returnauth', 'value')
 })
+
+socket.on('returnauth', async function(data) {
+    auth.onAuthStateChanged(user => {
+    var ref = firebase.database().ref('appData');
+    var user = firebase.auth().currentUser;
+        if (user) {
+            if (user.emailVerified == 1) {
+                console.log("user logged in (verified account)");
+                function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChange();
+                // admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
+
+
+            } else if (user.emailVerified == 0) {
+                console.log("user logged in (!verified account)");
+
+
+            }
+
+        } else {
+            console.log("user logged out");
+            accountname.innerHTML = "Sign In";
+            accountinname.innerHTML = "Sign In";
+            signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> SIGN IN </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Login into BionikHub to gain more apps and features. </div><div class="list-block media-list"></div></div><div class="list-block inset" style="margin-top: -3px"><ul><!-- Text inputs --><li><div class="item-content"><div class="item-inner"><div class="item-title label">Email</div><div class="item-input"><input id="loginemail" type="email" placeholder="Enter Email"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">Password</div><div class="item-input"><input id="loginpassword" type="password" placeholder="Enter Password"></div></div></div></li></ul></div> <div id="inputquery2"></div><a href="#" class="tab-link"><i id="loginsignin" class="icon button button-fill button-big" style="margin-top: 0px; width: 100%;">Sign In</i></a><br><br><a href="#view-signup" href="#" class="tab-link"> <i class="icon button button-fill color-green button-big" style="margin-top: -5px; width: 100%;">Sign Up</i></a><a href="#view-1" id="clicker" class="tab-link"></a>';
+
+            //Authentication Login 
+            var loginsignin = document.getElementById('loginsignin'); 
+            var loginemail = document.getElementById('loginemail'); 
+            var loginpassword = document.getElementById('loginpassword'); 
+            var inputquery2 = document.getElementById('inputquery2'); 
+            loginsignin.addEventListener('click', function() { 
+                var usercred = []; 
+                var emailsignval = loginemail.value; 
+                var passwordsignval = loginpassword.value; 
+                usercred.push(emailsignval, passwordsignval); 
+                socket.emit('loginsignin',usercred); 
+                inputquery2.removeChild(inputquery2.lastChild); 
+            });   
+
+            var newsourceauth = document.getElementById('new-sourceauth'); 
+            newsourceauth.innerHTML = ''; 
+            socket.on('signinuservalid', async function(data) { 
+
+                await auth.signInWithEmailAndPassword(data[0], data[1]).catch((error) => myError(error))
+
+                loginemail.value = ""; 
+                loginpassword.value = ""; 
+                document.getElementById("clicker").click(); 
+            });
+
+        }
+    })
+})
+
+
+// socket.on('apiKey', async function(data) {
+//     console.log("apiKey: "+data);
+// });
+// socket.on('authDomain', async function(data) {
+//     console.log("authDomain: "+data);
+// });
+// socket.on('databaseURL', async function(data) {
+//     console.log("databaseURL: "+data);
+// });
+// socket.on('projectId', async function(data) {
+//     console.log("projectId: "+data);
+// });
+// socket.on('storageBucket', async function(data) {
+//     console.log("storageBucket: "+data);
+// });
+// socket.on('messagingSenderId', async function(data) {
+//     console.log("messagingSenderId: "+data);
+// });
+// socket.on('appId', async function(data) {
+//     console.log("appId: "+data);
+// });
+// socket.on('measurementId', async function(data) {
+//     console.log("measurementId: "+data);
+// });
+
+
+// socket.on('checkuserstat', function(data) {
+//     if (data) {
+//         console.log("logged in (user verified)")
+//             // function accountPageChangeAccount() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChangeAccount();
+//             accountname.addEventListener('click', function() { socket.emit('signoutfunc', 'value'); }); 
+
+//             socket.on('portray', function(data) {
+//                 socket.emit('portray', 'value');
+//             });
+
+//             socket.on('display', function(data) {
+//                 function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } }
+//                 accountPageChange();
+//             });
+
+
+
+//     } else {
+//         console.log("user logged out");
+//         admincontent.innerHTML = "";
+//         while (popularapps.firstChild) { popularapps.removeChild(popularapps.firstChild); a=0; }
+//         while (searchapps.firstChild) { searchapps.removeChild(searchapps.firstChild); a=0; }
+
+//         showclock.innerHTML = '';
+
+//         //Loading Popular Apps
+//         var i = 0; socket.on('requestPopularAppsNoAccount', function(data) { var a = data; i++; function sortFunction(a, b) { if (a[1] === b[1]) { return 0; } else { return (a[1] > b[1]) ? -1 : 1; } } a.sort(sortFunction); if (i == (totalNumApps-1)) { createTag(a[1][0], "popular-apps"); createTag(a[2][0], "popular-apps"); createTag(a[3][0], "popular-apps"); createTag(a[4][0], "popular-apps"); } })
+
+//         socket.on('clock-time', function(data) {
+//             clockElement.style.visibility = "hidden";
+//         })
+
+//         //Changes UI of Account Page
+//         accountname.innerHTML = "Sign In";
+//         accountinname.innerHTML = "Sign In";
+//         signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> SIGN IN </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Login into BionikHub to gain more apps and features. </div><div class="list-block media-list"></div></div><div class="list-block inset" style="margin-top: -3px"><ul><!-- Text inputs --><li><div class="item-content"><div class="item-inner"><div class="item-title label">Email</div><div class="item-input"><input id="loginemail" type="email" placeholder="Enter Email"></div></div></div></li><li><div class="item-content"><div class="item-inner"><div class="item-title label">Password</div><div class="item-input"><input id="loginpassword" type="password" placeholder="Enter Password"></div></div></div></li></ul></div> <div id="inputquery2"></div><a href="#" class="tab-link"><i id="loginsignin" class="icon button button-fill button-big" style="margin-top: 0px; width: 100%;">Sign In</i></a><br><br><a href="#view-signup" href="#" class="tab-link"> <i class="icon button button-fill color-green button-big" style="margin-top: -5px; width: 100%;">Sign Up</i></a><a href="#view-1" id="clicker" class="tab-link"></a>';
+
+//         //Resetting the sources page (View-Page App)
+//         var newsourceauth = document.getElementById('new-sourceauth');
+//         newsourceauth.innerHTML = '';
+
+//         //Adding the extra sources 
+//         sourcelimit.innerHTML = '';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     }
+// })
 
 /*
 CHECKING USER STATUS FOR FIREBASE AUTHENTICATION

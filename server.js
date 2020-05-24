@@ -157,6 +157,21 @@ function reset() {
 // reset();		
 
 const auth = firebase.auth();
+var credentialfirebase = [process.env.API_KEY, process.env.AUTHDOMAIN, process.env.DATABASEURL, process.env.PROJECTID, process.env.STORAGEBUCKET, process.env.MESSAGINGSENDERID, process.env.APPID, process.env.MEASUREMENTID];
+socket.emit('credentialfirebase', (credentialfirebase));
+socket.on('returnauth', async function(data) { 
+	socket.emit('returnauth', 'value');
+});	
+
+// socket.emit('apiKey', (process.env.API_KEY));
+// socket.emit('authDomain', (process.env.AUTHDOMAIN));
+// socket.emit('databaseURL', (process.env.DATABASEURL));
+// socket.emit('projectId', (process.env.PROJECTID));
+// socket.emit('storageBucket', (process.env.STORAGEBUCKET));
+// socket.emit('messagingSenderId', (process.env.MESSAGINGSENDERID));
+// socket.emit('appId', (process.env.APPID));
+// socket.emit('measurementId', (process.env.MEASUREMENTID));
+
 
 /*
 CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
@@ -844,56 +859,56 @@ CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
 // 	return socket.emit('checkuserstat', user);
 // })
 
-auth.onAuthStateChanged(user => {
-var ref = firebase.database().ref('appData');
-var user = firebase.auth().currentUser;
-	if (user) {
-        if (user.emailVerified == 1) {
-        	var currentToken;
-        	console.log("user logged in (verified account)");
-			// admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
-
-		   	firebase.auth().currentUser.getIdToken(true).then(async function(idToken){
-		    	currentToken = await idToken;
-		    	console.log(currentToken);
-		    	await socket.emit('portray', 'value');
-		    })	
-
-		socket.on('portray', async function(data) {
-			await admin.auth().verifyIdToken(currentToken).then(function(decodedToken) {
-			    let val = decodedToken.uid;
-			    console.log(val);
-			    if (val == user.uid) {
-			    	socket.emit('display', 'value');
-			    }
-			})
-		});
-
-
-
-
+// auth.onAuthStateChanged(user => {
+// var ref = firebase.database().ref('appData');
 // var user = firebase.auth().currentUser;
-//    admin.auth().verifyIdToken(token)
-//   .then(function (decodedToken) {
-//       if(decodedToken.uid === user.uid)
-//       {
-//       	console.log("GOOD")
-//       }
-//    })
+// 	if (user) {
+//         if (user.emailVerified == 1) {
+//         	var currentToken;
+//         	console.log("user logged in (verified account)");
+// 			// admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
+
+// 		   	firebase.auth().currentUser.getIdToken(true).then(async function(idToken){
+// 		    	currentToken = await idToken;
+// 		    	console.log(currentToken);
+// 		    	await socket.emit('portray', 'value');
+// 		    })	
+
+// 		socket.on('portray', async function(data) {
+// 			await admin.auth().verifyIdToken(currentToken).then(function(decodedToken) {
+// 			    let val = decodedToken.uid;
+// 			    console.log(val);
+// 			    if (val == user.uid) {
+// 			    	socket.emit('display', 'value');
+// 			    }
+// 			})
+// 		});
 
 
-        } else if (user.emailVerified == 0) {
-	        console.log("user logged in (!verified account)");
 
 
-        }
+// // var user = firebase.auth().currentUser;
+// //    admin.auth().verifyIdToken(token)
+// //   .then(function (decodedToken) {
+// //       if(decodedToken.uid === user.uid)
+// //       {
+// //       	console.log("GOOD")
+// //       }
+// //    })
 
-	} else {
-		console.log("user logged out");
 
-	}
-return socket.emit('checkuserstat', user);
-})
+//         } else if (user.emailVerified == 0) {
+// 	        console.log("user logged in (!verified account)");
+
+
+//         }
+
+// 	} else {
+// 		console.log("user logged out");
+
+// 	}
+// return socket.emit('checkuserstat', user);
+// })
 
 
 
@@ -940,10 +955,10 @@ return socket.emit('checkuserstat', user);
 
 //Submitting the 'SIGN IN' button in non-sign in
 socket.on('loginsignin', async function(data) {
-	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; }
-	var usercred = data; 
-		await auth.signInWithEmailAndPassword(usercred[0], usercred[1]).catch((error) => myError(error))
-	if (a == 1) { socket.emit('signinuservalid', 'value'); }    
+	var a = 1; function myError(error) { console.log('signIn error: ', error); socket.emit('signinuserinvalid', error); a = 0; console.log("invalid and error when signing in.") }
+	var usercred = await data; 
+	console.log("authenticated")
+	if (a == 1) { socket.emit('signinuservalid', usercred); console.log("signed in and sent emit.") }    
 }); 
 //Submitting the 'SIGN UP' button in non-sign in
 socket.on('signindata', async function(data) {

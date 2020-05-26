@@ -135,7 +135,8 @@ await firebase.initializeApp({
 });
 console.log("initialised");
 auth = await firebase.auth();
-console.log(auth);
+await auth.signOut() //TURN THIS OFF LATER
+await console.log(auth);
 await socket.emit('returnauth', 'value')
 })
 
@@ -148,6 +149,59 @@ socket.on('returnauth', async function(data) {
                 console.log("user logged in (verified account)");
                 function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChange();
                 // admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
+
+                socket.emit('value', 'value');
+
+            var sourcelimit = document.getElementById('source-limit')    
+            sourcelimit.innerHTML = '<li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSNinja</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosninja-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">CoconutX</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="coconutx-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSGods</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosgods-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">FlekSt0re</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="flekstore-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">Emus4u</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="emus4u-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSEmus</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosemus-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li>';
+
+            var useremail = user.email;
+            var useremailver = user.emailVerified;
+            signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
+
+            var signout = document.getElementById('signout');
+            signout.addEventListener('click', function() { auth.signOut() }); 
+
+
+        // socket.emit('appData3','value');
+        // socket.on('appData3', function(data) { 
+        //                 var ref = firebase.database().ref('appData');
+        //     ref.on('value', async function(snapshot) { 
+        //         data = await snapshot.numChildren();
+        //         totalNumApps = ((data+1)/2);
+        //         console.log("Total Apps (no account): "+totalNumApps);
+        //         socket.emit('appData3', totalNumApps);
+
+        //         //Recieving request to load Popular Apps
+        //         async function requestPopularApps() {
+        //         var a = [];
+        //         var value;
+        //         for (var g = 0; g < totalNumApps; g++) {
+        //             a.push([g])
+        //         }
+        //         function running(num) {
+        //             var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
+
+        //             source.on('value', function(snapshot) {
+        //                 value = snapshot.val(); 
+        //                 a[num].push(value) 
+        //                 socket.emit('requestPopularApps3', a);
+        //             }); 
+        //         }
+        //         for (var i = 1; i < totalNumApps; i++) {
+        //             running(i)
+        //         }
+        //         }
+        //         requestPopularApps();
+
+        //         //Resetting the database
+        //         // await reset();
+
+        //     })
+        // })
+        // userfav.innerHTML = ''
+
+
 
 
             } else if (user.emailVerified == 0) {
@@ -606,7 +660,37 @@ CHECKING USER STATUS FOR FIREBASE AUTHENTICATION
 //             //     favlistcount = 1; //Allowing functions to run as numcountvalue has gotten its value
 //             // }) 
 
-//             signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // signincontent.innerHTML = '<div class="content-block-title"><h1 class="text color-text-flow"> ACCOUNT </h1></div><div class="card" style="margin-top: -5px"><div class="card-header">Welcome to BionikHub '+useremail+'. <br> Email Verification: '+useremailver+' </div></div> <div class="content-block-title"><h1 class="text color-text-flow"> FAVOURITES </h1><div><a href="#" class="tab-link"> <i id="remove-fav-app" class="icon button button-fill button-big color-red" style="margin-top: 0px; width: 100%;">REMOVE APP</i></a><div class="card" style="margin-top: 15px"><div class="list-block media-list"><div class="card-content lazy lazy-fadeIn"><div class="list-block media-list"><div id="fav-list"></div></div></div></div></div></div> <a href="#" class="tab-link"> <i id="signout" class="icon button button-fill button-big color-red" style="margin-top: 10px; width: 100%;">Logout</i></a><br><br>';
 
 //             // socket.on('favlist', async function(dataref) { //dataref is the array of favourite apps being sent from the server 
 //             //     if (favlistcount == 1) { //Checking if I got the numcount value to continue the code

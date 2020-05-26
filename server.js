@@ -11,14 +11,14 @@ var firebase = require('firebase');
 require('firebase/app');
 require('firebase/database');
 firebase.initializeApp({
-		apiKey: process.env.API_KEY,
-		authDomain: process.env.AUTHDOMAIN,
-		databaseURL: process.env.DATABASEURL,
-		projectId: process.env.PROJECTID,
-		storageBucket: process.env.STORAGEBUCKET,
-		messagingSenderId: process.env.MESSAGINGSENDERID,
-		appId: process.env.APPID,
-		measurementId: process.env.MEASUREMENTID
+		apiKey: process.env.API_KEY1,
+		authDomain: process.env.AUTHDOMAIN1,
+		databaseURL: process.env.DATABASEURL1,
+		projectId: process.env.PROJECTID1,
+		storageBucket: process.env.STORAGEBUCKET1,
+		messagingSenderId: process.env.MESSAGINGSENDERID1,
+		appId: process.env.APPID1,
+		measurementId: process.env.MEASUREMENTID1
 });
 
 require("firebase/auth");
@@ -159,9 +159,41 @@ function reset() {
 const auth = firebase.auth();
 var credentialfirebase = [process.env.API_KEY, process.env.AUTHDOMAIN, process.env.DATABASEURL, process.env.PROJECTID, process.env.STORAGEBUCKET, process.env.MESSAGINGSENDERID, process.env.APPID, process.env.MEASUREMENTID];
 socket.emit('credentialfirebase', (credentialfirebase));
+
 socket.on('returnauth', async function(data) { 
 	socket.emit('returnauth', 'value');
 });	
+
+socket.on('value', function(data) { 
+	console.log(data);
+});	
+
+		// socket.on('appData3', function(data) {
+		// 	socket.emit('appData3', 'value');
+		// });	
+
+  //       var i = 0;
+  //       socket.on('requestPopularApps3', function(data) {
+  //           var a = data;
+  //           i++;
+  //           function sortFunction(a, b) {
+  //               if (a[1] === b[1]) {
+  //                   return 0;
+  //               }
+  //               else {
+  //                   return (a[1] > b[1]) ? -1 : 1;
+  //               }
+  //           }
+
+  //           a.sort(sortFunction);
+  //           if (i == (totalNumApps-1)) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
+  //               createTag(a[1][0], "popular-apps");
+  //               createTag(a[2][0], "popular-apps");
+  //               createTag(a[3][0], "popular-apps");
+  //               createTag(a[4][0], "popular-apps");
+  //           }
+  //       })
+
 
 // socket.emit('apiKey', (process.env.API_KEY));
 // socket.emit('authDomain', (process.env.AUTHDOMAIN));

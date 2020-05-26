@@ -98,18 +98,6 @@ socket.on('appDataAccount', async function(data) {
 
 });
 
-socket.on('favlist1', async function(data) {
-    favarray = data;
-    var favlist = document.getElementById('fav-list');
-    favlist.innerHTML = '';  
-    async function run(i) {
-        await createTag(data[i], "fav-list");
-    }
-    for (var i = 0; i < data.length; i++) {
-        run(i);
-    }
-});
-
             socket.on('clock-time', async function(data) {
                 showclock.innerHTML = await '<div class="content-block-title" style="margin-top: -10px; margin-left: 5px; font-size: 15px;"><h3 id="clock"></h3></div>';
                 var clockElement = await document.getElementById("clock");
@@ -123,6 +111,9 @@ socket.on('favlist1', async function(data) {
 
 var auth;
 socket.on('credentialfirebase', async function(data) {
+    /*
+CHECK IF THIS DATABASE IS AT ALL NECESSARY
+    */
 await firebase.initializeApp({
         apiKey: data[0],
         authDomain: data[1],
@@ -150,7 +141,7 @@ socket.on('returnauth', async function(data) {
                 function accountPageChange() { accountname.innerHTML = "Account"; accountinname.innerHTML = "Account"; while (signincontent.firstChild) { signincontent.removeChild(signincontent.firstChild); } } accountPageChange();
                 // admin.auth().createCustomToken(user.uid).then((customToken) => { currentToken = customToken; console.log("customToken: "+currentToken); }) //Creating Token
 
-                socket.emit('value', 'value');
+                socket.emit('useruid', user.uid);
 
             var sourcelimit = document.getElementById('source-limit')    
             sourcelimit.innerHTML = '<li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1183929081164943360/pCEXaf-M_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSNinja</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosninja-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1041622852896620544/64l3Eg7A_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">CoconutX</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="coconutx-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1053003638443036672/UhwU_4du_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSGods</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosgods-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/1155768313781379077/M4BMFCfC_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">FlekSt0re</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="flekstore-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/796862544790982656/VA7rUFwQ_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">Emus4u</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="emus4u-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li> <li class="item-content"> <div class="item-media"> <img class="lazy-fadeIn lazy-loaded" width="44" srcset="https://pbs.twimg.com/profile_images/945699436608524288/oM1Y_3vh_400x400.jpg"> </div> <div class="item-inner"> <div class="item-title-row"> <div id="app1" class="item-title">IOSEmus</div> <div class="" style="margin-right: 20px;"> <a class="tab-link" href="#view-6" id="iosemus-open"><em class="button button-fill button-round" style="background: rgb(240, 241, 246); color: rgb(0, 122, 255); font-weight: bold;">OPEN</em></a> </div> </div> <div class="app-subtitle">3rd Party Appstore</div> </div> </li>';
@@ -163,43 +154,90 @@ socket.on('returnauth', async function(data) {
             signout.addEventListener('click', function() { auth.signOut() }); 
 
 
-        // socket.emit('appData3','value');
-        // socket.on('appData3', function(data) { 
-        //                 var ref = firebase.database().ref('appData');
-        //     ref.on('value', async function(snapshot) { 
-        //         data = await snapshot.numChildren();
-        //         totalNumApps = ((data+1)/2);
-        //         console.log("Total Apps (no account): "+totalNumApps);
-        //         socket.emit('appData3', totalNumApps);
+            socket.emit('appData1','value');
 
-        //         //Recieving request to load Popular Apps
-        //         async function requestPopularApps() {
-        //         var a = [];
-        //         var value;
-        //         for (var g = 0; g < totalNumApps; g++) {
-        //             a.push([g])
-        //         }
-        //         function running(num) {
-        //             var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
 
-        //             source.on('value', function(snapshot) {
-        //                 value = snapshot.val(); 
-        //                 a[num].push(value) 
-        //                 socket.emit('requestPopularApps3', a);
-        //             }); 
-        //         }
-        //         for (var i = 1; i < totalNumApps; i++) {
-        //             running(i)
-        //         }
-        //         }
-        //         requestPopularApps();
+        var i = 0;
+        socket.on('requestPopularApps1', function(data) {
+            var a = data;
+            i++;
+            function sortFunction(a, b) {
+                if (a[1] === b[1]) {
+                    return 0;
+                }
+                else {
+                    return (a[1] > b[1]) ? -1 : 1;
+                }
+            }
 
-        //         //Resetting the database
-        //         // await reset();
+            a.sort(sortFunction);
+            if (i == ((a.length)-1)) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
+                createTag(a[1][0], "popular-apps");
+                createTag(a[2][0], "popular-apps");
+                createTag(a[3][0], "popular-apps");
+                createTag(a[4][0], "popular-apps");
+            }
+        })
 
-        //     })
-        // })
-        // userfav.innerHTML = ''
+        userfav.innerHTML = ''
+
+
+
+        socket.emit('favlistinit', user.uid);
+
+        userfav.innerHTML = '<div class="card" style="margin-top: -10px"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <div class="all-file-managers"> <div class="list-block media-list"> <div class="card-content lazy lazy-fadeIn"> <div class="list-block media-list"> <li class="item-content"> <div class="item-inner"> <div class="item-title-row"> <div class="item-title">Add to Favourites</div> <div class="" style="margin-right: 20px;"> <a id="fav-app-add" class="button button-fill button-round" style="background: #F0F1F6; color: #007AFF; font-weight:bold;">ADD</a> </div> </div> <div class="app-subtitle">Easy access to apps</div> </div> </li> </div> </div> </div> </div> </div> </div> </div> </div><br>';
+
+
+        socket.on('favlist1', async function(data) {
+            favarray = data;
+            var favlist = document.getElementById('fav-list');
+            favlist.innerHTML = '';  
+            async function run(i) {
+                await createTag(data[i], "fav-list");
+            }
+            for (var i = 0; i < data.length; i++) {
+                run(i);
+            }
+        });
+
+
+
+
+            //Adding and Removing Favourite Apps
+            var removefavapp = document.getElementById('remove-fav-app');
+            removefavapp.addEventListener('click', async function() {
+                var favlist = document.getElementById('fav-list');  
+                favlist.innerHTML = '';  
+                favarray.pop();
+                async function run(i) {
+                    await createTag(favarray[i], "fav-list");
+                }
+                for (var i = 0; i < favarray.length; i++) {
+                    run(i);
+                }      
+                socket.emit('favlist4', user.uid) 
+            }); 
+
+            var favappadd = document.getElementById('fav-app-add');   
+            favappadd.addEventListener('click', async function() { 
+                var counter = 1;
+                    if (favarray.length < 10 ) {
+                        for (var i = 0; i < favarray.length; i++) {
+                                if (valnum == favarray[i]) {
+                                    if (counter == 1) {
+                                        counter = 0;
+                                    }
+                                }
+                        }
+                        if (counter == 1) {
+                            console.log("success");
+                            favarray.push(valnum);
+                            console.log(favarray);
+                            socket.emit('favlist5', valnum);
+                        } 
+                    } 
+            });  
+
 
 
 

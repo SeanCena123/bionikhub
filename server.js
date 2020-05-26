@@ -164,35 +164,79 @@ socket.on('returnauth', async function(data) {
 	socket.emit('returnauth', 'value');
 });	
 
-socket.on('value', function(data) { 
-	console.log(data);
+var useruiddat;
+socket.on('useruid', async function(data) { 
+	useruiddat = await data;
 });	
 
-		// socket.on('appData3', function(data) {
-		// 	socket.emit('appData3', 'value');
-		// });	
+		socket.on('appData1', function(data) {
+			var ref = firebase.database().ref('appData');
+            ref.on('value', async function(snapshot) { 
+                data = await snapshot.numChildren();
+                totalNumApps = ((data+1));
+                console.log("Total Apps (no account): "+totalNumApps);
+                socket.emit('appData1', totalNumApps);
 
-  //       var i = 0;
-  //       socket.on('requestPopularApps3', function(data) {
-  //           var a = data;
-  //           i++;
-  //           function sortFunction(a, b) {
-  //               if (a[1] === b[1]) {
-  //                   return 0;
-  //               }
-  //               else {
-  //                   return (a[1] > b[1]) ? -1 : 1;
-  //               }
-  //           }
+                //Recieving request to load Popular Apps
+                async function requestPopularApps() {
+                var a = [];
+                var value;
+                for (var g = 0; g < totalNumApps; g++) {
+                    a.push([g])
+                }
+                function running(num) {
+                    var source = firebase.database().ref().child('storeData/appGet/app-source-get-total/app'+num+'/app'+num+'-total');
 
-  //           a.sort(sortFunction);
-  //           if (i == (totalNumApps-1)) { //Make sure that the list of apps is available in chronological order on the database, otherwise it won't work.
-  //               createTag(a[1][0], "popular-apps");
-  //               createTag(a[2][0], "popular-apps");
-  //               createTag(a[3][0], "popular-apps");
-  //               createTag(a[4][0], "popular-apps");
-  //           }
-  //       })
+                    source.on('value', function(snapshot) {
+                        value = snapshot.val(); 
+                        a[num].push(value) 
+                        socket.emit('requestPopularApps1', a);
+                    }); 
+                }
+                for (var i = 1; i < totalNumApps; i++) {
+                    running(i)
+                }
+                }
+                requestPopularApps();
+
+                //Resetting the database
+                // await reset();
+
+            })
+		});	
+
+
+
+socket.on('favlistinit', function(data) { 
+	var favref = firebase.database().ref('storeData/userProperties/'+data+'/favlist');
+	favref.on('value', async function(snapshot) { 
+	 numcount = await snapshot.numChildren();    
+
+	 var usrfavlist = [];
+	         for (var i = 0; i < numcount; i++) {
+	             var favlist = await firebase.database().ref('storeData/userProperties/'+data+'/favlist/app'+i);
+	             favlist.on("value", async function(snapshot) { 
+	                 await usrfavlist.push(snapshot.val());    
+	                 if (i == numcount) {
+	                     await console.log(usrfavlist);        
+	                     socket.emit('favlist1', usrfavlist);  
+	                 }
+	             }) 
+	     } })
+});	
+
+socket.on('favlist4', async function(data) {
+	var source = await firebase.database().ref().child('storeData/userProperties/'+data+'/favlist/app'+(numcount-1));
+	source.remove(); 
+});	
+
+socket.on('favlist5', async function(data) {
+	var ref1 = firebase.database().ref('storeData/userProperties/'+useruiddat+'/favlist/app'+numcount);
+	ref1.set(data);
+	var ref2 = firebase.database().ref('storeData/userProperties/'+useruiddat+'/favlist-activity/added/app'+data+'/clientTime');
+	ref2.push().set(clientTime); 
+});
+
 
 
 // socket.emit('apiKey', (process.env.API_KEY));

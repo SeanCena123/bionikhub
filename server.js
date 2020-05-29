@@ -238,6 +238,21 @@ socket.on('favlist5', async function(data) {
 });
 
 
+socket.on('makeAdmin', async function(data) {
+    admin.auth().setCustomUserClaims(data, {
+        admin: true
+    }).then(() => {
+    	socket.emit('makeAdmin', 'true');
+    })
+});
+
+socket.on('nomakeAdmin', async function(data) {
+    admin.auth().setCustomUserClaims(data, {
+        admin: false
+    }).then(() => {
+    	socket.emit('nomakeAdmin', 'false');
+    })
+});
 
 // socket.emit('apiKey', (process.env.API_KEY));
 // socket.emit('authDomain', (process.env.AUTHDOMAIN));

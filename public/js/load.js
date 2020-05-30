@@ -268,7 +268,7 @@ socket.on('returnauth', async function(data) {
               .then((idTokenResult) => {
                  // Confirm the user is an Admin.
                  if (!!idTokenResult.claims.admin) {
-                    console.log("admin yes");
+                    console.log("admin yess");
                  } else {
                     console.log("admin no");
                  }
